@@ -17,7 +17,6 @@ $(document).ready(function () {
 	        dataType: "json",
 	        contentType: "application/json",
 	        data: myJSON,
-			//headers: {"Authorization": localStorage.getItem('token')},
 	        success: function (data) {
 				// data = ulogovani korisnik koji je vratila metoda iz kontrolera
 				// mozemo tu vrednost da ispisemo u konzoli
@@ -25,7 +24,7 @@ $(document).ready(function () {
 	
 	            alert(email + " je uspešno ulogovan");
 
-	            localStorage.setItem('email', email);
+				localStorage.setItem('token', data['accessToken']);
 
 	            window.location.href = "welcome.html";
 	        },
