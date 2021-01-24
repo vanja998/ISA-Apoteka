@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-    var email = localStorage.getItem("email");
 
     $.ajax({
         type: "GET",
@@ -15,7 +14,10 @@ $(document).ready(function () {
             console.log("SUCCESS : ", data);
         },
         error: function (data) {
-            console.log("ERROR : ", data);
+            window.location.href = "error.html"
+
+
+
         }
     });
 

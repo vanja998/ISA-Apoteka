@@ -26,7 +26,7 @@ public class UserController {
 
     @GetMapping(value="/user",produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PATIENT')")
-    public ResponseEntity<User> getKorisnik(String email) {
+    public ResponseEntity<User> getKorisnik() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
