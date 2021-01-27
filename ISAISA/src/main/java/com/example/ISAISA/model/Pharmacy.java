@@ -30,6 +30,20 @@ public class Pharmacy {
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<AdminPharmacy> adminPharmacySet = new HashSet<AdminPharmacy>();
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "pharmacies")
+    private Set<Medication> medication = new HashSet<Medication>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
+
+    @JsonIgnore
+    @ManyToMany
+    @JoinTable(name = "dermatologist_pharmacy", joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "dermatologist_id", referencedColumnName = "id"))
+    private Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
+
+
     public Pharmacy() {
     }
 
@@ -64,4 +78,28 @@ public class Pharmacy {
     public Float getRating() { return rating; }
 
     public void setRating(Float rating) { this.rating = rating; }
+
+    public Set<Medication> getMedication() {
+        return medication;
+    }
+
+    public void setMedication(Set<Medication> medication) {
+        this.medication = medication;
+    }
+
+    public Set<Pharmacist> getPharmacists() {
+        return pharmacists;
+    }
+
+    public void setPharmacists(Set<Pharmacist> pharmacists) {
+        this.pharmacists = pharmacists;
+    }
+
+    public Set<Dermatologist> getDermatologists() {
+        return dermatologists;
+    }
+
+    public void setDermatologists(Set<Dermatologist> dermatologists) {
+        this.dermatologists = dermatologists;
+    }
 }
