@@ -1,11 +1,13 @@
 package com.example.ISAISA.model;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @Entity
 @DiscriminatorValue("adminpharmacy")
 public class AdminPharmacy extends User {
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private Pharmacy pharmacy;
 
     public AdminPharmacy() {
     }
@@ -14,4 +16,11 @@ public class AdminPharmacy extends User {
         super(id, email, password, firstName, lastName, address, phone, city, country);
     }
 
+    public Pharmacy getPharmacy() {
+        return pharmacy;
+    }
+
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
+    }
 }
