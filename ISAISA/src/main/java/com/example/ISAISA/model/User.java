@@ -73,6 +73,18 @@ public class User implements UserDetails {
         this.country = country;
     }
 
+    public User( String email, String password, String firstName, String lastName, String address, String phone, String city, String country) {
+
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phone = phone;
+        this.city = city;
+        this.country = country;
+    }
+
     //Settes and getters
 
     public Integer getId() { return id;}

@@ -17,6 +17,9 @@ public class PatientService {
         this.patientRepository = patientRepository;
     }
 
+
+
+
     public Optional<Patient> findById(Integer patientId) {
         return patientRepository.findById(patientId);
     }

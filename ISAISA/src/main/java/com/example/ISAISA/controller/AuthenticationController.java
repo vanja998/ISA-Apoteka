@@ -1,5 +1,6 @@
 package com.example.ISAISA.controller;
 
+import com.example.ISAISA.model.PatientDto;
 import com.example.ISAISA.model.User;
 import com.example.ISAISA.model.UserRequest;
 import com.example.ISAISA.model.UserTokenState;
@@ -76,6 +77,22 @@ public class AuthenticationController {
         }
 
         User user = this.userService.save(userRequest);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+
+
+
+    @PostMapping("/signupPatient")
+    public ResponseEntity<User> addPatient(@RequestBody PatientDto patientDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
+
+        User existUser = this.userService.findByEmail(patientDto.getEmail());
+        if (existUser != null) {
+            throw new Exception("Postoji User");
+        }
+
+        User user = this.userService.savePatient(patientDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
