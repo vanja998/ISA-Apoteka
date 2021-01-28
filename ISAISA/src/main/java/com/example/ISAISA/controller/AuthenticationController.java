@@ -1,11 +1,11 @@
 package com.example.ISAISA.controller;
 
-import com.example.ISAISA.model.PatientDto;
-import com.example.ISAISA.model.User;
-import com.example.ISAISA.model.UserRequest;
-import com.example.ISAISA.model.UserTokenState;
+import com.example.ISAISA.model.*;
+import com.example.ISAISA.repository.ConfirmationTokenRepository;
+import com.example.ISAISA.repository.UserRepository;
 import com.example.ISAISA.security.TokenUtils;
 import com.example.ISAISA.security.auth.JwtAuthenticationRequest;
+import com.example.ISAISA.service.EmailSenderService;
 import com.example.ISAISA.service.UserService;
 import com.example.ISAISA.service.UserServiceDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,10 +34,20 @@ public class AuthenticationController {
     private TokenUtils tokenUtils;
 
     @Autowired
+    private EmailSenderService emailSenderService;
+
+    @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
+    private ConfirmationTokenRepository confirmationTokenRepository;
+
+    @Autowired
     private UserServiceDetails userDetailsService;
+
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private UserService userService;
@@ -93,10 +104,43 @@ public class AuthenticationController {
         }
 
         User user = this.userService.savePatient(patientDto);
+        ConfirmationToken confirmationToken = new ConfirmationToken(user);
+
+        confirmationTokenRepository.save(confirmationToken);
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(user.getEmail());
+        mailMessage.setSubject("Complete Registration!");
+        mailMessage.setFrom("isaverifikacija@gmail.com");
+        mailMessage.setText("To confirm your account, please click here : "
+                +"http://localhost:8081/auth/confirm-account?token="+confirmationToken.getConfirmationToken());
+
+        emailSenderService.sendEmail(mailMessage);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
+
+    @RequestMapping(value="/confirm-account", method= {RequestMethod.GET, RequestMethod.POST})
+    public String confirmUserAccount(@RequestParam("token")String confirmationToken)
+    {
+        ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+
+        if(token != null)
+        {
+            User user = userRepository.findByEmail(token.getUser().getEmail());
+            user.setEnabled(true);
+            userRepository.save(user);
+            return "Cestitamo uspesno ste verifikovali nalog";
+        }
+        else
+        {
+            return "error";
+        }
+
+
+    }
+
 
     // U slucaju isteka vazenja JWT tokena, endpoint koji se poziva da se token osvezi
     @PostMapping(value = "/refresh")

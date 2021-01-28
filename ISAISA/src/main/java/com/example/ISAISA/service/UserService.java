@@ -65,7 +65,7 @@ public class UserService {
         p.setCity(userRequest.getCity());
         p.setPhone(userRequest.getPhoneNumber());
 
-        p.setEnabled(true);
+        p.setEnabled(false);
 
         List<Authority> auth = authService.findByname("ROLE_PATIENT");
         // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
