@@ -1,5 +1,7 @@
 package com.example.ISAISA.service;
 
+import com.example.ISAISA.DTO.UserChangeDTO;
+import com.example.ISAISA.DTO.UserPasswordDTO;
 import com.example.ISAISA.model.AdminPharmacy;
 import com.example.ISAISA.model.Pharmacy;
 import com.example.ISAISA.repository.AdminPharmacyRepository;
@@ -18,16 +20,19 @@ public class AdminPharmacyService {
         this.adminPharmacyRepository = adminPharmacyRepository;
     }
 
-    public AdminPharmacy changeAdminPharmacy(String email, String firstName, String lastName, String address, String phone, String city, String country, Pharmacy pharmacy) {
+    public AdminPharmacy changeAdminInfo(UserChangeDTO userDTO) {
+
         AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        user.setEmail(email);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setAddress(address);
-        user.setPhone(phone);
-        user.setCity(city);
-        user.setCountry(country);
-        user.setPharmacy(pharmacy);
+
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setAddress(userDTO.getAddress());
+        user.setPhone(userDTO.getPhone());
+        user.setCity(userDTO.getCity());
+        user.setCountry(userDTO.getCountry());
+
+        adminPharmacyRepository.save(user);
+
         return user;
     }
 }
