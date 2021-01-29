@@ -53,6 +53,11 @@ public class User implements UserDetails {
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
 
+    @Transient
+    public String getDecriminatorValue() {
+        return this.getClass().getAnnotation(DiscriminatorValue.class).value();
+    }
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -63,6 +68,18 @@ public class User implements UserDetails {
 
     public User(Integer id, String email, String password, String firstName, String lastName, String address, String phone, String city, String country) {
         this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.phone = phone;
+        this.city = city;
+        this.country = country;
+    }
+
+    public User( String email, String password, String firstName, String lastName, String address, String phone, String city, String country) {
+
         this.email = email;
         this.password = password;
         this.firstName = firstName;

@@ -26,7 +26,22 @@ $(document).ready(function () {
 
 				localStorage.setItem('token', data['accessToken']);
 
-	            window.location.href = "patientProfile.html";
+
+				if (data['role']==='adminpharmacy'){
+
+					window.location.href = "welcomeAdminPharmacy.html";
+
+				}
+				else if(data['role']==='patient'){
+					window.location.href = "patientProfile.html";
+				}
+				else{
+					window.location.href = "error.html";
+				}
+
+
+
+
 	        },
 	        error: function (data) {
 	            console.log(data);

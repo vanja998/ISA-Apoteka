@@ -1,8 +1,6 @@
 package com.example.ISAISA.service;
 
-import com.example.ISAISA.model.Authority;
-import com.example.ISAISA.model.User;
-import com.example.ISAISA.model.UserRequest;
+import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -53,6 +51,28 @@ public class UserService {
 
         u = this.userRepository.save(u);
         return u;
+    }
+
+    public User savePatient(PatientDto userRequest) {
+        Patient p = new Patient();
+        p.setEmail(userRequest.getEmail());
+        // pre nego sto postavimo lozinku u atribut hesiramo je
+        p.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        p.setFirstName(userRequest.getNamee());
+        p.setLastName(userRequest.getLastName());
+        p.setAddress(userRequest.getAdress());
+        p.setCountry(userRequest.getCountry());
+        p.setCity(userRequest.getCity());
+        p.setPhone(userRequest.getPhoneNumber());
+
+        p.setEnabled(false);
+
+        List<Authority> auth = authService.findByname("ROLE_PATIENT");
+        // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
+        p.setAuthorities(auth);
+
+        p = this.userRepository.save(p);
+        return p;
     }
 
     public User findByEmail(String email) {
