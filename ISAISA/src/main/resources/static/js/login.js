@@ -33,6 +33,12 @@ $(document).ready(function () {
 				else if(data['role']==='patient'){
 					window.location.href = "patientProfile.html";
 				}
+				else if(data['role']==='dermatologist'){
+					window.location.href = "welcomeDermatologist.html";
+				}
+				else if(data['role']==='pharmacist'){
+					window.location.href = "welcomePharmacist.html";
+				}
 				else{
 					window.location.href = "error.html";
 				}
