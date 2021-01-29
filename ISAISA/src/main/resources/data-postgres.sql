@@ -24,4 +24,5 @@ INSERT INTO AUTHORITY (name) VALUES ('ROLE_SUPPLIER');
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (1, 1);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (2, 6);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (3, 4);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (5, 3);
 
