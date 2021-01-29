@@ -1,5 +1,6 @@
 package com.example.ISAISA.service;
 
+import com.example.ISAISA.DTO.UserChangeDTO;
 import com.example.ISAISA.model.AdminPharmacy;
 import com.example.ISAISA.model.Dermatologist;
 import com.example.ISAISA.model.Pharmacy;
@@ -18,15 +19,19 @@ public class DermatologistService {
         this.dermatologistRepository = dermatologistRepository;
     }
 
-    public Dermatologist changeDermatologist(String email, String firstName, String lastName, String address, String phone, String city, String country, Pharmacy pharmacy) {
+    public Dermatologist changeDermatologistInfo(UserChangeDTO userDTO) {
+
         Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        user.setEmail(email);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setAddress(address);
-        user.setPhone(phone);
-        user.setCity(city);
-        user.setCountry(country);
+
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setAddress(userDTO.getAddress());
+        user.setPhone(userDTO.getPhone());
+        user.setCity(userDTO.getCity());
+        user.setCountry(userDTO.getCountry());
+
+        dermatologistRepository.save(user);
+
         return user;
     }
 
