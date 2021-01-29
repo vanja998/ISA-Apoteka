@@ -1,11 +1,11 @@
-//Load informacija o adminu
 $(document).ready(function () {
 
-    var changeProfileAdminPharmacy = $(".changeProfileAdminPharmacy")
-    changeProfileAdminPharmacy.hide();
 
-    var changePasswordAdminPharmacy = $(".changePasswordAdminPharmacy")
-    changePasswordAdminPharmacy.hide();
+    var changeProfilePatient = $(".changeProfilePatient")
+    changeProfilePatient.hide();
+
+    var changePasswordPatient = $(".changePasswordPatient")
+    changePasswordPatient.hide();
 
     var passwordChangeSuccess = $(".passwordChangeSuccess")
     passwordChangeSuccess.hide();
@@ -13,12 +13,12 @@ $(document).ready(function () {
     var passwordChangeError = $(".passwordChangeError")
     passwordChangeError.hide();
 
-    var profileAdminPharmacy = $(".profileAdminPharmacy")
-    profileAdminPharmacy.show();
+    var profilePatient = $(".profilePatient")
+    profilePatient.show();
 
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/pharmacyadmins/admin",
+        url: "http://localhost:8081/patients/patient",
         dataType: "json",
         beforeSend: function(xhr) {
             if (localStorage.token) {
@@ -26,6 +26,7 @@ $(document).ready(function () {
             }
         },
         success: function (data) {
+
             $('#firstName').append(data['firstName']);
             $('#lastName').append(data['lastName']);
             $('#email').append(data['email']);
@@ -33,18 +34,26 @@ $(document).ready(function () {
             $('#phone').append(data['phone']);
             $('#city').append(data['city']);
             $('#country').append(data['country']);
+            $('#pharmacy').append(data['pharmacy']);
         },
         error: function (data) {
-            console.log("ERROR", data);
             window.location.href="error.html";
         }
     });
 });
 
+
 //Promena profila
-$(document).on('click', '#btnChangeProfileAdminPharmacy', function () {
-    var profileAdminPharmacy = $(".profileAdminPharmacy")
-    profileAdminPharmacy.hide();
+$(document).on('click', '#btnChangeProfilePatient', function () {
+
+    var profilePatient = $(".profilePatient")
+    profilePatient.hide();
+
+    var changeProfilePatient = $(".changeProfilePatient")
+    changeProfilePatient.show();
+    
+    var changePasswordPatient = $(".changePasswordPatient")
+    changePasswordPatient.hide();
 
     var passwordChangeSuccess = $(".passwordChangeSuccess")
     passwordChangeSuccess.hide();
@@ -52,12 +61,12 @@ $(document).on('click', '#btnChangeProfileAdminPharmacy', function () {
     var passwordChangeError = $(".passwordChangeError")
     passwordChangeError.hide();
 
-    var changeProfileAdminPharmacy = $(".changeProfileAdminPharmacy")
-    changeProfileAdminPharmacy.show();
+    var profilePatient = $(".profilePatient")
+    profilePatient.hide();
 
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/pharmacyadmins/admin",
+        url: "http://localhost:8081/patients/patient",
         dataType: "json",
         beforeSend: function(xhr) {
             if (localStorage.token) {
@@ -65,12 +74,16 @@ $(document).on('click', '#btnChangeProfileAdminPharmacy', function () {
             }
         },
         success: function (data) {
-            $('#chFirstName:text').val(data['firstName']);
-            $('#chLastName:text').val(data['lastName']);
-            $('#chAddress:text').val(data['address']);
-            $('#chPhone:text').val(data['phone']);
-            $('#chCity:text').val(data['city']);
-            $('#chCountry:text').val(data['country']);
+            console.log(data);
+
+            $('#chFirstName').append(data['firstName']);
+            $('#chLastName').append(data['lastName']);
+            $('#chAddress').append(data['address']);
+            $('#chPhone').append(data['phone']);
+            $('#chCity').append(data['city']);
+            $('#chCountry').append(data['country']);
+
+
         },
         error: function (data) {
             window.location.href="error.html";
@@ -78,7 +91,7 @@ $(document).on('click', '#btnChangeProfileAdminPharmacy', function () {
     });
 });
 
-$(document).on('click', '#btnSaveProfileAdminPharmacy', function () {
+$(document).on('click', '#btnSaveProfilePatient', function () {
 
     var firstName = $("#chFirstName").val();
     var lastName = $("#chLastName").val();
@@ -91,7 +104,7 @@ $(document).on('click', '#btnSaveProfileAdminPharmacy', function () {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/pharmacyadmins/adminChangeInfo",
+        url: "http://localhost:8081/patients/patientChangeInfo",
         dataType: "json",
         contentType: "application/json",
         data: myJSON,
@@ -103,7 +116,7 @@ $(document).on('click', '#btnSaveProfileAdminPharmacy', function () {
         success: function (data) {
             console.log("SUCCESS: ", data);
 
-            window.location.href="adminPharmacyProfile.html";
+            window.location.href="patientProfile.html";
         },
         error: function () {
             window.location.href="error.html";
@@ -112,8 +125,14 @@ $(document).on('click', '#btnSaveProfileAdminPharmacy', function () {
 });
 
 $(document).on('click', '#btnCancelChanges', function () {
-    var changeProfileAdminPharmacy = $(".changeProfileAdminPharmacy")
-    changeProfileAdminPharmacy.hide();
+    var profilePatient = $(".profilePatient")
+    profilePatient.hide();
+
+    var changeProfilePatient = $(".changeProfilePatient")
+    changeProfilePatient.hide();
+
+    var changePasswordPatient = $(".changePasswordPatient")
+    changePasswordPatient.hide();
 
     var passwordChangeSuccess = $(".passwordChangeSuccess")
     passwordChangeSuccess.hide();
@@ -121,11 +140,8 @@ $(document).on('click', '#btnCancelChanges', function () {
     var passwordChangeError = $(".passwordChangeError")
     passwordChangeError.hide();
 
-    var changePasswordAdminPharmacy = $(".changePasswordAdminPharmacy")
-    changePasswordAdminPharmacy.hide();
-
-    var profileAdminPharmacy = $(".profileAdminPharmacy")
-    profileAdminPharmacy.show();
+    var profilePatient = $(".profilePatient")
+    profilePatient.hide();
 });
 
 function formToJSON(firstName, lastName, address, phone, city, country) {
@@ -142,13 +158,13 @@ function formToJSON(firstName, lastName, address, phone, city, country) {
 }
 
 //Promena lozinke
-$(document).on('click', '#btnChangePasswordAdminPharmacy', function () {
+$(document).on('click', '#btnChangePasswordPatient', function () {
 
-    var profileAdminPharmacy = $(".profileAdminPharmacy")
-    profileAdminPharmacy.hide();
+    var profilePatient = $(".profilePatient")
+    profilePatient.hide();
 
-    var changeProfileAdminPharmacy = $(".changeProfileAdminPharmacy")
-    changeProfileAdminPharmacy.hide();
+    var changeProfilePatient = $(".changeProfilePatient")
+    changeProfilePatient.hide();
 
     var passwordChangeSuccess = $(".passwordChangeSuccess")
     passwordChangeSuccess.hide();
@@ -156,12 +172,13 @@ $(document).on('click', '#btnChangePasswordAdminPharmacy', function () {
     var passwordChangeError = $(".passwordChangeError")
     passwordChangeError.hide();
 
-    var changePasswordAdminPharmacy = $(".changePasswordAdminPharmacy")
-    changePasswordAdminPharmacy.show();
+    var changePasswordPatient = $(".changePasswordPatient")
+    changePasswordPatient.show();
 
 });
 
-$(document).on('click', '#btnSavePasswordAdminPharmacy', function () {
+
+$(document).on('click', '#btnSavePasswordPatient', function () {
 
     var oldPassword = $("#oldPassword").val();
     var newPassword = $("#chPassword").val();
@@ -175,7 +192,7 @@ $(document).on('click', '#btnSavePasswordAdminPharmacy', function () {
 
         $.ajax({
             type: "POST",
-            url: "http://localhost:8081/pharmacyadmins/change-password",
+            url: "http://localhost:8081/patients/change-password",
             dataType: "json",
             contentType: "application/json",
             data: myJSON,
@@ -186,8 +203,8 @@ $(document).on('click', '#btnSavePasswordAdminPharmacy', function () {
             },
             success: function (data) {
                 console.log("SUCCESS: ", data);
-                var changePasswordAdminPharmacy = $(".changePasswordAdminPharmacy")
-                changePasswordAdminPharmacy.hide();
+                var changePasswordPatient = $(".changePasswordPatient")
+                changePasswordPatient.hide();
                 var passwordChangeSuccess = $(".passwordChangeSuccess")
                 passwordChangeSuccess.show();
             },
@@ -198,16 +215,16 @@ $(document).on('click', '#btnSavePasswordAdminPharmacy', function () {
         });
     }
     else {
-        var changePasswordAdminPharmacy = $(".changePasswordAdminPharmacy")
-        changePasswordAdminPharmacy.hide();
+        var changePasswordPatient = $(".changePasswordPatient")
+        changePasswordPatient.hide();
         var passwordChangeError = $(".passwordChangeError")
         passwordChangeError.show();
     }
 });
 
 $(document).on('click', '#btnCancelPassword', function () {
-    var changeProfileAdminPharmacy = $(".changeProfileAdminPharmacy")
-    changeProfileAdminPharmacy.hide();
+    var changeProfilePatient = $(".changeProfilePatient")
+    changeProfilePatient.hide();
 
     var passwordChangeSuccess = $(".passwordChangeSuccess")
     passwordChangeSuccess.hide();
@@ -215,11 +232,11 @@ $(document).on('click', '#btnCancelPassword', function () {
     var passwordChangeError = $(".passwordChangeError")
     passwordChangeError.hide();
 
-    var changePasswordAdminPharmacy = $(".changePasswordAdminPharmacy")
-    changePasswordAdminPharmacy.hide();
+    var changePasswordPatient = $(".changePasswordPatient")
+    changePasswordPatient.hide();
 
-    var profileAdminPharmacy = $(".profileAdminPharmacy")
-    profileAdminPharmacy.show();
+    var profilePatient = $(".profilePatient")
+    profilePatient.show();
 });
 
 function formToJSON1(oldPassword, newPassword) {
@@ -230,3 +247,5 @@ function formToJSON1(oldPassword, newPassword) {
         }
     );
 }
+
+

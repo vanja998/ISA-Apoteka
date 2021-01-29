@@ -19,14 +19,23 @@ $(document).ready(function () {
 	        data: myJSON,
 	        success: function (data) {
 				// data = ulogovani korisnik koji je vratila metoda iz kontrolera
-				// mozemo tu vrednost da ispisemo u konzoli
 	            console.log(data);
 	
 	            alert(email + " je uspešno ulogovan");
 
 				localStorage.setItem('token', data['accessToken']);
 
-	            window.location.href = "welcomeAdminPharmacy.html";
+				if (data['role']==='adminpharmacy'){
+
+					window.location.href = "adminPharmacyWelcome.html";
+
+				}
+				else if(data['role']==='patient'){
+					window.location.href = "patientProfile.html";
+				}
+				else{
+					window.location.href = "error.html";
+				}
 	        },
 	        error: function (data) {
 	            console.log(data);

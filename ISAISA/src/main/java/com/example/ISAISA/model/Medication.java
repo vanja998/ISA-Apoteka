@@ -39,6 +39,10 @@ public class Medication {
     @Column(nullable = false)
     private String notes;
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "medication")
+    private Set<Patient> patients = new HashSet<Patient>();
+
     @ManyToMany
     @JoinTable(name = "medication_altmedication", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "altmedication_id", referencedColumnName = "id"))
     private Set<Medication> medication = new HashSet<Medication>();
