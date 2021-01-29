@@ -26,7 +26,16 @@ $(document).ready(function () {
 
 				localStorage.setItem('token', data['accessToken']);
 
-	            window.location.href = "welcomeAdminPharmacy.html";
+				if (data['role']==='adminpharmacy'){
+
+					window.location.href = "welcomeAdminPharmacy.html";
+
+				}
+				else{
+					window.location.href = "error.html";
+				}
+
+
 	        },
 	        error: function (data) {
 	            console.log(data);

@@ -55,7 +55,7 @@ public class AuthenticationController {
     // Prvi endpoint koji pogadja korisnik kada se loguje.
     // Tada zna samo svoje korisnicko ime i lozinku i to prosledjuje na backend.
     @PostMapping("/login")
-    public ResponseEntity<UserTokenState> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
+    public ResponseEntity<UserTokenRoleDto> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest,
                                                                     HttpServletResponse response) {
 
         //Poziva se loadByUsername iz UserDetails i proverava da li postoji user sa ovakvim usernameom
@@ -74,9 +74,13 @@ public class AuthenticationController {
         String jwt = tokenUtils.generateToken(user.getEmail());
         int expiresIn = tokenUtils.getExpiredIn();
 
+        String rola= user.getDecriminatorValue();
+
         // Vrati token kao odgovor na uspesnu autentifikaciju
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+        return ResponseEntity.ok(new UserTokenRoleDto(jwt,expiresIn,rola));
     }
+
+
 
     // Endpoint za registraciju novog korisnika
     @PostMapping("/signup")
