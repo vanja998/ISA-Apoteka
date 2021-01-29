@@ -3,6 +3,9 @@ package com.example.ISAISA.controller;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.ConfirmationTokenRepository;
 import com.example.ISAISA.repository.UserRepository;
+import com.example.ISAISA.model.User;
+import com.example.ISAISA.model.UserRequest;
+import com.example.ISAISA.model.UserTokenState;
 import com.example.ISAISA.security.TokenUtils;
 import com.example.ISAISA.security.auth.JwtAuthenticationRequest;
 import com.example.ISAISA.service.EmailSenderService;
@@ -165,9 +168,10 @@ public class AuthenticationController {
         }
     }
 
-    @RequestMapping(value = "/change-password", method = RequestMethod.POST)
-    @PreAuthorize("hasRole('PATIENT')")
+    @PostMapping(value = "/change-password")
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
     public ResponseEntity<?> changePassword(@RequestBody PasswordChanger passwordChanger) {
+
         userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
 
         Map<String, String> result = new HashMap<String, String>();

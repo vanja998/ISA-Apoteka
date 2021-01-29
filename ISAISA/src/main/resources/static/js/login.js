@@ -19,13 +19,11 @@ $(document).ready(function () {
 	        data: myJSON,
 	        success: function (data) {
 				// data = ulogovani korisnik koji je vratila metoda iz kontrolera
-				// mozemo tu vrednost da ispisemo u konzoli
 	            console.log(data);
 	
 	            alert(email + " je uspešno ulogovan");
 
 				localStorage.setItem('token', data['accessToken']);
-
 
 				if (data['role']==='adminpharmacy'){
 
@@ -38,10 +36,6 @@ $(document).ready(function () {
 				else{
 					window.location.href = "error.html";
 				}
-
-
-
-
 	        },
 	        error: function (data) {
 	            console.log(data);

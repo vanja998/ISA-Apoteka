@@ -102,4 +102,11 @@ public class Pharmacy {
     public void setDermatologists(Set<Dermatologist> dermatologists) {
         this.dermatologists = dermatologists;
     }
+
+    @Override
+    public String toString() {
+        return "name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                '}';
+    }
 }
