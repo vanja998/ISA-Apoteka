@@ -1,5 +1,6 @@
 package com.example.ISAISA.controller;
 
+import com.example.ISAISA.DTO.PharmacyDTO;
 import com.example.ISAISA.model.AdminPharmacy;
 import com.example.ISAISA.model.Pharmacy;
 import com.example.ISAISA.model.User;
@@ -10,9 +11,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/pharmacy")
@@ -31,6 +36,20 @@ public class PharmacyController {
         AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Pharmacy pharmacy = user.getPharmacy();
         return new ResponseEntity<>(pharmacy, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/allpharmacies",produces = MediaType.APPLICATION_JSON_VALUE)                                           // value nije naveden, jer koristimo bazni url
+    public ResponseEntity<List<PharmacyDTO>> getPharmacies() {
+        List<Pharmacy> pharmacyList = this.pharmacyService.findAll();
+
+        // Kreiramo listu DTO objekata
+        List<PharmacyDTO> pharmaciesDTOS = new ArrayList<>();
+
+        for (Pharmacy pharmacy : pharmacyList) {
+            PharmacyDTO pharmacyDTO = new PharmacyDTO(pharmacy.getId(),pharmacy.getName(),pharmacy.getAddress(),pharmacy.getDescription(), pharmacy.getRating());
+            pharmaciesDTOS.add(pharmacyDTO);
+        }
+        return new ResponseEntity<>(pharmaciesDTOS, HttpStatus.OK);
     }
 
 }

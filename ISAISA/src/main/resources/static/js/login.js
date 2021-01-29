@@ -26,7 +26,7 @@ $(document).ready(function () {
 
 				localStorage.setItem('token', data['accessToken']);
 
-	            window.location.href = "welcomeAdminPharmacy.html";
+	            window.location.href = "patientProfile.html";
 	        },
 	        error: function (data) {
 	            console.log(data);
