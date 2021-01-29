@@ -1,12 +1,9 @@
 package com.example.ISAISA.service;
 
 import com.example.ISAISA.DTO.UserChangeDTO;
-import com.example.ISAISA.DTO.UserPasswordDTO;
 import com.example.ISAISA.model.AdminPharmacy;
-import com.example.ISAISA.model.Pharmacy;
 import com.example.ISAISA.repository.AdminPharmacyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 

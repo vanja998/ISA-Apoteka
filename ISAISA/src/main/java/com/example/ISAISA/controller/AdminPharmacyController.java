@@ -1,24 +1,23 @@
 package com.example.ISAISA.controller;
 
+import com.example.ISAISA.DTO.PharmacistDTO;
 import com.example.ISAISA.DTO.UserChangeDTO;
-import com.example.ISAISA.DTO.UserPasswordDTO;
 import com.example.ISAISA.model.AdminPharmacy;
-import com.example.ISAISA.model.Pharmacy;
-import com.example.ISAISA.model.User;
+import com.example.ISAISA.model.Pharmacist;
 import com.example.ISAISA.service.AdminPharmacyService;
+import com.example.ISAISA.service.PharmacistService;
 import com.example.ISAISA.service.UserServiceDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/pharmacyadmins")
@@ -28,10 +27,16 @@ public class AdminPharmacyController {
     private UserServiceDetails userDetailsService;
 
     private AdminPharmacyService adminPharmacyService;
+    private PharmacistService pharmacistService;
 
     @Autowired
     public void setAdminPharmacyService(AdminPharmacyService adminPharmacyService) {
         this.adminPharmacyService = adminPharmacyService;
+    }
+
+    @Autowired
+    public void setPharmacistService(PharmacistService pharmacistService) {
+        this.pharmacistService = pharmacistService;
     }
 
     @GetMapping(value="/admin",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -60,6 +65,16 @@ public class AdminPharmacyController {
         result.put("result", "success");
 
         return ResponseEntity.accepted().body(result);
+    }
+
+    @GetMapping(value="/adminPharmacists", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByAdminPharmacy() {
+
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<PharmacistDTO> pharmacists = pharmacistService.getPharmacistsByPharmacy(user.getPharmacy());
+
+        return new ResponseEntity<>(pharmacists, HttpStatus.OK);
     }
 
 }
