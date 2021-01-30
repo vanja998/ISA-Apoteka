@@ -1,6 +1,8 @@
 package com.example.ISAISA.service;
 
+import com.example.ISAISA.DTO.AdminSystemRegDto;
 import com.example.ISAISA.model.*;
+import com.example.ISAISA.repository.PharmacyRepository;
 import com.example.ISAISA.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,6 +27,9 @@ public class UserService {
 
     @Autowired
     private AuthorityService authService;
+
+    @Autowired
+    private PharmacyRepository pharmacyRepository;
 
     public User findById(Integer id) throws AccessDeniedException {
         User u = userRepository.findById(id).orElseGet(null);
@@ -51,6 +56,30 @@ public class UserService {
 
         u = this.userRepository.save(u);
         return u;
+    }
+
+
+    public User saveAdminPharmacy(AdminSystemRegDto userRequest) {
+        AdminPharmacy a = new AdminPharmacy();
+        a.setEmail(userRequest.getEmail());
+        // pre nego sto postavimo lozinku u atribut hesiramo je
+        a.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        a.setFirstName(userRequest.getFirstName());
+        a.setLastName(userRequest.getLastName());
+        a.setAddress(userRequest.getAddress());
+        a.setCountry(userRequest.getCountry());
+        a.setCity(userRequest.getCity());
+        a.setPhone(userRequest.getPhone());
+        Pharmacy pharmacy= pharmacyRepository.getOne(userRequest.getPharmacyID());
+        a.setPharmacy(pharmacy);
+        a.setEnabled(true);
+
+        List<Authority> auth = authService.findByname("ROLE_ADMINPHARMACY");
+        // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
+        a.setAuthorities(auth);
+
+        a = this.userRepository.save(a);
+        return a;
     }
 
     public User savePatient(PatientDto userRequest) {

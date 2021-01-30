@@ -1,5 +1,6 @@
 package com.example.ISAISA.controller;
 
+import com.example.ISAISA.DTO.AdminSystemRegDto;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.ConfirmationTokenRepository;
 import com.example.ISAISA.repository.UserRepository;
@@ -95,6 +96,20 @@ public class AuthenticationController {
         }
 
         User user = this.userService.save(userRequest);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/signupAdminPharmacy")
+    public ResponseEntity<User> addAdminPharmacy(@RequestBody AdminSystemRegDto adminSystemRegDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
+
+        User existUser = this.userService.findByEmail(adminSystemRegDto.getEmail());
+        if (existUser != null) {
+            throw new Exception("Postoji User");
+        }
+
+        User user = this.userService.saveAdminPharmacy(adminSystemRegDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
