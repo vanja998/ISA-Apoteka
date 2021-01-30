@@ -39,7 +39,7 @@ public class AdminPharmacyController {
         this.pharmacistService = pharmacistService;
     }
 
-    @GetMapping(value="/admin",produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/admin", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public ResponseEntity<AdminPharmacy> getAdmin() {
         AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -86,6 +86,17 @@ public class AdminPharmacyController {
                 pharmacistDTO.getFirstName(), pharmacistDTO.getLastName());
 
         return new ResponseEntity<>(pharmacists, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/adminPharmacistsAdd", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Pharmacist> savePharmacist(@RequestBody PharmacistDTO pharmacistDTO) {
+
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        pharmacistDTO.setPharmacy(user.getPharmacy());
+        Pharmacist pharmacist = pharmacistService.save(pharmacistDTO);
+
+        return new ResponseEntity<>(pharmacist, HttpStatus.OK);
     }
 
 }

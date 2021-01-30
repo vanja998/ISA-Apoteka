@@ -1,6 +1,5 @@
 $(document).ready(function () {
 
-
     var changeProfilePatient = $(".changeProfilePatient")
     changeProfilePatient.hide();
 

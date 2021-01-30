@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     var dermatologistsAdminPharmacy = $(".dermatologistsAdminPharmacy")
     dermatologistsAdminPharmacy.hide();
 
@@ -27,6 +26,12 @@ $(document).on('click', '#btnPharmacistsAdminPharmacy', function () {
     var pharmacistsSearchAdminPharmacy = $(".pharmacistsSearchAdminPharmacy")
     pharmacistsSearchAdminPharmacy.hide();
 
+    var addNewPharmacistAdminPharmacy= $(".addNewPharmacistAdminPharmacy")
+    addNewPharmacistAdminPharmacy.hide();
+
+    var successAddPharmacist = $(".successAddPharmacist");
+    successAddPharmacist.hide();
+
     $.ajax({
         type: "GET",
         url: "http://localhost:8081/pharmacyadmins/adminPharmacists",
@@ -45,12 +50,14 @@ $(document).on('click', '#btnPharmacistsAdminPharmacy', function () {
                 row += "<td>" + data[i]['rating'] + "</td>";
                 row += "<td>" + data[i]['pharmacy']['name'] + "</td>";
                 row += "<td>" + data[i]['pharmacy']['address'] + "</td>";
+
+                $('#tablePharmacistsAdminPharmacy').append(row);
             }
-            $('#tablePharmacistsAdminPharmacy').append(row);
+
         },
         error: function (data) {
             console.log("ERROR", data);
-            //window.location.href = "error.html";
+            window.location.href = "error.html";
         }
     });
 });
@@ -59,6 +66,9 @@ $(document).on('click', '#btnSearchPharmacistsAdminPharmacy', function () {
 
     var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy")
     pharmacistsShowAdminPharmacy.hide();
+
+    var addNewPharmacistAdminPharmacy= $(".addNewPharmacistAdminPharmacy")
+    addNewPharmacistAdminPharmacy.hide();
 
     var pharmacistsSearchAdminPharmacy= $(".pharmacistsSearchAdminPharmacy")
     pharmacistsSearchAdminPharmacy.show();
@@ -111,3 +121,80 @@ function formToJSON(firstName, lastName) {
         }
     );
 }
+
+$(document).on('click', '#btnAddPharmacistAdminPharmacy', function () {
+
+    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy")
+    pharmacistsShowAdminPharmacy.hide();
+
+    var pharmacistsSearchAdminPharmacy = $(".pharmacistsSearchAdminPharmacy")
+    pharmacistsSearchAdminPharmacy.hide();
+
+    var addNewPharmacistAdminPharmacy = $(".addNewPharmacistAdminPharmacy")
+    addNewPharmacistAdminPharmacy.show();
+
+});
+
+$(document).on('click', '#btnAddSavePharmacistAdminPharmacy', function () {
+
+    var firstName = $("#firstName").val();
+    var lastName = $("#lastName").val();
+    var email = $("#email").val();
+    var address = $("#address").val();
+    var phone = $("#phone").val();
+    var city = $("#city").val();
+    var country = $("#country").val();
+
+    var myJSON1 = formToJSON1(firstName, lastName, email, address, phone, city, country);
+
+    console.log(myJSON1);
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/pharmacyadmins/adminPharmacistsAdd",
+        dataType: "json",
+        contentType: "application/json",
+        data: myJSON1,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log("SUCCESS: ", data);
+            var addNewPharmacistAdminPharmacy = $(".addNewPharmacistAdminPharmacy")
+            addNewPharmacistAdminPharmacy.hide();
+            var successAddPharmacist = $(".successAddPharmacist");
+            successAddPharmacist.show();
+        },
+        error: function (data) {
+            console.log("ERROR: ", data);
+            window.location.href="error.html";
+        }
+    });
+
+});
+
+function formToJSON1(firstName, lastName, email, address, phone, city, country) {
+    return JSON.stringify(
+        {
+            "firstName" : firstName,
+            "lastName" : lastName,
+            "email" : email,
+            "password" : "default",
+            "address" : address,
+            "phone" : phone,
+            "city" : city,
+            "country" : country
+        }
+    );
+}
+
+$(document).on('click', '#returnToPharmacists', function () {
+
+    var successAddPharmacist = $(".successAddPharmacist");
+    successAddPharmacist.hide();
+
+    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy")
+    pharmacistsShowAdminPharmacy.show();
+});
