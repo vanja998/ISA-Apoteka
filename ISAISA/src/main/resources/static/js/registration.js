@@ -20,7 +20,7 @@ $(document).on("submit", "form", function (event) {           // kada je submito
         data: newKupacJSON,                                      // Šaljemo novog zaposlenog
         success: function () {
             alert("success");
-            window.location.href = "welcomeAdminPharmacy.html";
+            window.location.href = "welcomeAdminSystem.html";
         },
         error: function (error) {
             alert(error);
