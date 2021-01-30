@@ -29,5 +29,6 @@ INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (2, 6);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (3, 4);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (6, 3);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (4, 4);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (5, 5);
 
 
