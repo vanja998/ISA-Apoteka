@@ -3,8 +3,6 @@ $(document).ready(function () {
     $('#btnLogin').click(function () {
 
     	event.preventDefault();
-
-        console.log('proba')
         
 	    var email = $("#email").val();
 	    var password = $("#password").val();
@@ -26,9 +24,7 @@ $(document).ready(function () {
 				localStorage.setItem('token', data['accessToken']);
 
 				if (data['role']==='adminpharmacy'){
-
-					window.location.href = "welcomeAdminPharmacy.html";
-
+					window.location.href = "adminPharmacyWelcome.html";
 				}
 				else if(data['role']==='patient'){
 					window.location.href = "patientProfile.html";

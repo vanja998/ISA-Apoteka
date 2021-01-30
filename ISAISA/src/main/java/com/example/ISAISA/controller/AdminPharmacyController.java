@@ -77,4 +77,15 @@ public class AdminPharmacyController {
         return new ResponseEntity<>(pharmacists, HttpStatus.OK);
     }
 
+    @PostMapping(value="/adminPharmacistsSearch", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByAdminPharmacyAndFirstNameAndLastName(@RequestBody PharmacistDTO pharmacistDTO) {
+
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<PharmacistDTO> pharmacists = pharmacistService.getPharmacistsByPharmacyAndFirstNameAndLastName(user.getPharmacy(),
+                pharmacistDTO.getFirstName(), pharmacistDTO.getLastName());
+
+        return new ResponseEntity<>(pharmacists, HttpStatus.OK);
+    }
+
 }

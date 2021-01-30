@@ -16,19 +16,41 @@
 
     </div>
     <div class="pharmacistsAdminPharmacy">
-        <input type="search"  placeholder="Unesite ime i prezime farmaceuta"/>
-        <input type="submit" id="btnSearch"/>
+        <input type="search" id="searchPharmacistsAdminPharmacy" name="q" placeholder="Unesite ime i prezime farmaceuta"/>
+        <input type="submit" id="btnSearchPharmacistsAdminPharmacy"/>
 
-        <table id="tablePharmacistsAdminPharmacy">
-            <h1>Farmaceuti</h1>
-            <tr>
-                <th>Ime</th>
-                <th>Prezime</th>
-                <th>Ocena</th>
-                <th>Apoteka</th>
-                <th>Adresa apoteke</th>
-            </tr>
-        </table>
+        <div class="pharmacistsShowAdminPharmacy">
+            <table id="tablePharmacistsAdminPharmacy">
+                <h1>Farmaceuti</h1>
+                <tr>
+                    <th>Ime</th>
+                    <th>Prezime</th>
+                    <th>Ocena</th>
+                    <th>Apoteka</th>
+                    <th>Adresa apoteke</th>
+                </tr>
+            </table>
+        </div>
+
+        <div class="pharmacistsSearchAdminPharmacy">
+            <table id="tablePharmacistsSearchAdminPharmacy">
+                <h1>Rezulati za: </h1><h1 id="searchPharmacists"></h1>
+                <thead>
+                    <tr>
+                        <th>Ime</th>
+                        <th>Prezime</th>
+                        <th>Ocena</th>
+                        <th>Apoteka</th>
+                        <th>Adresa apoteke</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     </div>
 </body>
 </html>

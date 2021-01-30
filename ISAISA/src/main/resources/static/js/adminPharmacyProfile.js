@@ -36,7 +36,7 @@ $(document).ready(function () {
         },
         error: function (data) {
             console.log("ERROR", data);
-            window.location.href="error.html";
+            //window.location.href="error.html";
         }
     });
 });

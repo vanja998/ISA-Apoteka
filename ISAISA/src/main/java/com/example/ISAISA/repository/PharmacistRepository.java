@@ -9,4 +9,6 @@ import java.util.Set;
 public interface PharmacistRepository extends JpaRepository<Pharmacist, Integer> {
 
     Set<Pharmacist> findAllByPharmacy (Pharmacy pharmacy);
+
+    Set<Pharmacist> findAllByPharmacyAndFirstNameIgnoreCaseAndLastNameIgnoreCase (Pharmacy pharmacy, String firstName, String lastName);
 }

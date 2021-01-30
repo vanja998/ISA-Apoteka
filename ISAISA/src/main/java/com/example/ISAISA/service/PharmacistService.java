@@ -33,6 +33,20 @@ public class PharmacistService {
         }
 
         return pharmacistDTOS;
-
     }
+
+    public Set<PharmacistDTO> getPharmacistsByPharmacyAndFirstNameAndLastName(Pharmacy pharmacy, String firstName, String lastName) {
+
+        Set<Pharmacist> pharmacists = pharmacistRepository.findAllByPharmacyAndFirstNameIgnoreCaseAndLastNameIgnoreCase(pharmacy, firstName, lastName);
+
+        Set<com.example.ISAISA.DTO.PharmacistDTO> pharmacistDTOS = new HashSet<>();
+        for(Pharmacist p : pharmacists) {
+            com.example.ISAISA.DTO.PharmacistDTO pharmacistDTO = new com.example.ISAISA.DTO.PharmacistDTO(p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
+            pharmacistDTOS.add(pharmacistDTO);
+        }
+
+        return pharmacistDTOS;
+    }
+
+
 }
