@@ -1,6 +1,8 @@
 package com.example.ISAISA.controller;
 
 import com.example.ISAISA.DTO.AdminSystemRegDto;
+import com.example.ISAISA.DTO.PharmacyDTO;
+import com.example.ISAISA.DTO.PharmacyRegDTO;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.ConfirmationTokenRepository;
 import com.example.ISAISA.repository.UserRepository;
@@ -10,6 +12,7 @@ import com.example.ISAISA.model.UserTokenState;
 import com.example.ISAISA.security.TokenUtils;
 import com.example.ISAISA.security.auth.JwtAuthenticationRequest;
 import com.example.ISAISA.service.EmailSenderService;
+import com.example.ISAISA.service.PharmacyService;
 import com.example.ISAISA.service.UserService;
 import com.example.ISAISA.service.UserServiceDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +45,9 @@ public class AuthenticationController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private PharmacyService pharmacyService;
 
     @Autowired
     private ConfirmationTokenRepository confirmationTokenRepository;
@@ -101,6 +107,35 @@ public class AuthenticationController {
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 
+    @PostMapping("/signupPharmacy")
+    public ResponseEntity<Pharmacy> addPharmacy(@RequestBody PharmacyRegDTO pharmacyDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
+
+        Pharmacy existPharmacy = this.pharmacyService.findByAddress(pharmacyDto.getAddress());
+        if (existPharmacy != null) {
+            throw new Exception("Postoji User");
+        }
+
+        Pharmacy pharmacy = this.pharmacyService.save(pharmacyDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(pharmacy.getId()).toUri());
+        return new ResponseEntity<Pharmacy>(pharmacy, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/signupSupplier")
+    public ResponseEntity<User> addSupplier(@RequestBody PatientDto patientDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
+
+        User existUser = this.userService.findByEmail(patientDto.getEmail());
+        if (existUser != null) {
+            throw new Exception("Postoji User");
+        }
+
+        User user = this.userService.saveSupplier(patientDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+
+
     @PostMapping("/signupAdminPharmacy")
     public ResponseEntity<User> addAdminPharmacy(@RequestBody AdminSystemRegDto adminSystemRegDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
 
@@ -110,6 +145,21 @@ public class AuthenticationController {
         }
 
         User user = this.userService.saveAdminPharmacy(adminSystemRegDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("/signupDermatologist")
+    public ResponseEntity<User> addAdminPharmacy(@RequestBody PatientDto patientDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
+
+        User existUser = this.userService.findByEmail(patientDto.getEmail());
+        if (existUser != null) {
+            throw new Exception("Postoji User");
+        }
+
+        User user = this.userService.saveDermatologist(patientDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<User>(user, HttpStatus.CREATED);

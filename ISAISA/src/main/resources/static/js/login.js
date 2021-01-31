@@ -34,7 +34,7 @@ $(document).ready(function () {
 					window.location.href = "patientProfile.html";
 				}
 				else if(data['role']==='adminsystem'){
-					window.location.href = "welcomeAdminSystem.html";
+					window.location.href = "adminSystemHomePage.html";
 				}
 				else{
 					window.location.href = "error.html";

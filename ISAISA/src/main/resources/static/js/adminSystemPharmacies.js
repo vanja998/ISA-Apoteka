@@ -71,7 +71,7 @@ $(document).on('click', '.btnRegisterAdminPharmacy', function () {
             },
             success: function () {
                 alert("success");
-                window.location.href = "welcomeAdminSystem.html";
+                window.location.href = "adminSystemHomePage.html";
             },
             error: function (error) {
                 alert(error);

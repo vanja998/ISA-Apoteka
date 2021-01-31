@@ -59,6 +59,50 @@ public class UserService {
     }
 
 
+    public User saveDermatologist(PatientDto userRequest) {
+        Dermatologist u = new Dermatologist();
+        u.setEmail(userRequest.getEmail());
+        // pre nego sto postavimo lozinku u atribut hesiramo je
+        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        u.setFirstName(userRequest.getNamee());
+        u.setLastName(userRequest.getLastName());
+        u.setEnabled(true);
+        u.setAddress(userRequest.getAdress());
+        u.setCity(userRequest.getCity());
+        u.setCountry(userRequest.getCountry());
+        u.setPhone(userRequest.getPhoneNumber());
+
+        List<Authority> auth = authService.findByname("ROLE_DERMATOLOGIST");
+
+        u.setAuthorities(auth);
+
+        u = this.userRepository.save(u);
+        return u;
+    }
+
+
+    public User saveSupplier(PatientDto userRequest) {
+        Supplier u = new Supplier();
+        u.setEmail(userRequest.getEmail());
+        // pre nego sto postavimo lozinku u atribut hesiramo je
+        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        u.setFirstName(userRequest.getNamee());
+        u.setLastName(userRequest.getLastName());
+        u.setEnabled(true);
+        u.setAddress(userRequest.getAdress());
+        u.setCity(userRequest.getCity());
+        u.setCountry(userRequest.getCountry());
+        u.setPhone(userRequest.getPhoneNumber());
+
+        List<Authority> auth = authService.findByname("ROLE_SUPPLIER");
+
+        u.setAuthorities(auth);
+
+        u = this.userRepository.save(u);
+        return u;
+    }
+
+
     public User saveAdminPharmacy(AdminSystemRegDto userRequest) {
         AdminPharmacy a = new AdminPharmacy();
         a.setEmail(userRequest.getEmail());
