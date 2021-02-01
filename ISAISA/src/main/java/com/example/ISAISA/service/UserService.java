@@ -80,6 +80,27 @@ public class UserService {
         return u;
     }
 
+    public User saveAdminSystem(PatientDto userRequest) {
+        AdminSystem u = new AdminSystem();
+        u.setEmail(userRequest.getEmail());
+        // pre nego sto postavimo lozinku u atribut hesiramo je
+        u.setPassword(passwordEncoder.encode(userRequest.getPassword()));
+        u.setFirstName(userRequest.getNamee());
+        u.setLastName(userRequest.getLastName());
+        u.setEnabled(true);
+        u.setAddress(userRequest.getAdress());
+        u.setCity(userRequest.getCity());
+        u.setCountry(userRequest.getCountry());
+        u.setPhone(userRequest.getPhoneNumber());
+
+        List<Authority> auth = authService.findByname("ROLE_ADMINSYSTEM");
+
+        u.setAuthorities(auth);
+
+        u = this.userRepository.save(u);
+        return u;
+    }
+
 
     public User saveSupplier(PatientDto userRequest) {
         Supplier u = new Supplier();
