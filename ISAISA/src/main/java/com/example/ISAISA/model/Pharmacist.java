@@ -2,9 +2,14 @@ package com.example.ISAISA.model;
 
 
 
-import org.joda.time.LocalTime;
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @DiscriminatorValue("pharmacist")
@@ -21,6 +26,11 @@ public class Pharmacist extends User {
 
     @Column
     private LocalTime endofwork;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Counseling> counselings = new HashSet<Counseling>();
+
 
     public Pharmacist(String email, String password, String firstName, String lastName, String address, String phone, String city, String country, Pharmacy pharmacy, Float rating, LocalTime beginofwork, LocalTime endofwork) {
         super(email, password, firstName, lastName, address, phone, city, country);

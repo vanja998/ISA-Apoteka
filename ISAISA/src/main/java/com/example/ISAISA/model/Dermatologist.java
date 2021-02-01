@@ -1,12 +1,9 @@
 package com.example.ISAISA.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.joda.time.LocalTime;
 
-import javax.persistence.Column;
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,46 +12,17 @@ import java.util.Set;
 public class Dermatologist extends User {
 
 
-    @Column
-    private LocalTime beginofwork;
 
-    @Column
-    private LocalTime endofwork;
 
-    public Dermatologist(String email, String password, String firstName, String lastName, String address, String phone, String city, String country, LocalTime beginofwork, LocalTime endofwork, Set<Pharmacy> pharmacies) {
-        super(email, password, firstName, lastName, address, phone, city, country);
-        this.beginofwork = beginofwork;
-        this.endofwork = endofwork;
-        this.pharmacies = pharmacies;
-    }
-
-    public LocalTime getBeginofwork() {
-        return beginofwork;
-    }
-
-    public void setBeginofwork(LocalTime beginofwork) {
-        this.beginofwork = beginofwork;
-    }
-
-    public LocalTime getEndofwork() {
-        return endofwork;
-    }
-
-    public void setEndofwork(LocalTime endofwork) {
-        this.endofwork = endofwork;
-    }
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "dermatologists")
-    private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
+    @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Appointment> appointments = new HashSet<Appointment>();
 
-    public Set<Pharmacy> getPharmacies() {
-        return pharmacies;
-    }
+    @JsonIgnore
+    @OneToMany(mappedBy = "dermatologist_id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Dermatologist_Pharmacyy> dermatologist_pharmacies = new HashSet<Dermatologist_Pharmacyy>();
 
-    public void setPharmacies(Set<Pharmacy> pharmacies) {
-        this.pharmacies = pharmacies;
-    }
 
     public Dermatologist() {
     }

@@ -14,6 +14,9 @@ public class Patient extends User{
     @OneToOne(mappedBy = "patient")
     private Complaint complaint;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Appointment> appointments = new HashSet<Appointment>();
 
     @JsonIgnore
     @ManyToMany

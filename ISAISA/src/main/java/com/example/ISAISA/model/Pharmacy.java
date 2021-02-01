@@ -39,6 +39,23 @@ public class Pharmacy {
     private Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
 
     @JsonIgnore
+    @OneToMany(mappedBy = "pharmacy_id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Dermatologist_Pharmacyy> dermatologist_pharmacies = new HashSet<Dermatologist_Pharmacyy>();
+
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "pharmacy_appointment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Appointment> appointments = new HashSet<Appointment>();
+
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "dermatologist_pharmacy", joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "dermatologist_id", referencedColumnName = "id"))
     private Set<Dermatologist> dermatologists = new HashSet<Dermatologist>();
