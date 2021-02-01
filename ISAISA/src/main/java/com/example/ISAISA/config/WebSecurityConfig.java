@@ -1,6 +1,7 @@
 package com.example.ISAISA.config;
 
 import com.example.ISAISA.security.TokenUtils;
+import com.example.ISAISA.security.auth.RestAuthenticationEntryPoint;
 import com.example.ISAISA.security.auth.TokenAuthenticationFilter;
 import com.example.ISAISA.service.UserServiceDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
+    private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+
+    @Autowired
     private TokenUtils tokenUtils;
 
     //Authentication manager - spring bean, kazemo mu da cemo koristiti nas implementirani userServiceDetails
@@ -54,7 +58,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 // sve neautentifikovane zahteve obradi uniformno i posalji 401 gresku
                 //.exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
-
+                .exceptionHandling().authenticationEntryPoint(restAuthenticationEntryPoint).and()
+                
                 // svim korisnicima dopusti da pristupe putanjama /auth/**
                 .authorizeRequests().antMatchers("/auth/**").permitAll()
 

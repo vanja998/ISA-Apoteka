@@ -67,36 +67,6 @@ public class AdminPharmacyController {
         return ResponseEntity.accepted().body(result);
     }
 
-    @GetMapping(value="/adminPharmacists", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMINPHARMACY')")
-    public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByAdminPharmacy() {
 
-        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Set<PharmacistDTO> pharmacists = pharmacistService.getPharmacistsByPharmacy(user.getPharmacy());
-
-        return new ResponseEntity<>(pharmacists, HttpStatus.OK);
-    }
-
-    @PostMapping(value="/adminPharmacistsSearch", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMINPHARMACY')")
-    public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByAdminPharmacyAndFirstNameAndLastName(@RequestBody PharmacistDTO pharmacistDTO) {
-
-        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Set<PharmacistDTO> pharmacists = pharmacistService.getPharmacistsByPharmacyAndFirstNameAndLastName(user.getPharmacy(),
-                pharmacistDTO.getFirstName(), pharmacistDTO.getLastName());
-
-        return new ResponseEntity<>(pharmacists, HttpStatus.OK);
-    }
-
-    @PostMapping(value="/adminPharmacistsAdd", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMINPHARMACY')")
-    public ResponseEntity<Pharmacist> savePharmacist(@RequestBody PharmacistDTO pharmacistDTO) {
-
-        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        pharmacistDTO.setPharmacy(user.getPharmacy());
-        Pharmacist pharmacist = pharmacistService.save(pharmacistDTO);
-
-        return new ResponseEntity<>(pharmacist, HttpStatus.OK);
-    }
 
 }

@@ -81,5 +81,57 @@ public class PharmacistService {
         return pharmacist;
     }
 
+    public Set<PharmacistDTO> getAll() {
+
+        List<Pharmacist> pharmacists = pharmacistRepository.findAll();
+
+        Set<com.example.ISAISA.DTO.PharmacistDTO> pharmacistDTOS = new HashSet<>();
+
+        for(Pharmacist p : pharmacists) {
+            com.example.ISAISA.DTO.PharmacistDTO pharmacistDTO = new com.example.ISAISA.DTO.PharmacistDTO(p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
+            pharmacistDTOS.add(pharmacistDTO);
+        }
+
+        return pharmacistDTOS;
+    }
+
+    public Set<PharmacistDTO> getPharmacistsByFirstNameAndLastName(String firstName, String lastName) {
+
+        Set<Pharmacist> pharmacists = pharmacistRepository.findAllByFirstNameIgnoreCaseAndLastNameIgnoreCase(firstName, lastName);
+
+        Set<com.example.ISAISA.DTO.PharmacistDTO> pharmacistDTOS = new HashSet<>();
+        for(Pharmacist p : pharmacists) {
+            com.example.ISAISA.DTO.PharmacistDTO pharmacistDTO = new com.example.ISAISA.DTO.PharmacistDTO(p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
+            pharmacistDTOS.add(pharmacistDTO);
+        }
+
+        return pharmacistDTOS;
+    }
+
+    public Set<PharmacistDTO> getPharmacistsByRatingBetweenAndPharmacyName(Float ratingOver, Float ratingUnder, Pharmacy pharmacy) {
+
+        Set<Pharmacist> pharmacists = pharmacistRepository.findAllByRatingBetweenAndPharmacy(ratingOver, ratingUnder, pharmacy);
+
+        Set<com.example.ISAISA.DTO.PharmacistDTO> pharmacistDTOS = new HashSet<>();
+        for(Pharmacist p : pharmacists) {
+            com.example.ISAISA.DTO.PharmacistDTO pharmacistDTO = new com.example.ISAISA.DTO.PharmacistDTO(p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
+            pharmacistDTOS.add(pharmacistDTO);
+        }
+
+        return pharmacistDTOS;
+    }
+
+    public Set<PharmacistDTO> getPharmacistsByRatingBetween(Float ratingOver, Float ratingUnder) {
+
+        Set<Pharmacist> pharmacists = pharmacistRepository.findAllByRatingBetween(ratingOver, ratingUnder);
+
+        Set<com.example.ISAISA.DTO.PharmacistDTO> pharmacistDTOS = new HashSet<>();
+        for(Pharmacist p : pharmacists) {
+            com.example.ISAISA.DTO.PharmacistDTO pharmacistDTO = new com.example.ISAISA.DTO.PharmacistDTO(p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
+            pharmacistDTOS.add(pharmacistDTO);
+        }
+
+        return pharmacistDTOS;
+    }
 
 }

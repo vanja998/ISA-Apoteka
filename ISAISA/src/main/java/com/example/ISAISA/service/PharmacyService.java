@@ -5,6 +5,7 @@ import com.example.ISAISA.repository.PharmacyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PharmacyService {
@@ -19,5 +20,7 @@ public class PharmacyService {
     public List<Pharmacy> findAll(){
         return pharmacyRepository.findAll();
     }
+
+    public Pharmacy findByName(String name) { return pharmacyRepository.findByName(name); }
 
 }

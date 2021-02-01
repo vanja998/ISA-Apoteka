@@ -20,6 +20,9 @@ public class PharmacyDTO {
         this.rating = rating;
     }
 
+    public PharmacyDTO() {
+    }
+
     public Integer getId() {
         return id;
     }

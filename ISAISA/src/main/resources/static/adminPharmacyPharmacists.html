@@ -2,27 +2,18 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>Zaposleni</title>
+    <title>Farmaceuti</title>
     <script src="js/jquery.min.js"></script>
-    <script src="js/adminPharmacyEmployees.js"></script>
+    <script src="js/adminPharmacyPharmacists.js"></script>
 </head>
 <body>
-    <div class="employeesAdminPharmacy">
-        <button id="btnDermatologistsAdminPharmacy">Dermatolozi</button>
-        <button id="btnPharmacistsAdminPharmacy">Farmaceuti</button>
-    </div>
-
-    <div class="dermatologistsAdminPharmacy">
-
-    </div>
-
     <div class="pharmacistsAdminPharmacy">
-
+        <input type="search" class="searchPharmacistsAdminPharmacy" name="q" placeholder="Unesite ime i prezime farmaceuta"/>
+        <input type="submit" class="btnSearchPharmacistsAdminPharmacy"/>
+        <button class="btnAddPharmacistAdminPharmacy">Dodaj farmaceuta</button>
+        <button class="btnFilterPharmacistAdminPharmacy">Filter</button>
         <div class="pharmacistsShowAdminPharmacy">
-            <input type="search" id="searchPharmacistsAdminPharmacy" name="q" placeholder="Unesite ime i prezime farmaceuta"/>
-            <input type="submit" id="btnSearchPharmacistsAdminPharmacy"/>
-            <button id="btnAddPharmacistAdminPharmacy">Dodaj farmaceuta</button>
-            <button id="btnFilterPharmacistAdminPharmacy">Filter</button>
+
             <table id="tablePharmacistsAdminPharmacy">
                 <h1>Farmaceuti</h1>
                 <tr>
@@ -36,10 +27,10 @@
         </div>
 
         <div class="pharmacistsSearchAdminPharmacy">
-            <input type="search" id="searchPharmacistsAdminPharmacy" name="q" placeholder="Unesite ime i prezime farmaceuta"/>
-            <input type="submit" id="btnSearchPharmacistsAdminPharmacy"/>
-            <button id="btnAddPharmacistAdminPharmacy">Dodaj farmaceuta</button>
-            <button id="btnFilterPharmacistAdminPharmacy">Filter</button>
+            <input type="search" class="searchPharmacistsAdminPharmacy" name="q" placeholder="Unesite ime i prezime farmaceuta"/>
+            <input type="submit" class="btnSearchPharmacistsAdminPharmacy"/>
+            <button class="btnAddPharmacistAdminPharmacy">Dodaj farmaceuta</button>
+            <button class="btnFilterPharmacistAdminPharmacy">Filter</button>
             <table id="tablePharmacistsSearchAdminPharmacy">
                 <h1>Rezulati za: </h1><h1 id="searchPharmacists"></h1>
                 <thead>
@@ -55,6 +46,16 @@
                 </tbody>
             </table>
         </div>
+
+        <div class="pharmacistsFilterAdminPharmacy">
+            <label for="ratingOver">Ocena iznad:</label>
+            <input id="ratingOver"  min="1" max="5" type="number"/>
+            <label for="ratingUnder">Ocena ispod:</label>
+            <input id="ratingUnder" type="number" min="1" max="5"/>
+            <button id="btnSubmitFilterPharmacists">Ok</button>
+            <button id="btnCancelFilterPharmacists">Ponisti</button>
+        </div>
+
 
         <div class="addNewPharmacistAdminPharmacy">
             <form id="addPharmacistForm">

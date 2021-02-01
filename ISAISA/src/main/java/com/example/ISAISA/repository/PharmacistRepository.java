@@ -11,4 +11,17 @@ public interface PharmacistRepository extends JpaRepository<Pharmacist, Integer>
     Set<Pharmacist> findAllByPharmacy (Pharmacy pharmacy);
 
     Set<Pharmacist> findAllByPharmacyAndFirstNameIgnoreCaseAndLastNameIgnoreCase (Pharmacy pharmacy, String firstName, String lastName);
+
+    Set<Pharmacist> findAllByFirstNameIgnoreCaseAndLastNameIgnoreCase (String firstName, String lastName);
+
+    Set<Pharmacist> findAllByRatingBetweenAndPharmacy(Float ratingOver, Float ratingUnder, Pharmacy pharmacyName);
+
+    Set<Pharmacist> findAllByRatingBetween(Float ratingOver, Float ratingUnder);
+
+    //Ako je samo ratingOver prosledjen
+    Set<Pharmacist> findAllByRatingGreaterThan(Float ratingOver);
+
+    //Ako je samo ratingUnder prosledjen
+    Set<Pharmacist> findAllByRatingIsLessThan(Float ratingUnder);
+
 }
