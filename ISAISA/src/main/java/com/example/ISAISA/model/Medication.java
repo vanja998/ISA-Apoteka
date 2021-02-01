@@ -40,6 +40,10 @@ public class Medication {
     private String notes;
 
     @JsonIgnore
+    @OneToMany(mappedBy = "medication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Orderr_Medication> orderr_medications = new HashSet<Orderr_Medication>();
+
+    @JsonIgnore
     @ManyToMany(mappedBy = "medication")
     private Set<Patient> patients = new HashSet<Patient>();
 
