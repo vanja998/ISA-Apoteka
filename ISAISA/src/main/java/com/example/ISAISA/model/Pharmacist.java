@@ -1,6 +1,7 @@
 package com.example.ISAISA.model;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 
 @Entity
 @DiscriminatorValue("pharmacist")
@@ -11,6 +12,9 @@ public class Pharmacist extends User {
 
     @Column
     private Float rating;
+
+    @Column
+    private LocalTime beginTime;
 
     public Pharmacist() {
     }
