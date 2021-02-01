@@ -1,11 +1,14 @@
 package com.example.ISAISA.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
 @DiscriminatorValue("adminpharmacy")
 public class AdminPharmacy extends User {
 
+    @JsonIgnore
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Pharmacy pharmacy;
 

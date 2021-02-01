@@ -14,13 +14,13 @@ $(document).on("submit", "form", function (event) {           // kada je submito
 
     $.ajax({
         type: "POST",                                               // HTTP metoda je POST
-        url: "http://localhost:8081/auth/signupPatient",                 // URL na koji se šalju podaci
+        url: "http://localhost:8081/auth/signupDermatologist",                 // URL na koji se šalju podaci
         dataType: "json",                                           // tip povratne vrednosti
         contentType: "application/json",                            // tip podataka koje šaljemo
         data: newUserJSON,                                      // Šaljemo novog zaposlenog
         success: function () {
             alert("success");
-            window.location.href = "welcomeAdminSystem.html";
+            window.location.href = "adminSystemHomePage.html";
         },
         error: function (error) {
             alert(error);

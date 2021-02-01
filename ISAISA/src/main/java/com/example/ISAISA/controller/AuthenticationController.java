@@ -1,5 +1,6 @@
 package com.example.ISAISA.controller;
 
+import com.example.ISAISA.DTO.*;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.ConfirmationTokenRepository;
 import com.example.ISAISA.repository.UserRepository;
@@ -8,9 +9,7 @@ import com.example.ISAISA.model.UserRequest;
 import com.example.ISAISA.model.UserTokenState;
 import com.example.ISAISA.security.TokenUtils;
 import com.example.ISAISA.security.auth.JwtAuthenticationRequest;
-import com.example.ISAISA.service.EmailSenderService;
-import com.example.ISAISA.service.UserService;
-import com.example.ISAISA.service.UserServiceDetails;
+import com.example.ISAISA.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -27,7 +26,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -40,7 +41,13 @@ public class AuthenticationController {
     private EmailSenderService emailSenderService;
 
     @Autowired
+    private ComplaintService complaintService;
+
+    @Autowired
     private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private PharmacyService pharmacyService;
 
     @Autowired
     private ConfirmationTokenRepository confirmationTokenRepository;
@@ -95,6 +102,96 @@ public class AuthenticationController {
         }
 
         User user = this.userService.save(userRequest);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/signupPharmacy")
+    public ResponseEntity<Pharmacy> addPharmacy(@RequestBody PharmacyRegDTO pharmacyDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
+
+        Pharmacy existPharmacy = this.pharmacyService.findByAddress(pharmacyDto.getAddress());
+        if (existPharmacy != null) {
+            throw new Exception("Postoji User");
+        }
+
+        Pharmacy pharmacy = this.pharmacyService.save(pharmacyDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(pharmacy.getId()).toUri());
+        return new ResponseEntity<Pharmacy>(pharmacy, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/signupAdminSystem")
+    public ResponseEntity<User> addAdminSystem(@RequestBody PatientDto patientDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
+
+        User existUser = this.userService.findByEmail(patientDto.getEmail());
+        if (existUser != null) {
+            throw new Exception("Postoji User");
+        }
+
+        User user = this.userService.saveAdminSystem(patientDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("/signupSupplier")
+    public ResponseEntity<User> addSupplier(@RequestBody PatientDto patientDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
+
+        User existUser = this.userService.findByEmail(patientDto.getEmail());
+        if (existUser != null) {
+            throw new Exception("Postoji User");
+        }
+
+        User user = this.userService.saveSupplier(patientDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("/signupAdminPharmacy")
+    public ResponseEntity<User> addAdminPharmacy(@RequestBody AdminSystemRegDto adminSystemRegDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
+
+        User existUser = this.userService.findByEmail(adminSystemRegDto.getEmail());
+        if (existUser != null) {
+            throw new Exception("Postoji User");
+        }
+
+        User user = this.userService.saveAdminPharmacy(adminSystemRegDto);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+        return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/reply")
+    public ResponseEntity<Complaint> addReply(@RequestBody ReplyDTO replyDTO, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
+
+        Complaint complaint = this.complaintService.saveReply(replyDTO);
+        Patient patient= complaint.getPatient();
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(patient.getEmail());
+        mailMessage.setSubject("Odgovor na zalbu");
+        mailMessage.setFrom("isaverifikacija@gmail.com");
+        mailMessage.setText(complaint.getReply());
+
+        emailSenderService.sendEmail(mailMessage);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(complaint.getId()).toUri());
+        return new ResponseEntity<Complaint>(complaint, HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("/signupDermatologist")
+    public ResponseEntity<User> addAdminPharmacy(@RequestBody PatientDto patientDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
+
+        User existUser = this.userService.findByEmail(patientDto.getEmail());
+        if (existUser != null) {
+            throw new Exception("Postoji User");
+        }
+
+        User user = this.userService.saveDermatologist(patientDto);
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
@@ -182,5 +279,16 @@ public class AuthenticationController {
     static class PasswordChanger {
         public String oldPassword;
         public String newPassword;
+    }
+
+    @GetMapping(value="/allcomplaints",produces = MediaType.APPLICATION_JSON_VALUE)                                           // value nije naveden, jer koristimo bazni url
+    public ResponseEntity<List<Complaint>> getComplaints() {
+        List<Complaint> complaintList = this.complaintService.findAll();
+
+        // Kreiramo listu DTO objekata
+
+
+
+        return new ResponseEntity<>(complaintList, HttpStatus.OK);
     }
 }

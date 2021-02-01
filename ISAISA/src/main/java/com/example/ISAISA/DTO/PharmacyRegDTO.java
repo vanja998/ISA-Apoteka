@@ -1,8 +1,6 @@
 package com.example.ISAISA.DTO;
 
-public class PharmacyDTO {
-
-    private  Integer id;
+public class PharmacyRegDTO {
 
     private String name;
 
@@ -10,28 +8,10 @@ public class PharmacyDTO {
 
     private String description;
 
-    private Float rating;
-
-    public PharmacyDTO(Integer id, String name, String address, String description, Float rating) {
-        this.id = id;
+    public PharmacyRegDTO(String name, String address, String description) {
         this.name = name;
         this.address = address;
         this.description = description;
-        this.rating = rating;
-    }
-
-    public PharmacyDTO(String name, String address, String description) {
-        this.name = name;
-        this.address = address;
-        this.description = description;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -56,13 +36,5 @@ public class PharmacyDTO {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Float getRating() {
-        return rating;
-    }
-
-    public void setRating(Float rating) {
-        this.rating = rating;
     }
 }

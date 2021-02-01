@@ -11,6 +11,10 @@ import java.util.Set;
 public class Patient extends User{
 
 
+    @OneToOne(mappedBy = "patient")
+    private Complaint complaint;
+
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "allergy_patient", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"))
