@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Pretraga korisnika</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/patientSearch.js"></script>
+</head>
+<body>
+
+
+    <input type="search" id="patientSearch" name="q" placeholder="Unesite ime i prezime pacijenta"/>
+    <input type="submit" id="btnSearchPatient"/>
+
+    <div class="patientsShowAll">
+        <table id="tablePatientsShow">
+            <h1>Pacijenti</h1>
+            <tr>
+                <th>Ime</th>
+                <th>Prezime</th>
+                <th>Adresa</th>
+                <th>Grad</th>
+                <th>Drzava</th>
+            </tr>
+        </table>
+    </div>
+    <div class="patientsShowSearch">
+        <table id="tablepatientsShowSearch">
+            <h1>Rezulati za: </h1><h1 id="searchPatient"></h1>
+            <thead>
+            <tr>
+                <th>Ime</th>
+                <th>Prezime</th>
+                <th>Adresa</th>
+                <th>Grad</th>
+                <th>Drzava</th>
+            </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>
