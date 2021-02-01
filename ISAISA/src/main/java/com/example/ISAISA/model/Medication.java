@@ -69,6 +69,17 @@ public class Medication {
 
     }
 
+    public Medication(String code, String name, String type_med, String shape_med, String ingredients, String producer, Boolean prescription, String notes) {
+        this.code = code;
+        this.name = name;
+        this.type_med = type_med;
+        this.shape_med = shape_med;
+        this.ingredients = ingredients;
+        this.producer = producer;
+        this.prescription = prescription;
+        this.notes = notes;
+    }
+
     public Integer getId() {
         return id;
     }

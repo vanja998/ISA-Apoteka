@@ -27,7 +27,7 @@ $(document).ready(function () {
 
 				if (data['role']==='adminpharmacy'){
 
-					window.location.href = "welcomeAdminPharmacy.html";
+					window.location.href = "adminPharmacyWelcome.html";
 
 				}
 				else if(data['role']==='patient'){

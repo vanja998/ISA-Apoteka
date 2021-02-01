@@ -1,4 +1,5 @@
 insert into pharmacy(id, name, address, description) values (nextval('seq_pharmacy'), 'Apoteka Jankovic', 'Bulevar Oslobodjenja 127', 'Bukvalno nebitno');
+insert into pharmacy(id, name, address, description) values (nextval('seq_pharmacy'), 'Apoteka mala moja', 'Bulevar Oslobodjenja 128', 'dodji ako si bolestan');
 
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled) values ('patient', nextval('seq_user'), 'dad', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Pera', 'Peric', 'Dunavska', '060111111', 'Novi Sad', 'Srbija', true);
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled) values ('patient', nextval('seq_user'), 'jokjok', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Dejan', 'Deki', 'Dunavska', '060111111', 'Novi Sad', 'Srbija', true);
@@ -25,6 +26,7 @@ INSERT INTO AUTHORITY (name) VALUES ('ROLE_SUPPLIER');
 
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (1, 1);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (2, 1);
-INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (2, 6);
-INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (3, 4);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (2, 6); --??
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (3, 6);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (4, 4);
 
