@@ -3,8 +3,6 @@ $(document).ready(function () {
     $('#btnLogin').click(function () {
 
     	event.preventDefault();
-
-        console.log('proba')
         
 	    var email = $("#email").val();
 	    var password = $("#password").val();
@@ -26,9 +24,7 @@ $(document).ready(function () {
 				localStorage.setItem('token', data['accessToken']);
 
 				if (data['role']==='adminpharmacy'){
-
 					window.location.href = "adminPharmacyWelcome.html";
-
 				}
 				else if(data['role']==='patient'){
 					window.location.href = "patientProfile.html";
@@ -36,8 +32,11 @@ $(document).ready(function () {
 				else if(data['role']==='dermatologist'){
 					window.location.href = "welcomeDermatologist.html";
 				}
-				else if(data['role']==='pharmacist'){
+				else if(data['role']==='pharmacist') {
 					window.location.href = "welcomePharmacist.html";
+				}
+				else if(data['role']==='adminsystem'){
+					window.location.href = "adminSystemHomePage.html";
 				}
 				else{
 					window.location.href = "error.html";

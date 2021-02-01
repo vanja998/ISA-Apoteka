@@ -34,9 +34,15 @@ $(document).ready(function () {
             $('#city').append(data['city']);
             $('#country').append(data['country']);
         },
-        error: function (data) {
-            console.log("ERROR", data);
-            window.location.href="error.html";
+        error: function (jqXHR) {
+            if(jqXHR.status == 403)
+            {
+                window.location.href="error.html";
+            }
+            if(jqXHR.status == 401)
+            {
+                window.location.href="error.html";
+            }
         }
     });
 });
@@ -72,8 +78,15 @@ $(document).on('click', '#btnChangeProfileAdminPharmacy', function () {
             $('#chCity:text').val(data['city']);
             $('#chCountry:text').val(data['country']);
         },
-        error: function (data) {
-            window.location.href="error.html";
+        error: function (jqXHR) {
+            if(jqXHR.status == 403)
+            {
+                window.location.href="error.html";
+            }
+            if(jqXHR.status == 401)
+            {
+                window.location.href="error.html";
+            }
         }
     });
 });
@@ -105,8 +118,15 @@ $(document).on('click', '#btnSaveProfileAdminPharmacy', function () {
 
             window.location.href="adminPharmacyProfile.html";
         },
-        error: function () {
-            window.location.href="error.html";
+        error: function (jqXHR) {
+            if(jqXHR.status == 403)
+            {
+                window.location.href="error.html";
+            }
+            if(jqXHR.status == 401)
+            {
+                window.location.href="error.html";
+            }
         }
     });
 });
@@ -191,9 +211,15 @@ $(document).on('click', '#btnSavePasswordAdminPharmacy', function () {
                 var passwordChangeSuccess = $(".passwordChangeSuccess")
                 passwordChangeSuccess.show();
             },
-            error: function (data) {
-                console.log("ERROR: ", data)
-                window.location.href="error.html";
+            error: function (jqXHR) {
+                if(jqXHR.status == 403)
+                {
+                    window.location.href="error.html";
+                }
+                if(jqXHR.status == 401)
+                {
+                    window.location.href="error.html";
+                }
             }
         });
     }

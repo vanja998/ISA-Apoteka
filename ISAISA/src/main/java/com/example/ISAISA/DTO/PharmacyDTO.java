@@ -20,6 +20,15 @@ public class PharmacyDTO {
         this.rating = rating;
     }
 
+    public PharmacyDTO(String name, String address, String description) {
+        this.name = name;
+        this.address = address;
+        this.description = description;
+    }
+
+    public PharmacyDTO() {
+    }
+
     public Integer getId() {
         return id;
     }

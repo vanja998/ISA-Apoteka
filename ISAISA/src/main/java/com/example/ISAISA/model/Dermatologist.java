@@ -2,9 +2,8 @@ package com.example.ISAISA.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.DiscriminatorValue;
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,17 +11,18 @@ import java.util.Set;
 @DiscriminatorValue("dermatologist")
 public class Dermatologist extends User {
 
+
+
+
+
     @JsonIgnore
-    @ManyToMany(mappedBy = "dermatologists")
-    private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
+    @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Appointment> appointments = new HashSet<Appointment>();
 
-    public Set<Pharmacy> getPharmacies() {
-        return pharmacies;
-    }
+    @JsonIgnore
+    @OneToMany(mappedBy = "dermatologist_id", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Dermatologist_Pharmacyy> dermatologist_pharmacies = new HashSet<Dermatologist_Pharmacyy>();
 
-    public void setPharmacies(Set<Pharmacy> pharmacies) {
-        this.pharmacies = pharmacies;
-    }
 
     public Dermatologist() {
     }

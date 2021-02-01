@@ -11,6 +11,13 @@ import java.util.Set;
 public class Patient extends User{
 
 
+    @OneToOne(mappedBy = "patient")
+    private Complaint complaint;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "patient", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Appointment> appointments = new HashSet<Appointment>();
+
     @JsonIgnore
     @ManyToMany
     @JoinTable(name = "allergy_patient", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"))

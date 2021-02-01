@@ -1,0 +1,15 @@
+package com.example.ISAISA.repository;
+
+import com.example.ISAISA.model.Medication;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Set;
+
+
+public interface MedicationRepository extends JpaRepository<Medication, Integer> {
+
+
+
+   Set<Medication> findAllByName(String name);
+
+}

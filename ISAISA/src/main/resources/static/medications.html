@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Apoteke</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/medications.js"></script>
+</head>
+<body>
+
+<div id="medications">
+    <h1>Svi Lekovi</h1>
+    <br><br>
+    <div class="container">
+        <table id="medication">
+            <tr>
+                <th>sifra</th>
+                <th>ime</th>
+                <th>tip leka</th>
+                <th>oblik</th>
+                <th>sastojci</th>
+                <th>proizvodjac</th>
+                <th>recept</th>
+                <th>beleske</th>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="onemedication" hidden>
+    <div class="card">
+        <h1 id="code"></h1>
+        <h1 id="name"></h1>
+        <h1 id="type_med"></h1>
+        <h1 id="shape_med"></h1>
+        <h1 id="ingredients"></h1>
+        <h1 id="producer"></h1>
+        <h1 id="prescription"></h1>
+        <h1 id="notes"></h1>
+    </div>
+</div>
+
+<div class="medicationssearch">
+    <input type="search" id="searchMedication" name="q" placeholder="Unesite ime i prezime farmaceuta"/>
+    <input type="submit" id="btnSearchMedication"/>
+
+    <div class="medicationsShowMeds">
+        <table id="tableMedicationsSearch">
+            <h1>lekovi</h1>
+            <tr>
+                <th>sifra</th>
+                <th>ime</th>
+                <th>tip leka</th>
+                <th>oblik</th>
+                <th>sastojci</th>
+                <th>proizvodjac</th>
+                <th>recept</th>
+                <th>beleske</th>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

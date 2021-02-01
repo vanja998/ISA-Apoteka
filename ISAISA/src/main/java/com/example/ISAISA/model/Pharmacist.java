@@ -1,20 +1,61 @@
 package com.example.ISAISA.model;
 
+
+
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalTime;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @DiscriminatorValue("pharmacist")
 public class Pharmacist extends User {
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Pharmacy pharmacy;
 
     @Column
     private Float rating;
 
     @Column
-    private LocalTime beginTime;
+    private LocalTime beginofwork;
+
+    @Column
+    private LocalTime endofwork;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Counseling> counselings = new HashSet<Counseling>();
+
+
+    public Pharmacist(String email, String password, String firstName, String lastName, String address, String phone, String city, String country, Pharmacy pharmacy, Float rating, LocalTime beginofwork, LocalTime endofwork) {
+        super(email, password, firstName, lastName, address, phone, city, country);
+        this.pharmacy = pharmacy;
+        this.rating = rating;
+        this.beginofwork = beginofwork;
+        this.endofwork = endofwork;
+    }
+
+    public LocalTime getBeginofwork() {
+        return beginofwork;
+    }
+
+    public void setBeginofwork(LocalTime beginofwork) {
+        this.beginofwork = beginofwork;
+    }
+
+    public LocalTime getEndofwork() {
+        return endofwork;
+    }
+
+    public void setEndofwork(LocalTime endofwork) {
+        this.endofwork = endofwork;
+    }
 
     public Pharmacist() {
     }
