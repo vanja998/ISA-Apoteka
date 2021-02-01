@@ -1,8 +1,10 @@
 package com.example.ISAISA.controller;
 
+import com.example.ISAISA.DTO.PatientSearchDto;
+import com.example.ISAISA.DTO.PharmacistDTO;
+import com.example.ISAISA.DTO.PharmacyDTO;
 import com.example.ISAISA.DTO.UserChangeDTO;
-import com.example.ISAISA.model.AdminPharmacy;
-import com.example.ISAISA.model.Patient;
+import com.example.ISAISA.model.*;
 import com.example.ISAISA.service.PatientService;
 import com.example.ISAISA.service.UserServiceDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/patients")
@@ -65,5 +65,23 @@ public class PatientController {
         return ResponseEntity.accepted().body(result);
     }
 
+    @GetMapping(value="/allSearchPatientsDerma",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<List<PatientSearchDto>> getAllSearchPatientsDoctor() {
+        //Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<PatientSearchDto> patients = patientService.getAllSearchPatients();
+
+        return new ResponseEntity<>(patients, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/searchPatientsDerma", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<Set<PatientSearchDto>> getSearchPatientByFirstNameAndLastName(@RequestBody PatientSearchDto patientSearchDto) {
+
+        //AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<PatientSearchDto> patients = patientService.getPatientByFirstNameAndLastName(patientSearchDto.getFirstName(), patientSearchDto.getLastName());
+
+        return new ResponseEntity<>(patients, HttpStatus.OK);
+    }
 
 }
