@@ -39,7 +39,7 @@ public class AdminPharmacyController {
         this.pharmacistService = pharmacistService;
     }
 
-    @GetMapping(value="/admin",produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value="/admin", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public ResponseEntity<AdminPharmacy> getAdmin() {
         AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -67,14 +67,6 @@ public class AdminPharmacyController {
         return ResponseEntity.accepted().body(result);
     }
 
-    @GetMapping(value="/adminPharmacists", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMINPHARMACY')")
-    public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByAdminPharmacy() {
 
-        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Set<PharmacistDTO> pharmacists = pharmacistService.getPharmacistsByPharmacy(user.getPharmacy());
-
-        return new ResponseEntity<>(pharmacists, HttpStatus.OK);
-    }
 
 }

@@ -26,6 +26,9 @@ public class PharmacyDTO {
         this.description = description;
     }
 
+    public PharmacyDTO() {
+    }
+
     public Integer getId() {
         return id;
     }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class PharmacyService {
@@ -43,5 +44,7 @@ public class PharmacyService {
     public List<Pharmacy> findAll(){
         return pharmacyRepository.findAll();
     }
+
+    public Pharmacy findByName(String name) { return pharmacyRepository.findByName(name); }
 
 }

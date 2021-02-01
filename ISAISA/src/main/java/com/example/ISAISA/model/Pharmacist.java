@@ -6,7 +6,7 @@ import javax.persistence.*;
 @DiscriminatorValue("pharmacist")
 public class Pharmacist extends User {
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Pharmacy pharmacy;
 
     @Column
