@@ -1,5 +1,9 @@
 package com.example.ISAISA.model;
 
+
+
+import org.joda.time.LocalTime;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,6 +15,36 @@ public class Pharmacist extends User {
 
     @Column
     private Float rating;
+
+    @Column
+    private LocalTime beginofwork;
+
+    @Column
+    private LocalTime endofwork;
+
+    public Pharmacist(String email, String password, String firstName, String lastName, String address, String phone, String city, String country, Pharmacy pharmacy, Float rating, LocalTime beginofwork, LocalTime endofwork) {
+        super(email, password, firstName, lastName, address, phone, city, country);
+        this.pharmacy = pharmacy;
+        this.rating = rating;
+        this.beginofwork = beginofwork;
+        this.endofwork = endofwork;
+    }
+
+    public LocalTime getBeginofwork() {
+        return beginofwork;
+    }
+
+    public void setBeginofwork(LocalTime beginofwork) {
+        this.beginofwork = beginofwork;
+    }
+
+    public LocalTime getEndofwork() {
+        return endofwork;
+    }
+
+    public void setEndofwork(LocalTime endofwork) {
+        this.endofwork = endofwork;
+    }
 
     public Pharmacist() {
     }
