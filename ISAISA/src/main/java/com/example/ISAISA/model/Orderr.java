@@ -73,4 +73,28 @@ public class Orderr {
     public void setStatusSupplier(String statusSupplier) {
         this.statusSupplier = statusSupplier;
     }
+
+    public AdminPharmacy getAdminPharmacy() {
+        return adminPharmacy;
+    }
+
+    public void setAdminPharmacy(AdminPharmacy adminPharmacy) {
+        this.adminPharmacy = adminPharmacy;
+    }
+
+    public Set<Orderr_Medication> getOrderr_medications() {
+        return orderr_medications;
+    }
+
+    public void setOrderr_medications(Set<Orderr_Medication> orderr_medications) {
+        this.orderr_medications = orderr_medications;
+    }
+
+    public Set<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(Set<Offer> offers) {
+        this.offers = offers;
+    }
 }

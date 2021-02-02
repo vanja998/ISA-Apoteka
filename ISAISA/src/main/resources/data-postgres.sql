@@ -23,7 +23,7 @@ insert into "med_pharmacies" (pharmacy_id,medication_id) values (1,1);
 insert into "allergy_patient" (patient_id,medication_id) values (1,1);
 insert into "complaint"(id,question,answered,patient_id,user_id) values(1,'Zasto dermatolog stalno kasni??',false,1,6);
 
-insert into "orderr"(id,dateDeadline,statusAdmin,statusSupplier,admin_id) values(1,'18/03/2021','ceka_na_ponude','ceka_na_odgovor',4);
+insert into "orderr"(id,dateDeadline,statusAdmin,statusSupplier,admin_id) values(1,'31/12/2020','ceka_na_ponude','ceka_na_odgovor',4);
 insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (1,5,1,1);
 
 insert into offer(id,deliverydate,offerprice,orderr_id,supplier_id) values (1,'12/03/2021',4000,1,1);

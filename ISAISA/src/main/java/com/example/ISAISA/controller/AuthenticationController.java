@@ -55,6 +55,8 @@ public class AuthenticationController {
     @Autowired
     private UserServiceDetails userDetailsService;
 
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private UserRepository userRepository;
@@ -290,5 +292,26 @@ public class AuthenticationController {
 
 
         return new ResponseEntity<>(complaintList, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value="/allorders",produces = MediaType.APPLICATION_JSON_VALUE)                                           // value nije naveden, jer koristimo bazni url
+    public ResponseEntity<List<OrderrDTO>> getPharmacies() {
+        List<Orderr> orderList = this.orderService.findAll();
+
+
+        List<OrderrDTO> orderrDTOS = new ArrayList<>();
+
+        for (Orderr orderr : orderList) {
+            AdminPharmacy adminPharmacy= orderr.getAdminPharmacy();
+            Pharmacy pharmacy=adminPharmacy.getPharmacy();
+            String emailAdmin=adminPharmacy.getEmail();
+            String pharmacyName=pharmacy.getName();
+            String address=pharmacy.getAddress();
+
+            OrderrDTO orderrDTO = new OrderrDTO(orderr.getId(),orderr.getDateDeadline(),orderr.getStatusSupplier(),emailAdmin,pharmacyName,address);
+            orderrDTOS.add(orderrDTO);
+        }
+        return new ResponseEntity<>(orderrDTOS, HttpStatus.OK);
     }
 }
