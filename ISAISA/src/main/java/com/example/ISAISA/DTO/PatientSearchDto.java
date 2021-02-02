@@ -2,6 +2,8 @@ package com.example.ISAISA.DTO;
 
 public class PatientSearchDto {
 
+    private Integer id;
+
     private String firstName;
 
     private String lastName;
@@ -15,7 +17,8 @@ public class PatientSearchDto {
     public PatientSearchDto() {
     }
 
-    public PatientSearchDto(String firstName, String lastName, String address, String phone, String city) {
+    public PatientSearchDto(Integer id, String firstName, String lastName, String address, String phone, String city) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
@@ -61,5 +64,13 @@ public class PatientSearchDto {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 }

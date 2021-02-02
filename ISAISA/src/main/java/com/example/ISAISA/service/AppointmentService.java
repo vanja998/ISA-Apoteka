@@ -1,17 +1,73 @@
 package com.example.ISAISA.service;
 
+import com.example.ISAISA.model.Appointment;
+import com.example.ISAISA.model.Dermatologist;
+import com.example.ISAISA.model.Dermatologist_Pharmacyy;
 import com.example.ISAISA.repository.AdminSystemRepository;
 import com.example.ISAISA.repository.AppointmentRepository;
+import com.example.ISAISA.repository.Dermatologist_PharmacyyRepository;
+import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.List;
 
 @Service
 public class AppointmentService {
 
     private AppointmentRepository appointmentRepository;
+    private Dermatologist_PharmacyyRepository dermafarmaRepository;
 
     @Autowired
     public void setAppointmentRepository(AppointmentRepository appointmentRepository) {
         this.appointmentRepository = appointmentRepository;
     }
+
+    @Autowired
+    public void setDermafarmaRepository(Dermatologist_PharmacyyRepository dermafarmaRepository) {
+        this.dermafarmaRepository = dermafarmaRepository;
+    }
+
+    public Appointment ifPatientHasAppointment(Integer idPatient, Dermatologist dermatologist){
+
+        LocalTime now = LocalTime.now();
+
+        List<Appointment> appointments = appointmentRepository.findAll();
+        for (Appointment i : appointments){
+            if(i.getPatient().getId() == idPatient){
+                if(now.isAfter(i.getBeginofappointment()/*.toLocalTime()*/) && now.isBefore(i.getEndofappointment()/*.toLocalTime()*/)){
+                    if(i.getDermatologist().getId() == dermatologist.getId()) {
+                        return i;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public Boolean checkPharmacy(Appointment appointment, Dermatologist dermatologist){
+
+        LocalTime now = LocalTime.now();
+
+        List<Dermatologist_Pharmacyy> dermaFarma = dermafarmaRepository.findAll();
+        for (Dermatologist_Pharmacyy i : dermaFarma){
+            if(i.getDermatologist().getId() == dermatologist.getId()){
+                if(i.getPharmacy().getId() == appointment.getPharmacy_appointment().getId()){
+                    if(now.isAfter(i.getBeginofwork()) && now.isBefore(i.getEndofwork())){
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+}
+
+
+
+
+
 }

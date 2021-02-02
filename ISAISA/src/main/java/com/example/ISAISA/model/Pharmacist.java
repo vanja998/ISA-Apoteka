@@ -1,9 +1,5 @@
 package com.example.ISAISA.model;
 
-
-
-
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
