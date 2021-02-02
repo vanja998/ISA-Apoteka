@@ -3,9 +3,11 @@ package com.example.ISAISA.service;
 import com.example.ISAISA.model.Appointment;
 import com.example.ISAISA.model.Dermatologist;
 import com.example.ISAISA.model.Dermatologist_Pharmacyy;
+import com.example.ISAISA.model.Patient;
 import com.example.ISAISA.repository.AdminSystemRepository;
 import com.example.ISAISA.repository.AppointmentRepository;
 import com.example.ISAISA.repository.Dermatologist_PharmacyyRepository;
+import com.example.ISAISA.repository.PatientRepository;
 import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ public class AppointmentService {
 
     private AppointmentRepository appointmentRepository;
     private Dermatologist_PharmacyyRepository dermafarmaRepository;
+    private PatientRepository patientRepository;
 
     @Autowired
     public void setAppointmentRepository(AppointmentRepository appointmentRepository) {
@@ -28,6 +31,11 @@ public class AppointmentService {
     @Autowired
     public void setDermafarmaRepository(Dermatologist_PharmacyyRepository dermafarmaRepository) {
         this.dermafarmaRepository = dermafarmaRepository;
+    }
+
+    @Autowired
+    public void setPatientRepository(PatientRepository patientRepository) {
+        this.patientRepository = patientRepository;
     }
 
     public Appointment ifPatientHasAppointment(Integer idPatient, Dermatologist dermatologist){
@@ -66,6 +74,15 @@ public class AppointmentService {
         return false;
 }
 
+    public Integer penalPatient(Integer appointmentId){
+
+        Appointment appointment = appointmentRepository.getOne(appointmentId);
+        Patient patient = appointment.getPatient();
+        patient.setPenalty(patient.getPenalty()+1);
+        patient = patientRepository.save(patient);
+        return patient.getId();
+
+    }
 
 
 

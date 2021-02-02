@@ -8,15 +8,15 @@
 
 package com.example.ISAISA.DTO;
 
-public class AppointmentIdDto {
+public class IdDto {
 
     private Integer id;
 
-    public AppointmentIdDto(Integer id) {
+    public IdDto(Integer id) {
         this.id = id;
     }
 
-    public AppointmentIdDto() {
+    public IdDto() {
     }
 
     public Integer getId() {

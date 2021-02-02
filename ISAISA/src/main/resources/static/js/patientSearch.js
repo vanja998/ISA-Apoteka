@@ -143,20 +143,45 @@ $(document).on('click', '.btnStartAppointment', function () {
                 row += "<td>" + btnPenal + "</td>";
                 $('#tableAppointmentExists').append(row);
             }
-            /*else {
-                console.log("error : ", data);
-                appointentDoesNotExist.show();
-            }*/
             },
-        error: function (jqXHR) {
-            if(jqXHR.status === 200)
-            {
-                appointentDoesNotExist.show();
-            }
-            if(jqXHR.status === 403)
-            {
-                window.location.href="error.html";
-            }
+        error: function () {
+            appointentDoesNotExist.show();
+        }
+    });
+});
+
+$(document).on('click', '.btnPenal', function () {
+
+    /*var patientsShowAll = $(".patientsShowAll")
+    patientsShowAll.hide();
+    var patientsShowSearch = $(".patientsShowSearch")
+    patientsShowSearch.hide();
+    var appointmentStart = $(".appointentStart")
+    appointmentStart.hide();
+    var appointentDoesNotExist = $(".appointentDoesNotExist")
+    appointentDoesNotExist.hide();*/
+
+    var id = this.id;
+    var idd= JSON.stringify({"id":id});
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/appointments/penalPatient",
+        dataType: "json",
+        contentType: "application/json",
+        data: idd,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }},
+        success: function (data) {
+            console.log("SUCCESS : ", data);
+            window.location.href="welcomeDermatologist.html";
+
+        },
+        error: function () {
+            window.location.href="error.html";
+
         }
     });
 });

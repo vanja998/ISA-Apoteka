@@ -1,11 +1,8 @@
 package com.example.ISAISA.controller;
 
-import com.example.ISAISA.DTO.AppointmentIdDto;
-import com.example.ISAISA.DTO.UserChangeDTO;
-import com.example.ISAISA.model.AdminPharmacy;
+import com.example.ISAISA.DTO.IdDto;
 import com.example.ISAISA.model.Appointment;
 import com.example.ISAISA.model.Dermatologist;
-import com.example.ISAISA.service.AdminSystemService;
 import com.example.ISAISA.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,19 +29,19 @@ public class AppointmentController {
 
     @PostMapping(value="/checkIfAppointmentExists", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('DERMATOLOGIST')")
-    public ResponseEntity<AppointmentIdDto> checkIfAppointmentExists(@RequestBody AppointmentIdDto appointmentIdDto) throws Exception {
+    public ResponseEntity<IdDto> checkIfAppointmentExists(@RequestBody IdDto PatientIdDto) throws Exception {
 
         //Integer id = Integer.parseInt(idPatient);
 
         Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        Appointment checkIfPatientHasAppointmentNow = appointmentService.ifPatientHasAppointment(appointmentIdDto.getId(), user);
+        Appointment checkIfPatientHasAppointmentNow = appointmentService.ifPatientHasAppointment(PatientIdDto.getId(), user);
 
         if(checkIfPatientHasAppointmentNow != null){
             Boolean checkPharmacy = appointmentService.checkPharmacy(checkIfPatientHasAppointmentNow, user);
             if(checkPharmacy){
-                AppointmentIdDto idDto = new AppointmentIdDto(checkIfPatientHasAppointmentNow.getId());
-                return new ResponseEntity<>(idDto, HttpStatus.OK);
+                IdDto appointmentIdDto = new IdDto(checkIfPatientHasAppointmentNow.getId());
+                return new ResponseEntity<>(appointmentIdDto, HttpStatus.OK);
             }
             else{
                 return new ResponseEntity<>(null, HttpStatus.OK);
@@ -56,5 +53,15 @@ public class AppointmentController {
 
         /*AppointmentIdDto idDto = new AppointmentIdDto(5);
         return new ResponseEntity<>(idDto, HttpStatus.OK);*/
+    }
+
+    @PostMapping(value="/penalPatient", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<IdDto> penalPatient(@RequestBody IdDto AppointmentIdDto) throws Exception {
+
+        Integer idPatient = appointmentService.penalPatient(AppointmentIdDto.getId());
+        IdDto id = new IdDto(idPatient);
+        return new ResponseEntity<>(id, HttpStatus.OK);
+
     }
 }

@@ -10,6 +10,8 @@ import java.util.Set;
 @DiscriminatorValue("patient")
 public class Patient extends User{
 
+    @Column
+    private Integer penalty;
 
     @OneToOne(mappedBy = "patient")
     private Complaint complaint;
@@ -31,5 +33,13 @@ public class Patient extends User{
 
     public Patient(Integer id,String email, String password, String firstName, String lastName, String address, String phone, String city, String country) {
         super(id,email, password, firstName, lastName, address, phone, city, country);
+    }
+
+    public Integer getPenalty() {
+        return penalty;
+    }
+
+    public void setPenalty(Integer penalty) {
+        this.penalty = penalty;
     }
 }
