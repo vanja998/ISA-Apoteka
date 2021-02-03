@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Pregled</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/examinationDermatologist.js"></script>
+</head>
+<body>
+
+   <!-- <div class="examination">
+        <h2>Izvestaj: </h2><input id="chReport" type="text"/>
+        <hr>
+        <h2>Prepisi lek</h2>
+        <h3>Id leka: </h3><input id="chPrescriptMedication" type="text"/>
+        <h3>Trajanje terapije: </h3><input id="chTherapyDuration" type="text"/>
+
+    </div>-->
+    <div class="examination">
+        <button id="report">Napisi izvestaj</button>
+        <button id="prescript">Prepisi lek</button>
+        <button id="newAppointment">Zakazi novi termin</button>
+    </div>
+
+   <div class="writeReport" hidden>
+       <h2>Izvestaj: </h2><input id="chReport" type="text"/>
+       <button id="submitReport">Predaj</button>
+   </div>
+
+   <div class="prescriptMedication" hidden>
+       <h2>Prepisi lek</h2>
+       <h3>Id leka: </h3><input id="chPrescriptMedication" type="text"/>
+       <h3>Trajanje terapije: </h3><input id="chTherapyDuration" type="text"/>
+       <button id="alergy">Proveri da li je </button>
+   </div>
+
+    <div class="scheduleNewAppointment" hidden>
+
+    </div>
+
+</body>
+</html>

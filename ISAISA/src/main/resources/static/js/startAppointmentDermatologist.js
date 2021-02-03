@@ -6,8 +6,8 @@ $(document).ready(function () {
     patientsShowSearch.hide();
     var appointmentStart = $(".appointentStart")
     appointmentStart.hide();
-    var appointentDoesNotExist = $(".appointentDoesNotExist")
-    appointentDoesNotExist.hide();
+    var appoinmtentDoesNotExist = $(".appoinmtentDoesNotExist")
+    appoinmtentDoesNotExist.hide();
 
     $.ajax({
         type: "GET",
@@ -47,8 +47,8 @@ $(document).on('click', '#btnSearchPatient', function () {
     patientsShowSearch.show();
     var appointmentStart = $(".appointentStart")
     appointmentStart.hide();
-    var appointentDoesNotExist = $(".appointentDoesNotExist")
-    appointentDoesNotExist.hide();
+    var appoinmtentDoesNotExist = $(".appoinmtentDoesNotExist")
+    appoinmtentDoesNotExist.hide();
 
     var searchParam = $("#patientSearch").val();
     searchParam = searchParam.split(" ");
@@ -70,7 +70,7 @@ $(document).on('click', '#btnSearchPatient', function () {
             }
         },
         success: function (data) {
-            console.log("SUCCESS: ", data);
+            //console.log("SUCCESS: ", data);
             $('#searchPatient').append(searchParam[0], " ", searchParam[1]);
             for (i = 0; i < data.length; i++) {
                 var row = "<tr>";
@@ -89,7 +89,7 @@ $(document).on('click', '#btnSearchPatient', function () {
 
         },
         error: function (data) {
-            console.log("ERROR: ", data);
+            //console.log("ERROR: ", data);
             window.location.href="error.html";
         }
     });
@@ -113,8 +113,8 @@ $(document).on('click', '.btnStartAppointment', function () {
     patientsShowSearch.hide();
     var appointmentStart = $(".appointentStart")
     appointmentStart.hide();
-    var appointentDoesNotExist = $(".appointentDoesNotExist")
-    appointentDoesNotExist.hide();
+    var appoinmtentDoesNotExist = $(".appoinmtentDoesNotExist")
+    appoinmtentDoesNotExist.hide();
     var id = this.id;
     //var idd = formToJSON(id);
     var idd= JSON.stringify({"id":id});
@@ -145,7 +145,7 @@ $(document).on('click', '.btnStartAppointment', function () {
             }
             },
         error: function () {
-            appointentDoesNotExist.show();
+            appoinmtentDoesNotExist.show();
         }
     });
 });
@@ -184,4 +184,9 @@ $(document).on('click', '.btnPenal', function () {
 
         }
     });
+});
+
+$(document).on('click', '.btnStart', function () {
+    window.location.href="examinationDermatologist.html";
+
 });

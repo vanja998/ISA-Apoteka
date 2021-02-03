@@ -25,14 +25,21 @@ public class Appointment {
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Pharmacy pharmacy_appointment;
 
-    @Column
-    private LocalTime beginofappointment;
+    @JsonIgnore
+    @OneToMany(mappedBy = "newAppointment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Examination> examinations = new HashSet<Examination>();
 
     @Column
-    private LocalTime endofappointment;
+    private LocalDateTime beginofappointment;
+
+    @Column
+    private LocalDateTime endofappointment;
 
     @Column
     private Integer price;
+
+    @OneToOne(mappedBy = "examinationAppointment")
+    private Examination examination;
 
     public Appointment() {
     }
@@ -70,19 +77,19 @@ public class Appointment {
         this.pharmacy_appointment = pharmacy_appointment;
     }
 
-    public LocalTime getBeginofappointment() {
+    public LocalDateTime getBeginofappointment() {
         return beginofappointment;
     }
 
-    public void setBeginofappointment(LocalTime beginofappointment) {
+    public void setBeginofappointment(LocalDateTime beginofappointment) {
         this.beginofappointment = beginofappointment;
     }
 
-    public LocalTime getEndofappointment() {
+    public LocalDateTime getEndofappointment() {
         return endofappointment;
     }
 
-    public void setEndofappointment(LocalTime endofappointment) {
+    public void setEndofappointment(LocalDateTime endofappointment) {
         this.endofappointment = endofappointment;
     }
 

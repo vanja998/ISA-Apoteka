@@ -12,6 +12,7 @@ import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -41,13 +42,16 @@ public class AppointmentService {
     public Appointment ifPatientHasAppointment(Integer idPatient, Dermatologist dermatologist){
 
         LocalTime now = LocalTime.now();
+        LocalDate today = LocalDate.now();
 
         List<Appointment> appointments = appointmentRepository.findAll();
         for (Appointment i : appointments){
             if(i.getPatient().getId() == idPatient){
-                if(now.isAfter(i.getBeginofappointment()/*.toLocalTime()*/) && now.isBefore(i.getEndofappointment()/*.toLocalTime()*/)){
-                    if(i.getDermatologist().getId() == dermatologist.getId()) {
-                        return i;
+                if(today.isEqual(i.getBeginofappointment().toLocalDate())){
+                    if(now.isAfter(i.getBeginofappointment().toLocalTime()) && now.isBefore(i.getEndofappointment().toLocalTime())){
+                        if(i.getDermatologist().getId() == dermatologist.getId()) {
+                            return i;
+                        }
                     }
                 }
             }
