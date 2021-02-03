@@ -56,6 +56,7 @@ $(document).ready(function () {
     });
 });
 
+//Pretraga
 $(document).on('click', '.btnSearchPharmacistsAdminPharmacy', function () {
 
     var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy")
@@ -126,6 +127,7 @@ function formToJSON(firstName, lastName) {
     );
 }
 
+//Registracija farmaceuta
 $(document).on('click', '.btnAddPharmacistAdminPharmacy', function () {
 
     var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy")

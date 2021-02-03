@@ -1,0 +1,147 @@
+$(document).ready(function () {
+
+    var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy");
+    dermatologistsShowAdminPharmacy.show();
+
+    var availableAppointments = $(".availableAppointments");
+    availableAppointments.hide();
+
+    $.ajax({
+        type: "GET",
+        url: "http://localhost:8081/dermatologists/adminDermatologists",
+        dataType: "json",
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log("SUCCESS", data);
+            for (i = 0; i < data.length; i++) {
+                var row = "<tr>";
+                row += "<td>" + data[i]['id'] + "</td>";
+                row += "<td>" + data[i]['firstName'] + "</td>";
+                row += "<td>" + data[i]['lastName'] + "</td>";
+
+                var btn = "<button class='btnCreateAvailableAppointmentForDermatologist' id = " + data[i]['id'] + ">Kreiraj slobodan termin</button>";
+                row += "<td>" + btn + "</td>";
+
+                $('#tableDermatologistsAdminPharmacy').append(row);
+            }
+        },
+        error: function (jqXHR) {
+            if(jqXHR.status === 403)
+            {
+                window.location.href="error.html";
+            }
+            if(jqXHR.status === 401)
+            {
+                window.location.href="error.html";
+            }
+        }
+    });
+});
+
+$(document).on('click', '.btnCreateAvailableAppointmentForDermatologist', function () {
+    var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy");
+    dermatologistsShowAdminPharmacy.hide();
+
+    var availableAppointments = $(".availableAppointments");
+    availableAppointments.show();
+
+    var chooseDateAvailableAppointments = $(".chooseDateAvailableAppointments");
+    chooseDateAvailableAppointments.show();
+
+    var successfulAppointmentCreation = $(".successfulAppointmentCreation");
+    successfulAppointmentCreation.hide();
+
+    var unsuccessfulAppointmentCreation = $(".unsuccessfulAppointmentCreation");
+    unsuccessfulAppointmentCreation.hide();
+
+    var dermatologist_id = this.id;
+
+    $(document).on('click', '#btnSubmitNewAvailableAppointment', function () {
+        var beginofwork = $("#dateBegin").val();
+        var duration = $("#duration").val();
+        var price = $("#price").val();
+
+        console.log(beginofwork, duration);
+
+        var myJSON = formToJSON(dermatologist_id, beginofwork, duration, price);
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/appointments/createAvailableAppointment",
+            dataType: "json",
+            contentType: "application/json",
+            data: myJSON,
+            beforeSend: function (xhr) {
+                if (localStorage.token) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+                }
+            },
+            success: function (data) {
+                console.log("SUCCESS", data);
+                var successfulAppointmentCreation = $(".successfulAppointmentCreation");
+                successfulAppointmentCreation.show();
+            },
+            error: function (jqXHR) {
+                if (jqXHR.status === 403) {
+                    window.location.href = "error.html";
+                }
+                if (jqXHR.status === 401) {
+                    window.location.href = "error.html";
+                }
+                if (jqXHR.status === 500) {
+                    console.log(jqXHR.responseText);
+                    var unsuccessfulAppointmentCreation = $(".unsuccessfulAppointmentCreation");
+                    unsuccessfulAppointmentCreation.show();
+                    var response = JSON.parse(jqXHR.responseText);
+                    $('#responseMessageAppointmentCreation').append(response['message']);
+                }
+            }
+        });
+    });
+});
+
+function formToJSON(dermatologist_id, beginofwork, duration, price) {
+    return JSON.stringify(
+        {
+            "dermatologist" : dermatologist_id,
+            "beginofappointment" : beginofwork,
+            "duration" : duration,
+            "price" : price
+        }
+    );
+}
+
+$(document).on('click', '#btnCancelNewAvailableAppointment', function () {
+    var chooseDateAvailableAppointments = $(".chooseDateAvailableAppointments");
+    chooseDateAvailableAppointments.hide();
+
+    var unsuccessfulAppointmentCreation = $(".unsuccessfulAppointmentCreation");
+    unsuccessfulAppointmentCreation.hide();
+
+    var successfulAppointmentCreation = $(".successfulAppointmentCreation");
+    successfulAppointmentCreation.hide();
+
+    var availableAppointments = $(".availableAppointments");
+    availableAppointments.show();
+
+});
+
+$(document).on('click', '#btnReturnToChoosing1', function () {
+    var unsuccessfulAppointmentCreation = $(".unsuccessfulAppointmentCreation");
+    unsuccessfulAppointmentCreation.hide();
+
+    var availableAppointments = $(".availableAppointments");
+    availableAppointments.show();
+});
+
+$(document).on('click', '#btnReturnToChoosing', function () {
+    var usuccessfulAppointmentCreation = $(".successfulAppointmentCreation");
+    successfulAppointmentCreation.hide();
+
+    var availableAppointments = $(".availableAppointments");
+    availableAppointments.show();
+});
