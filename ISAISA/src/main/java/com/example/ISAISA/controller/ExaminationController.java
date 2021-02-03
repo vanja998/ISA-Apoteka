@@ -1,6 +1,7 @@
 package com.example.ISAISA.controller;
 
 import com.example.ISAISA.DTO.IdDto;
+import com.example.ISAISA.DTO.ReportDto;
 import com.example.ISAISA.model.Appointment;
 import com.example.ISAISA.model.Dermatologist;
 import com.example.ISAISA.model.Examination;
@@ -13,9 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/examinations")
@@ -42,5 +41,17 @@ public class ExaminationController {
         IdDto ex = new IdDto(examinationId);
         return new ResponseEntity<>(ex, HttpStatus.OK);
     }
+
+
+    @PostMapping(value="/writeReport", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<IdDto> writeReport(@RequestBody ReportDto reportDto) throws Exception {
+
+        examinationService.writeReport(reportDto.getId(), reportDto.getReport());
+
+        IdDto ex = new IdDto(reportDto.getId());
+        return new ResponseEntity<>(ex, HttpStatus.OK);
+    }
+
 
 }

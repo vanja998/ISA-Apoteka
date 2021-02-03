@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ExaminationService {
@@ -62,4 +63,12 @@ public class ExaminationService {
         return null;
     }*/
 
+    public void writeReport(Integer examinationId, String report) {
+
+        Examination examination = examinationRepository.findOneById(examinationId);
+
+        examination.setReport(report);
+        examination = examinationRepository.save(examination);
+
+    }
 }
