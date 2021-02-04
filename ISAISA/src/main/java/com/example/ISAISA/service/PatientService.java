@@ -51,7 +51,7 @@ public class PatientService {
 
         List<PatientSearchDto> patientDTOS = new ArrayList<>();
         for(Patient p : patients) {
-            PatientSearchDto patientDTO = new PatientSearchDto(p.getFirstName(), p.getLastName(), p.getAddress(), p.getPhone(), p.getCity());
+            PatientSearchDto patientDTO = new PatientSearchDto(p.getId() , p.getFirstName(), p.getLastName(), p.getAddress(), p.getPhone(), p.getCity());
             patientDTOS.add(patientDTO);
         }
 
@@ -64,7 +64,7 @@ public class PatientService {
 
         Set<PatientSearchDto> patientDTOS = new HashSet<>();
         for(Patient p : patients) {
-            PatientSearchDto patientDTO = new PatientSearchDto(p.getFirstName(), p.getLastName(), p.getAddress(), p.getPhone(), p.getCity());
+            PatientSearchDto patientDTO = new PatientSearchDto(p.getId() , p.getFirstName(), p.getLastName(), p.getAddress(), p.getPhone(), p.getCity());
             patientDTOS.add(patientDTO);
         }
 

@@ -19,11 +19,51 @@ public class Dermatologist_Pharmacyy {
     private LocalTime endofwork;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    private Pharmacy pharmacy_id;
+    private Pharmacy pharmacy;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    private Dermatologist dermatologist_id;
+    private Dermatologist dermatologist;
 
+    public Dermatologist_Pharmacyy() {
+    }
 
+    public Integer getId() {
+        return id;
+    }
 
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public LocalTime getBeginofwork() {
+        return beginofwork;
+    }
+
+    public void setBeginofwork(LocalTime beginofwork) {
+        this.beginofwork = beginofwork;
+    }
+
+    public LocalTime getEndofwork() {
+        return endofwork;
+    }
+
+    public void setEndofwork(LocalTime endofwork) {
+        this.endofwork = endofwork;
+    }
+
+    public Pharmacy getPharmacy() {
+        return pharmacy;
+    }
+
+    public void setPharmacy(Pharmacy pharmacy) {
+        this.pharmacy = pharmacy;
+    }
+
+    public Dermatologist getDermatologist() {
+        return dermatologist;
+    }
+
+    public void setDermatologist(Dermatologist dermatologist_id) {
+        this.dermatologist = dermatologist_id;
+    }
 }

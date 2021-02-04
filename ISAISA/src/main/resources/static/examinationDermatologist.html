@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Pregled</title>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/examinationDermatologist.js"></script>
+</head>
+<body>
+
+   <!-- <div class="examination">
+        <h2>Izvestaj: </h2><input id="chReport" type="text"/>
+        <hr>
+        <h2>Prepisi lek</h2>
+        <h3>Id leka: </h3><input id="chPrescriptMedication" type="text"/>
+        <h3>Trajanje terapije: </h3><input id="chTherapyDuration" type="text"/>
+
+    </div>-->
+    <div class="examination">
+        <button id="btnReport">Napisi izvestaj</button>
+        <button id="btnPrescript">Prepisi lek</button>
+        <button id="btnNewAppointment">Zakazi novi termin</button>
+    </div>
+
+   <div class="writeReport" >
+       <h2>Izvestaj: </h2><input id="chReport" type="text"/>
+       <button id="btnSubmitReport">Predaj</button>
+   </div>
+
+   <div class="prescriptMedication" >
+       <h2>Proveri dostupnost leka</h2>
+       <label>Izaberite lek:</label>
+       <!--<table id="tableMeds">
+           <thead>
+           <tr></tr>
+           </thead>
+           <tbody>
+
+           </tbody>
+       </table>-->
+       <select name="dropDown" id="idDropDown">
+           <option> </option>
+           <option></option>
+       </select>
+   </div>
+
+    <div class="scheduleNewAppointment" >
+
+    </div>
+
+    <div class="medInPharmacy">
+        <table id="tableMedInPharmacy">
+            <thead>
+            <tr><h3>Lek je dostupan.</h3></tr>
+            <h3>Trajanje terapije: </h3><input id="chTherapyDuration" type="text"/>
+            <br>
+            <tr><button id="btnPrescriptMedication">Prepisi lek</button></tr>
+            <tr><button id="btnCanclePrescription">Odustani</button></tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+
+        <!--<h3>Trajanje terapije: </h3><input id="chTherapyDuration" type="text"/>-->
+    </div>
+
+   <div class="medNotInPharmacy">
+       <table id="tableMedNotInPharmacy">
+           <thead>
+           <tr><h3>Lek je nedostupan. Administrator apoteke je obavesten.</h3></tr>
+           <tr><button id='btnCancle'>Odustani od preporucivanja leka</button></tr>
+           <tr><button id='btnAlternative'>Preporuci dostupnu alternativu</button></tr>
+           </thead>
+           <tbody>
+
+           </tbody>
+       </table>
+   </div>
+
+   <div class="alternativeMedication" >
+       <h2>Izaberite dostupnu alternativu</h2>
+       <h3>Trajanje terapije u danima: </h3><input id="chTherapyDurationAlternative" type="text"/>
+       <br>
+       <label>Izaberite lek:</label>
+       <!--<table id="tableMeds">
+           <thead>
+           <tr></tr>
+           </thead>
+           <tbody>
+
+           </tbody>
+       </table>-->
+       <select name="alternativeDropDown" id="idAlternativeDropDown">
+           <option> </option>
+       </select>
+       <tr><button id='btnCancleAlternative'>Odustani od preporucivanja leka</button></tr>
+   </div>
+
+
+
+</body>
+</html>
