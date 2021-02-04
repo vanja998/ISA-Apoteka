@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 @Entity
+@DiscriminatorValue("appointment")
 public class Appointment {
 
     @Id
@@ -24,8 +25,30 @@ public class Appointment {
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Dermatologist dermatologist;
+    public Appointment(Integer id, Patient patient, Dermatologist dermatologist, LocalDateTime beginofappointment, LocalDateTime endofappointment, Integer price) {
+        this.id = id;
+        this.patient = patient;
+        this.dermatologist = dermatologist;
+        this.beginofappointment = beginofappointment;
+        this.endofappointment = endofappointment;
+        this.price = price;
+    }
 
-    @JsonIgnore
+    public Appointment(Integer id, Dermatologist dermatologist, LocalDateTime beginofappointment, LocalDateTime endofappointment, Integer price) {
+        this.id = id;
+        this.dermatologist = dermatologist;
+        this.beginofappointment = beginofappointment;
+        this.endofappointment = endofappointment;
+        this.price = price;
+    }
+
+    /*public Appointment(Integer id, Patient patient, String firstName, LocalDateTime beginofappointment, LocalDateTime endofappointment, Integer price) {
+    }*/
+
+    public Appointment() {
+
+    }
+
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Pharmacy pharmacy_appointment;
 
@@ -46,9 +69,6 @@ public class Appointment {
 
     @OneToOne(mappedBy = "examinationAppointment")
     private Examination examination;
-
-    public Appointment() {
-    }
 
     public Appointment(Integer id, Patient patient, Dermatologist dermatologist, Pharmacy pharmacy_appointment, LocalDateTime beginofappointment, LocalDateTime endofappointment, Integer price) {
         this.id = id;

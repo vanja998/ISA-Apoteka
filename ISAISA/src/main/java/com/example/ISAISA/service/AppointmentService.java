@@ -9,12 +9,11 @@ import com.example.ISAISA.repository.Dermatologist_PharmacyyRepository;
 import com.example.ISAISA.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import com.example.ISAISA.repository.Dermatologist_PharmacyRepository;
 import java.util.Set;
+
 
 @Service
 public class AppointmentService {
@@ -22,6 +21,12 @@ public class AppointmentService {
     private AppointmentRepository appointmentRepository;
     private Dermatologist_PharmacyyRepository dermafarmaRepository;
     private PatientRepository patientRepository;
+
+    public List<Appointment> findAll(){
+        return appointmentRepository.findAll();
+    }
+    public Appointment findById(Integer id){return appointmentRepository.findOneById(id);}
+    public Appointment save(Appointment appointment){return appointmentRepository.save(appointment);}
 
     @Autowired
     public void setAppointmentRepository(AppointmentRepository appointmentRepository) {
@@ -87,7 +92,7 @@ public class AppointmentService {
 
     }
 
-    public Appointment save(Appointment appointment) throws Exception {
+    public Appointment saveAvailable(Appointment appointment) throws Exception {
         Dermatologist dermatologist = appointment.getDermatologist();
         Dermatologist_Pharmacyy dermatologist_pharmacy = dermafarmaRepository.findByDermatologistAndPharmacy(dermatologist, appointment.getPharmacy_appointment());
         LocalTime dermatologistBeginOfWork = dermatologist_pharmacy.getBeginofwork();

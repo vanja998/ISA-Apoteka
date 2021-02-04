@@ -9,6 +9,7 @@ import java.util.Set;
 
 
 public interface AppointmentRepository extends JpaRepository<Appointment, Integer> {
-        Set<Appointment> findAllByDermatologist(Dermatologist dermatologist);
-}
 
+        Set<Appointment> findAllByDermatologist(Dermatologist dermatologist);
+        Appointment findOneById(Integer id);
+}
