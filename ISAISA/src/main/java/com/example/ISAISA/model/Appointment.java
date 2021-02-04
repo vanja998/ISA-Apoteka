@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 @Entity
+@DiscriminatorValue("appointment")
 public class Appointment {
 
     @Id
@@ -20,6 +21,85 @@ public class Appointment {
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Dermatologist dermatologist;
 
+    public Appointment(Integer id, Patient patient, Dermatologist dermatologist, LocalDateTime beginofappointment, LocalDateTime endofappointment, Integer price) {
+        this.id = id;
+        this.patient = patient;
+        this.dermatologist = dermatologist;
+        this.beginofappointment = beginofappointment;
+        this.endofappointment = endofappointment;
+        this.price = price;
+    }
+
+    public Appointment(Integer id, Dermatologist dermatologist, LocalDateTime beginofappointment, LocalDateTime endofappointment, Integer price) {
+        this.id = id;
+        this.dermatologist = dermatologist;
+        this.beginofappointment = beginofappointment;
+        this.endofappointment = endofappointment;
+        this.price = price;
+    }
+
+    public Appointment(Integer id, Patient patient, String firstName, LocalDateTime beginofappointment, LocalDateTime endofappointment, Integer price) {
+    }
+
+    public Appointment() {
+
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Patient getPatient() {
+        return patient;
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
+    }
+
+    public Dermatologist getDermatologist() {
+        return dermatologist;
+    }
+
+    public void setDermatologist(Dermatologist dermatologist) {
+        this.dermatologist = dermatologist;
+    }
+
+    public Pharmacy getPharmacy_appointment() {
+        return pharmacy_appointment;
+    }
+
+    public void setPharmacy_appointment(Pharmacy pharmacy_appointment) {
+        this.pharmacy_appointment = pharmacy_appointment;
+    }
+
+    public LocalDateTime getBeginofappointment() {
+        return beginofappointment;
+    }
+
+    public void setBeginofappointment(LocalDateTime beginofappointment) {
+        this.beginofappointment = beginofappointment;
+    }
+
+    public LocalDateTime getEndofappointment() {
+        return endofappointment;
+    }
+
+    public void setEndofappointment(LocalDateTime endofappointment) {
+        this.endofappointment = endofappointment;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Pharmacy pharmacy_appointment;

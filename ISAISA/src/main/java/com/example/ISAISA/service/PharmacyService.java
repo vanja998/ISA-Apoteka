@@ -2,15 +2,14 @@ package com.example.ISAISA.service;
 
 import com.example.ISAISA.DTO.PharmacyDTO;
 import com.example.ISAISA.DTO.PharmacyRegDTO;
-import com.example.ISAISA.model.Authority;
-import com.example.ISAISA.model.Pharmacy;
-import com.example.ISAISA.model.User;
-import com.example.ISAISA.model.UserRequest;
+import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.PharmacyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -46,5 +45,24 @@ public class PharmacyService {
     }
 
     public Pharmacy findByName(String name) { return pharmacyRepository.findByName(name); }
+
+    public Pharmacy findByRating(Float rating){return  pharmacyRepository.findByRating(rating);}
+
+
+
+    public Set<Pharmacy> getPharmaciesbyname(String name){
+        Set<Pharmacy> pharmacies=pharmacyRepository.findAllByName(name);
+        Set<Pharmacy> pharmaciesDTOS = new HashSet<>();
+        for( Pharmacy m: pharmacies){
+            Pharmacy meds=new Pharmacy(m.getId(),m.getName(),m.getAddress(),m.getDescription(),m.getRating());
+            pharmaciesDTOS.add(meds);
+        }
+
+        return pharmaciesDTOS;
+    }
+
+
+
+
 
 }

@@ -27,7 +27,7 @@ $(document).ready(function () {
 					window.location.href = "adminPharmacyWelcome.html";
 				}
 				else if(data['role']==='patient'){
-					window.location.href = "patientProfile.html";
+					window.location.href = "patientWelcome.html";
 				}
 				else if(data['role']==='dermatologist'){
 					window.location.href = "welcomeDermatologist.html";
