@@ -157,8 +157,21 @@ public class Medication {
         this.notes = notes;
     }
 
+    public Set<Medication> getAlternate_medication() {
+        return alternate_medication;
+    }
 
+    public void setAlternate_medication(Set<Medication> alternate_medication) {
+        this.alternate_medication = alternate_medication;
+    }
 
+    public Set<Medication> getMedication() {
+        return medication;
+    }
+
+    public void setMedication(Set<Medication> medication) {
+        this.medication = medication;
+    }
 
     public Set<Pharmacy> getPharmacies() {
         return pharmacies;

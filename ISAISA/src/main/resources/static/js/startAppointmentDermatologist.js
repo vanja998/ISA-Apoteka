@@ -70,7 +70,7 @@ $(document).on('click', '#btnSearchPatient', function () {
             }
         },
         success: function (data) {
-            //console.log("SUCCESS: ", data);
+            console.log("SUCCESS: ", data);
             $('#searchPatient').append(searchParam[0], " ", searchParam[1]);
             for (i = 0; i < data.length; i++) {
                 var row = "<tr>";
@@ -133,7 +133,6 @@ $(document).on('click', '.btnStartAppointment', function () {
             console.log("SUCCESS : ", data);
             if( data['id'] != null) {
                 console.log("SUCCESS : ", data);
-                alert("success");
                 appointmentStart.show();
                 var btnStart = "<button class='btnStart' id = " + data['id'] + ">Zapocni pregled</button>";
                 var btnPenal = "<button class='btnPenal' id = " + data['id'] + ">Pacijent se nije pojavio</button>";

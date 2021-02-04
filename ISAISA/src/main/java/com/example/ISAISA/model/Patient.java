@@ -24,6 +24,7 @@ public class Patient extends User{
     @ManyToMany
     @JoinTable(name = "allergy_patient", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"))
     private Set<Medication> medication = new HashSet<Medication>();
+
     public Patient() {
     }
 
@@ -41,5 +42,13 @@ public class Patient extends User{
 
     public void setPenalty(Integer penalty) {
         this.penalty = penalty;
+    }
+
+    public Set<Medication> getMedication() {
+        return medication;
+    }
+
+    public void setMedication(Set<Medication> medication) {
+        this.medication = medication;
     }
 }
