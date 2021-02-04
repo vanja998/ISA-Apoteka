@@ -15,7 +15,7 @@ insert into "users" (rolee, id, email, password, firstName, lastName, address, p
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled) values ('adminsystem', nextval('seq_user'), 'va', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'tika', 'spic', 'blabla', '062111113', 'Pecenjevce', 'Srbija', true);
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, pharmacy_id, rating) values ('pharmacist', nextval('seq_user'), 'dara', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Dara', 'Granic', 'Dunavska', '060111113', 'Novi Sad', 'Srbija', true, 1, 5.0);
 
-insert into "appointment" (id,patient_id,dermatologist_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),null, 6 ,'2007-12-03T10:15:30','2007-12-03T10:16:30',5000);
+insert into "appointment" (id,patient_id,dermatologist_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),null, 6 ,'2007-12-03 10:15:30','2007-12-03 10:16:30',5000);
 insert into "dermatologist_pharmacyy" (id,beginofwork,endofwork,dermatologist_id_id,pharmacy_id_id) values (nextval('seq_dermatologist_pharmacy'),'16:00:00','17:00:00',5,1);
 insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes) values( nextval('seq_medication'),'as1234','paracetamol','tableta','okrugla','otrovcina','hemofarm',true,'javi se lekaru u slucaju nuspojava');
 insert into "medication_altmedication"(medication_id,altmedication_id) values(1,1);
