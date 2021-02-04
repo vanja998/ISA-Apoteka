@@ -39,7 +39,7 @@ $(document).ready(function () {
 					window.location.href = "adminSystemHomePage.html";
 				}
 				else if(data['role']==='supplier'){
-					window.location.href = "supplier.html";
+					window.location.href = "supplierHomePage.html";
 				}
 				else{
 					window.location.href = "error.html";

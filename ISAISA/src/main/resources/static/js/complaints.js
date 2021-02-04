@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/auth/allcomplaints",
+        url: "http://localhost:8081/systemadmins/allcomplaints",
         dataType: "json",
         beforeSend: function(xhr) {
             if (localStorage.token) {

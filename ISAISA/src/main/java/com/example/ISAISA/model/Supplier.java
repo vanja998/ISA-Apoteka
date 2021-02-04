@@ -20,4 +20,26 @@ public class Supplier extends User{
     @JsonIgnore
     @OneToMany(mappedBy = "supplier", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Offer> offers = new HashSet<Offer>();
+
+
+    @JsonIgnore
+    @ManyToMany(fetch=FetchType.EAGER)
+    @JoinTable(name = "supplier_medication", joinColumns = @JoinColumn(name = "supplier_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"))
+    private Set<Medication> medication = new HashSet<Medication>();
+
+    public Set<Offer> getOffers() {
+        return offers;
+    }
+
+    public void setOffers(Set<Offer> offers) {
+        this.offers = offers;
+    }
+
+    public Set<Medication> getMedication() {
+        return medication;
+    }
+
+    public void setMedication(Set<Medication> medication) {
+        this.medication = medication;
+    }
 }

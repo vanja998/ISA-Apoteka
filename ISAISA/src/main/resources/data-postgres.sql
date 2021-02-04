@@ -17,17 +17,30 @@ insert into "users" (rolee, id, email, password, firstName, lastName, address, p
 
 
 insert into "dermatologist_pharmacyy" (id,beginofwork,endofwork,dermatologist_id_id,pharmacy_id_id) values (nextval('seq_dermatologist_pharmacy'),'16:00:00','17:00:00',5,1);
+
 insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes) values( nextval('seq_medication'),'as1234','paracetamol','tableta','okrugla','otrovcina','hemofarm',true,'javi se lekaru u slucaju nuspojava');
+insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes) values( nextval('seq_medication'),'afeeff','brufen','tableta','okrugla','otrovcina','hemofarm',true,'javi se lekaru u slucaju nuspojava');
+insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes) values( nextval('seq_medication'),'aefefef','fervex','prasak','zrnast','otrovcina','hemofarm',true,'javi se lekaru u slucaju nuspojava');
+
 insert into "medication_altmedication"(medication_id,altmedication_id) values(1,1);
+
 insert into "med_pharmacies" (pharmacy_id,medication_id) values (1,1);
+
 insert into "allergy_patient" (patient_id,medication_id) values (1,1);
-insert into "complaint"(id,question,answered,patient_id,user_id) values(1,'Zasto dermatolog stalno kasni??',false,1,6);
 
-insert into "orderr"(id,dateDeadline,statusAdmin,statusSupplier,admin_id) values(1,'31/12/2020','ceka_na_ponude','ceka_na_odgovor',4);
-insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (1,5,1,1);
+insert into "complaint"(id,question,answered,patient_id,user_id) values(nextval('seq_complaint'),'Zasto dermatolog stalno kasni??',false,1,6);
 
-insert into offer(id,deliverydate,offerprice,orderr_id,supplier_id) values (1,'12/03/2021',4000,1,1);
+insert into "orderr"(id,dateDeadline,statusAdmin,statusSupplier,admin_id) values(nextval('seq_orderr'),'31/12/2020','ceka_na_ponude','ceka_na_ponude',4);
 
+insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,1,1);
+insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,2,1);
+insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,3,1);
+
+
+
+insert into "supplier_medication"(supplier_id,medication_id) values(3,1);
+insert into "supplier_medication"(supplier_id,medication_id) values(3,2);
+insert into "supplier_medication"(supplier_id,medication_id) values(3,3);
 
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_PATIENT');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_ADMINSYSTEM');

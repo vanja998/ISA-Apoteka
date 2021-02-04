@@ -12,4 +12,5 @@ public interface MedicationRepository extends JpaRepository<Medication, Integer>
 
    Set<Medication> findAllByName(String name);
 
+
 }

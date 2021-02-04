@@ -1,7 +1,11 @@
 $(document).ready(function () {
+
+
+
+
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/auth/allorders",
+        url: "http://localhost:8081/suppliers/allorders",
         dataType: "json",
         beforeSend: function(xhr) {
             if (localStorage.token) {
@@ -20,13 +24,25 @@ $(document).ready(function () {
                 row += "<td>" + data[i]['pharmacyAddress'] + "</td>";
                 row += "<td>" + data[i]['dateDeadline'] + "</td>";
                 row += "<td>" + data[i]['statusSupplier'] + "</td>";
+                row += "<td>" + data[i]['offer'] + "</td>";
 
 
 
+                if(data[i]['statusSupplier']==='prihvacena'){
+                    var btn = "<button disabled>Ponuda je obradjena</button>";
+                }
+                else if(data[i]['statusSupplier']==='odbijena'){
+                    var btn = "<button disabled>Ponuda je obradjena</button>";
+                }
+                else if ( data[i]['offer']==0) {
                     var btn = "<button class='btnGiveOffer' id = " + data[i]['id'] + ">Kreiraj ponudu</button>";
+                }
+                else {
+                    var btn = "<button class='btnChangeOffer' id = " + data[i]['id'] + ">Izmeni ponudu</button>";
+                }
 
 
-                    row += "<td>" + btn + "</td>";
+                row += "<td>" + btn + "</td>";
 
                 $('#orders').append(row);
 
@@ -39,3 +55,55 @@ $(document).ready(function () {
         }
     });
 });
+
+
+$(document).on('click', '.btnGiveOffer', function () {
+
+    var pharmacyDiv = $(".orderall");
+    pharmacyDiv.hide();
+    var formaDiv=$(".orderForm");
+    formaDiv.show();
+    var orderID=this.id;
+
+
+
+    $(document).on("submit", "form", function (event) {
+
+        event.preventDefault();
+        var offer = $("#offer").val();
+        var deliveryDate = $("#date").val();
+        var offerJSON = formToJSON(offer,deliveryDate,orderID);
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/suppliers/addOffer",
+            dataType: "json",
+            contentType: "application/json",
+            data: offerJSON,
+            beforeSend: function (xhr) {
+                if (localStorage.token) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+                }
+            },
+            success: function () {
+                alert("success");
+                window.location.href = "supplier.html";
+            },
+            error: function (error) {
+                alert(error);
+            }
+        });
+    });
+});
+
+
+function formToJSON(offerPrice,deliveryDate,orderID,supplier) {
+    return JSON.stringify(
+        {
+            "offerPrice": offerPrice,
+            "deliveryDate": deliveryDate,
+            "orderID": orderID,
+
+        }
+    );
+};

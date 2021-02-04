@@ -1,5 +1,7 @@
 package com.example.ISAISA.DTO;
 
+import com.example.ISAISA.model.Supplier;
+
 import java.util.Date;
 
 public class OrderrDTO {
@@ -15,13 +17,46 @@ public class OrderrDTO {
 
     private String pharmacyAddress;
 
-    public OrderrDTO(Integer id, Date dateDeadline, String statusSupplier, String adminEmail, String pharmacyName, String pharmacyAddress) {
+    private Integer offer;
+
+    private Supplier supplier;
+
+    public OrderrDTO(Integer id, Date dateDeadline, String statusSupplier, String adminEmail, String pharmacyName, String pharmacyAddress, Integer offer, Supplier supplier) {
         this.id = id;
         this.dateDeadline = dateDeadline;
         this.statusSupplier = statusSupplier;
         this.adminEmail = adminEmail;
         this.pharmacyName = pharmacyName;
         this.pharmacyAddress = pharmacyAddress;
+        this.offer = offer;
+        this.supplier = supplier;
+    }
+
+    public Supplier getSupplier() {
+        return supplier;
+    }
+
+    public void setSupplier(Supplier supplier) {
+        this.supplier = supplier;
+    }
+
+    public OrderrDTO(Integer id, Date dateDeadline, String statusSupplier, String adminEmail, String pharmacyName, String pharmacyAddress, Integer offer) {
+        this.id = id;
+        this.dateDeadline = dateDeadline;
+        this.statusSupplier = statusSupplier;
+        this.adminEmail = adminEmail;
+        this.pharmacyName = pharmacyName;
+        this.pharmacyAddress = pharmacyAddress;
+        this.offer=offer;
+    }
+
+
+    public Integer getOffer() {
+        return offer;
+    }
+
+    public void setOffer(Integer offer) {
+        this.offer = offer;
     }
 
     public Integer getId() {
