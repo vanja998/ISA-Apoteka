@@ -42,10 +42,17 @@ public class Pharmacy {
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Dermatologist_Pharmacyy> dermatologist_pharmacies = new HashSet<Dermatologist_Pharmacyy>();
 
-
     @JsonIgnore
     @OneToMany(mappedBy = "pharmacy_appointment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Appointment> appointments = new HashSet<Appointment>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Promotion> promotions = new HashSet<Promotion>();
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "pharmacies_promotions", fetch = FetchType.EAGER)
+    private Set<Patient> patients_promotions = new HashSet<Patient>();
 
     public Set<Appointment> getAppointments() {
         return appointments;
@@ -118,6 +125,14 @@ public class Pharmacy {
 
     public void setDermatologists(Set<Dermatologist> dermatologists) {
         this.dermatologists = dermatologists;
+    }
+
+    public Set<Patient> getPatients_promotions() {
+        return patients_promotions;
+    }
+
+    public void setPatients_promotions(Set<Patient> patients_promotions) {
+        this.patients_promotions = patients_promotions;
     }
 
     @Override

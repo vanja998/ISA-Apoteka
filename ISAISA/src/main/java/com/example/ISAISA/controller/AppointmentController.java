@@ -109,12 +109,12 @@ public class AppointmentController {
         appointment1 = appointmentService.saveAvailable(appointment1);
 
         return new ResponseEntity<>(appointment1, HttpStatus.OK);
-
     }
 
     @GetMapping(value="/unreservedappointment",produces = MediaType.APPLICATION_JSON_VALUE)// value nije naveden, jer koristimo bazni url
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<List<Appointment>> getUnreservedAppointments() {
+
         List<Appointment> appointmentList = this.appointmentService.findAll();
 
         // Kreiramo listu DTO objekata
@@ -145,6 +145,4 @@ public class AppointmentController {
         emailSenderService.sendEmail(mailMessage);
         return new ResponseEntity(appointment, HttpStatus.OK);
     }
-
-
 }

@@ -25,6 +25,11 @@ public class Patient extends User{
     @JoinTable(name = "allergy_patient", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"))
     private Set<Medication> medication = new HashSet<Medication>();
 
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "promotion_patients", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
+    private Set<Promotion> pharmacies_promotions = new HashSet<Promotion>();
+
     public Patient() {
     }
 

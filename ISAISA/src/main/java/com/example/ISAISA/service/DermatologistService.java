@@ -5,14 +5,12 @@ import com.example.ISAISA.model.Dermatologist;
 import com.example.ISAISA.model.Dermatologist_Pharmacyy;
 import com.example.ISAISA.model.Pharmacy;
 import com.example.ISAISA.repository.DermatologistRepository;
-import com.example.ISAISA.repository.Dermatologist_PharmacyRepository;
 import com.example.ISAISA.repository.Dermatologist_PharmacyyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 @Service
