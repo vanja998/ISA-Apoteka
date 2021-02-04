@@ -38,9 +38,6 @@ public class Appointment {
         this.price = price;
     }
 
-    public Appointment(Integer id, Patient patient, String firstName, LocalDateTime beginofappointment, LocalDateTime endofappointment, Integer price) {
-    }
-
     public Appointment() {
 
     }

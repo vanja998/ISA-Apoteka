@@ -42,15 +42,15 @@ public class AppointmentController {
         List<Appointment> appointmentList = this.appointmentService.findAll();
 
         // Kreiramo listu DTO objekata
-        List<Appointment> pharmaciesDTOS = new ArrayList<>();
+        List<Appointment> appointmentDTOS = new ArrayList<>();
 
         for (Appointment appointment : appointmentList) {
             Appointment pharmacyDTO = new Appointment(appointment.getId(),appointment.getPatient(),appointment.getDermatologist(),appointment.getBeginofappointment(),appointment.getEndofappointment(),appointment.getPrice());
             if(pharmacyDTO.getPatient()==null) {
-                pharmaciesDTOS.add(pharmacyDTO);
+                appointmentDTOS.add(pharmacyDTO);
             }
         }
-        return new ResponseEntity<>(pharmaciesDTOS, HttpStatus.OK);
+        return new ResponseEntity<>(appointmentDTOS, HttpStatus.OK);
     }
 
     @PostMapping(value="/reserveappointment", produces = MediaType.APPLICATION_JSON_VALUE)
