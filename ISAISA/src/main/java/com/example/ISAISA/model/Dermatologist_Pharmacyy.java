@@ -66,4 +66,13 @@ public class Dermatologist_Pharmacyy {
     public void setDermatologist(Dermatologist dermatologist_id) {
         this.dermatologist = dermatologist_id;
     }
+
+    public Dermatologist_Pharmacyy(Integer id, LocalTime beginofwork, LocalTime endofwork, Pharmacy pharmacy, Dermatologist dermatologist) {
+        this.id = id;
+        this.beginofwork = beginofwork;
+        this.endofwork = endofwork;
+        this.pharmacy = pharmacy;
+        this.dermatologist = dermatologist;
+    }
+
 }
