@@ -1,11 +1,3 @@
-
-
-
-
-
-
-
-
 package com.example.ISAISA.DTO;
 
 public class IdDto {

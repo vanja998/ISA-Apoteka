@@ -128,17 +128,35 @@ public class ExaminationService {
         Medication medication = medicationRepository.findByName(medicationName);
         Examination examination = examinationRepository.findOneById(examinationId);
 
-        Integer pharmacyId = examination.getExaminationAppointment().getPharmacy_appointment().getId();
+        //Integer pharmacyId = examination.getExaminationAppointment().getPharmacy_appointment().getId();
 
         //Set<Medication> medications = pharmacy.getMedication();
+        //jeste ahahhahahaha hahahah ne nadje definitivno apoteke od samo sekund pliz tati trebam EVO ME na 2
+        //Set<Pharmacy> pharmaciesSet = medication.getPharmacies();
 
-        Set<Pharmacy> pharmaciesSet = medication.getPharmacies();
+        Set<Medication> medications = examination.getExaminationAppointment().getPharmacy_appointment().getMedication();
 
-        for(Pharmacy i: pharmaciesSet){
-            if(i.getId() == pharmacyId){
+        List<Integer> lekoviId = new ArrayList<>();
+        for(Medication j : medications){
+            lekoviId.add(j.getId());
+        }
+
+        Integer lekId = medication.getId();
+
+        for(int i = 0; i<lekoviId.size(); i++){
+            if(lekoviId.get(i).equals(lekId)){
                 return true;
             }
         }
+
+
+        /*
+        for(Pharmacy i: pharmaciesSet){
+            Integer getId = i.getId();
+            if(getId.equals(pharmacyId)){
+                return true;
+            }
+        }*/
 
         /*List<Integer> apotekeId = new ArrayList<>();
         for(Pharmacy j : pharmaciesSet){
