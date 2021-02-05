@@ -26,6 +26,10 @@ public class PharmacyDTO {
         this.description = description;
     }
 
+    public PharmacyDTO(String name) {
+        this.name = name;
+    }
+
     public PharmacyDTO() {
     }
 

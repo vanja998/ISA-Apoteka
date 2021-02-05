@@ -11,7 +11,4 @@ public class IsaisaApplication {
 		SpringApplication.run(IsaisaApplication.class, args);
 
 	}
-
-
-
 }

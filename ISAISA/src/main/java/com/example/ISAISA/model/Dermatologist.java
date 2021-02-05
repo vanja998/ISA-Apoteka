@@ -23,6 +23,21 @@ public class Dermatologist extends User {
     @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Dermatologist_Pharmacyy> dermatologist_pharmacies = new HashSet<Dermatologist_Pharmacyy>();
 
+    public Set<Appointment> getAppointments() {
+        return appointments;
+    }
+
+    public void setAppointments(Set<Appointment> appointments) {
+        this.appointments = appointments;
+    }
+
+    public Set<Dermatologist_Pharmacyy> getDermatologist_pharmacies() {
+        return dermatologist_pharmacies;
+    }
+
+    public void setDermatologist_pharmacies(Set<Dermatologist_Pharmacyy> dermatologist_pharmacies) {
+        this.dermatologist_pharmacies = dermatologist_pharmacies;
+    }
 
     public Dermatologist() {
     }

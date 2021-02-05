@@ -1,5 +1,7 @@
 package com.example.ISAISA.controller;
 
+import com.example.ISAISA.DTO.DermatologistDTO;
+import com.example.ISAISA.DTO.PharmacistDTO;
 import com.example.ISAISA.DTO.UserChangeDTO;
 import com.example.ISAISA.model.AdminPharmacy;
 import com.example.ISAISA.model.Dermatologist;
@@ -15,7 +17,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/dermatologists")
@@ -58,4 +62,24 @@ public class DermatologistController {
 
         return ResponseEntity.accepted().body(result);
     }
+
+    @GetMapping(value="/adminDermatologists", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Set<DermatologistDTO>> getDermatologistsByAdminPharmacy() {
+
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Pharmacy pharmacy = user.getPharmacy();
+
+        Set<Dermatologist> dermatologists = dermatologistService.getByPharmacy(pharmacy);
+        Set<DermatologistDTO> dermatologistDTOS = new HashSet<>();
+        for (Dermatologist d : dermatologists) {
+            DermatologistDTO dermatologistDTO = new DermatologistDTO(d.getId(), d.getFirstName(), d.getLastName());
+            dermatologistDTOS.add(dermatologistDTO);
+        }
+
+        return new ResponseEntity<>(dermatologistDTOS, HttpStatus.OK);
+    }
+
+
+
 }

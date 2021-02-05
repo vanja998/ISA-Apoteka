@@ -4,18 +4,16 @@ import com.example.ISAISA.model.Appointment;
 import com.example.ISAISA.model.Dermatologist;
 import com.example.ISAISA.model.Dermatologist_Pharmacyy;
 import com.example.ISAISA.model.Patient;
-import com.example.ISAISA.repository.AdminSystemRepository;
 import com.example.ISAISA.repository.AppointmentRepository;
 import com.example.ISAISA.repository.Dermatologist_PharmacyyRepository;
 import com.example.ISAISA.repository.PatientRepository;
-import org.hibernate.procedure.spi.ParameterRegistrationImplementor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
+
 
 @Service
 public class AppointmentService {
@@ -23,6 +21,12 @@ public class AppointmentService {
     private AppointmentRepository appointmentRepository;
     private Dermatologist_PharmacyyRepository dermafarmaRepository;
     private PatientRepository patientRepository;
+
+    public List<Appointment> findAll(){
+        return appointmentRepository.findAll();
+    }
+    public Appointment findById(Integer id){return appointmentRepository.findOneById(id);}
+    public Appointment save(Appointment appointment){return appointmentRepository.save(appointment);}
 
     @Autowired
     public void setAppointmentRepository(AppointmentRepository appointmentRepository) {
@@ -90,7 +94,7 @@ public class AppointmentService {
         }
 
         return false;
-}
+    }
 
     public Integer penalPatient(Integer appointmentId){
 
@@ -102,7 +106,28 @@ public class AppointmentService {
 
     }
 
+    public Appointment saveAvailable(Appointment appointment) throws Exception {
+        Dermatologist dermatologist = appointment.getDermatologist();
+        Dermatologist_Pharmacyy dermatologist_pharmacy = dermafarmaRepository.findByDermatologistAndPharmacy(dermatologist, appointment.getPharmacy_appointment());
+        LocalTime dermatologistBeginOfWork = dermatologist_pharmacy.getBeginofwork();
+        LocalTime dermatologistEndOfWork = dermatologist_pharmacy.getEndofwork();
 
+        Set<Appointment> existingAppointments = appointmentRepository.findAllByDermatologist(appointment.getDermatologist());
+        for (Appointment a : existingAppointments) {
+            if((appointment.getBeginofappointment().isAfter(a.getBeginofappointment()) && appointment.getBeginofappointment().isBefore(a.getEndofappointment())) ||
+                    (appointment.getEndofappointment().isAfter(a.getBeginofappointment()) && appointment.getEndofappointment().isBefore(a.getEndofappointment())))
+            {
+                throw new Exception("Postoji zakazan termin u ovo vreme!");
+            }
+        }
+        if (appointment.getBeginofappointment().toLocalTime().isBefore(dermatologistBeginOfWork)
+        || appointment.getEndofappointment().toLocalTime().isAfter(dermatologistEndOfWork))
+        {
+            throw new Exception("Termin nije tokom radnog vremena dermatologa!");
+        }
 
+        appointmentRepository.save(appointment);
 
+        return appointment;
+    }
 }
