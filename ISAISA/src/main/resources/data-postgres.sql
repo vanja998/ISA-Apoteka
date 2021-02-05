@@ -20,10 +20,10 @@ insert into "medication_altmedication"(medication_id,altmedication_id) values(1,
 insert into "med_pharmacies" (pharmacy_id,medication_id) values (1,1);
 insert into "allergy_patient" (patient_id,medication_id) values (1,1);
 insert into "complaint"(id,question,answered,patient_id,user_id) values(1,'Zasto dermatolog stalno kasni??',false,1,6);
-insert into "appointment"(id,patient_id,dermatologist_id,pharmacy_appointment_id, beginofappointment, endofappointment, price) values (nextval('seq_appointment'), 2,6,1,'05-02-2021 00:00:00','05-02-2021 23:00:00', 300);
+insert into "appointment"(id,patient_id,dermatologist_id,pharmacy_appointment_id, beginofappointment, endofappointment, price) values (nextval('seq_appointment'), 2,6,1,'06-02-2021 00:00:00','06-02-2021 23:00:00', 300);
 insert into "dermatologist_pharmacyy" (id,beginofwork,endofwork,dermatologist_id,pharmacy_id) values (nextval('seq_dermatologist_pharmacy'),'00:00:00','23:59:00',6,1);
 ---insert into "examination"(id,report,therapyduration, examinationAppointment_id, prescriptedmedication_id,newappointment_id) values (nextval('seq_examination'), 'Pacijenta boli glava', null, 1,null, null);
-insert into "appointment"(id,patient_id,dermatologist_id,pharmacy_appointment_id, beginofappointment, endofappointment, price) values (nextval('seq_appointment'), 1,6,1,'04-02-2021 00:00:00','04-02-2021 23:59:00', 300);
+insert into "appointment"(id,patient_id,dermatologist_id,pharmacy_appointment_id, beginofappointment, endofappointment, price) values (nextval('seq_appointment'), 1,6,1,'05-02-2021 00:00:00','05-02-2021 23:59:00', 300);
 insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes) values( nextval('seq_medication'),'bb12','brufen','tableta','okrugla','otrov','hemofarm',true,'javi se lekaru u slucaju nuspojava');
 insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes) values( nextval('seq_medication'),'pp123','analgin','tableta','okrugla','otrovcic','hemofarm',true,'javi se lekaru u slucaju nuspojava');
 insert into "med_pharmacies" (pharmacy_id,medication_id) values (1,2);

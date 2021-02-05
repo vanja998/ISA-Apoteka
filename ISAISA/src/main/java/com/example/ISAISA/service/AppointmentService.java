@@ -45,6 +45,20 @@ public class AppointmentService {
         LocalDate today = LocalDate.now();
 
         List<Appointment> appointments = appointmentRepository.findAll();
+
+        for(int i = 0; i < appointments.size(); i++){
+            Appointment app = appointments.get(i);
+            if(app.getPatient().getId() == idPatient){
+                if(today.isEqual(app.getBeginofappointment().toLocalDate())){
+                    if(now.isAfter(app.getBeginofappointment().toLocalTime()) && now.isBefore(app.getEndofappointment().toLocalTime())){
+                        if(app.getDermatologist().getId() == dermatologist.getId()) {
+                            return app;
+                        }
+                    }
+                }
+            }
+        }
+        /*
         for (Appointment i : appointments){
             if(i.getPatient().getId() == idPatient){
                 if(today.isEqual(i.getBeginofappointment().toLocalDate())){
@@ -55,7 +69,7 @@ public class AppointmentService {
                     }
                 }
             }
-        }
+        }*/
 
         return null;
     }
