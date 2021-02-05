@@ -141,7 +141,7 @@ public class PharmacistController {
         Float ratingUnder = (float) pharmacistDTO.getRatingUnder();
         Float ratingOver = (float) pharmacistDTO.getRatingOver();
 
-        Set<PharmacistDTO> pharmacists = pharmacistService.getPharmacistsByRatingBetweenAndPharmacyName(
+        Set<PharmacistDTO> pharmacists = pharmacistService.filterPharmacists(
                 ratingOver, ratingUnder, pharmacy);
 
         return new ResponseEntity<>(pharmacists, HttpStatus.OK);

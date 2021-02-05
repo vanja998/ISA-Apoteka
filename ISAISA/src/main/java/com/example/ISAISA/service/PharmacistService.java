@@ -127,6 +127,14 @@ public class PharmacistService {
         return pharmacistDTOS;
     }
 
+    public Set<PharmacistDTO> filterPharmacists(Float ratingUnder, Float ratingOver, Pharmacy pharmacy) {
+        if (pharmacy == null) {
+            return getPharmacistsByRatingBetween(ratingOver, ratingUnder);
+        } else {
+            return getPharmacistsByRatingBetweenAndPharmacyName(ratingOver, ratingUnder, pharmacy);
+        }
+    }
+
     public Set<PharmacistDTO> getPharmacistsByRatingBetweenAndPharmacyName(Float ratingOver, Float ratingUnder, Pharmacy pharmacy) {
 
         Set<Pharmacist> pharmacists = pharmacistRepository.findAllByRatingBetweenAndPharmacy(ratingOver, ratingUnder, pharmacy);

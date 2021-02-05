@@ -25,6 +25,28 @@ public class Appointment {
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Dermatologist dermatologist;
+
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private Pharmacy pharmacy_appointment;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "newAppointment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Examination> examinations = new HashSet<Examination>();
+
+    @Column
+    @JsonFormat(pattern="MM-dd-yyyy'T'HH:mm'Z'")
+    private LocalDateTime beginofappointment;
+
+    @Column
+    @JsonFormat(pattern="MM-dd-yyyy'T'HH:mm'Z'")
+    private LocalDateTime endofappointment;
+
+    @Column
+    private Integer price;
+
+    @OneToOne(mappedBy = "examinationAppointment")
+    private Examination examination;
+
     public Appointment(Integer id, Patient patient, Dermatologist dermatologist, LocalDateTime beginofappointment, LocalDateTime endofappointment, Integer price) {
         this.id = id;
         this.patient = patient;
@@ -48,27 +70,6 @@ public class Appointment {
     public Appointment() {
 
     }
-
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
-    private Pharmacy pharmacy_appointment;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "newAppointment", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private Set<Examination> examinations = new HashSet<Examination>();
-
-    @Column
-    @JsonFormat(pattern="MM-dd-yyyy'T'HH:mm'Z'")
-    private LocalDateTime beginofappointment;
-
-    @Column
-    @JsonFormat(pattern="MM-dd-yyyy'T'HH:mm'Z'")
-    private LocalDateTime endofappointment;
-
-    @Column
-    private Integer price;
-
-    @OneToOne(mappedBy = "examinationAppointment")
-    private Examination examination;
 
     public Appointment(Integer id, Patient patient, Dermatologist dermatologist, Pharmacy pharmacy_appointment, LocalDateTime beginofappointment, LocalDateTime endofappointment, Integer price) {
         this.id = id;
@@ -107,4 +108,12 @@ public class Appointment {
     public Integer getPrice() { return price; }
 
     public void setPrice(Integer price) { this.price = price; }
+
+    public Set<Examination> getExaminations() { return examinations; }
+
+    public void setExaminations(Set<Examination> examinations) { this.examinations = examinations; }
+
+    public Examination getExamination() { return examination; }
+
+    public void setExamination(Examination examination) { this.examination = examination; }
 }

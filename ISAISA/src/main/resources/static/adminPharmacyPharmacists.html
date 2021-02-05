@@ -49,9 +49,9 @@
 
         <div class="pharmacistsFilterAdminPharmacy">
             <label for="ratingOver">Ocena iznad:</label>
-            <input id="ratingOver"  min="1" max="5" type="number"/>
+            <input id="ratingOver"  min="1" max="5" type="number" value="1" step="0.01"/>
             <label for="ratingUnder">Ocena ispod:</label>
-            <input id="ratingUnder" type="number" min="1" max="5"/>
+            <input id="ratingUnder" type="number" min="1" max="5" value="5" step="0.01"/>
             <button id="btnSubmitFilterPharmacists">Ok</button>
             <button id="btnCancelFilterPharmacists">Ponisti</button>
         </div>
@@ -73,6 +73,11 @@
                 <input id="city" type="text"/>
                 <label for="country">Drzava:</label>
                 <input id="country" type="text"/>
+
+                <label for="workingHoursFrom">Pocetak radnog vremena</label>
+                <input id="workingHoursFrom" type="time">
+                <label for="workingHoursUntil">Kraj radnog vremena</label>
+                <input id="workingHoursUntil" type="time">
 
                 <input type="button" value="Submit" id="btnAddSavePharmacistAdminPharmacy">
             </form>

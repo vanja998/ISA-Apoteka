@@ -10,6 +10,7 @@ import com.example.ISAISA.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Set;
@@ -50,30 +51,20 @@ public class AppointmentService {
 
         List<Appointment> appointments = appointmentRepository.findAll();
 
-        for(int i = 0; i < appointments.size(); i++){
-            Appointment app = appointments.get(i);
-            if(app.getPatient().getId() == idPatient){
-                if(today.isEqual(app.getBeginofappointment().toLocalDate())){
-                    if(now.isAfter(app.getBeginofappointment().toLocalTime()) && now.isBefore(app.getEndofappointment().toLocalTime())){
-                        if(app.getDermatologist().getId() == dermatologist.getId()) {
-                            return app;
+
+        for (Appointment i : appointments){
+            if(i.getPatient() != null) {
+                if (i.getPatient().getId().equals(idPatient)) {
+                    if (today.isEqual(i.getBeginofappointment().toLocalDate())) {
+                        if (now.isAfter(i.getBeginofappointment().toLocalTime()) && now.isBefore(i.getEndofappointment().toLocalTime())) {
+                            if (i.getDermatologist().getId() == dermatologist.getId()) {
+                                return i;
+                            }
                         }
                     }
                 }
             }
         }
-        /*
-        for (Appointment i : appointments){
-            if(i.getPatient().getId() == idPatient){
-                if(today.isEqual(i.getBeginofappointment().toLocalDate())){
-                    if(now.isAfter(i.getBeginofappointment().toLocalTime()) && now.isBefore(i.getEndofappointment().toLocalTime())){
-                        if(i.getDermatologist().getId() == dermatologist.getId()) {
-                            return i;
-                        }
-                    }
-                }
-            }
-        }*/
 
         return null;
     }
@@ -112,14 +103,22 @@ public class AppointmentService {
         LocalTime dermatologistBeginOfWork = dermatologist_pharmacy.getBeginofwork();
         LocalTime dermatologistEndOfWork = dermatologist_pharmacy.getEndofwork();
 
-        Set<Appointment> existingAppointments = appointmentRepository.findAllByDermatologist(appointment.getDermatologist());
-        for (Appointment a : existingAppointments) {
+        //Ako pokusa da zakaze za proslo vreme
+        if (appointment.getBeginofappointment().isBefore(LocalDateTime.now())) {
+            throw new Exception("Nije moguce zakazati ovaj termin!");
+        }
+
+        //Ako dermatolog vec ima zakazan termin tada
+        Set<Appointment> existingDermAppointments = appointmentRepository.findAllByDermatologist(appointment.getDermatologist());
+        for (Appointment a : existingDermAppointments) {
             if((appointment.getBeginofappointment().isAfter(a.getBeginofappointment()) && appointment.getBeginofappointment().isBefore(a.getEndofappointment())) ||
                     (appointment.getEndofappointment().isAfter(a.getBeginofappointment()) && appointment.getEndofappointment().isBefore(a.getEndofappointment())))
             {
                 throw new Exception("Postoji zakazan termin u ovo vreme!");
             }
         }
+
+        //Ako dermatolog ne radi tada
         if (appointment.getBeginofappointment().toLocalTime().isBefore(dermatologistBeginOfWork)
         || appointment.getEndofappointment().toLocalTime().isAfter(dermatologistEndOfWork))
         {
