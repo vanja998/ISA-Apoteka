@@ -1,5 +1,6 @@
 package com.example.ISAISA.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ public class Orderr {
     @SequenceGenerator(name="seq_orderr", sequenceName = "seq_orderr", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_orderr")
     private Integer id;
+
 
     private Date dateDeadline;
 
