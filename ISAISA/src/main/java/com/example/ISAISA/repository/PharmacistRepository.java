@@ -18,10 +18,4 @@ public interface PharmacistRepository extends JpaRepository<Pharmacist, Integer>
 
     Set<Pharmacist> findAllByRatingBetween(Float ratingOver, Float ratingUnder);
 
-    //Ako je samo ratingOver prosledjen
-    Set<Pharmacist> findAllByRatingGreaterThan(Float ratingOver);
-
-    //Ako je samo ratingUnder prosledjen
-    Set<Pharmacist> findAllByRatingIsLessThan(Float ratingUnder);
-
 }

@@ -19,7 +19,7 @@ public class Appointment {
     private Integer id;
 
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Patient patient;
 
     @JsonIgnore
@@ -108,4 +108,12 @@ public class Appointment {
     public Integer getPrice() { return price; }
 
     public void setPrice(Integer price) { this.price = price; }
+
+    public Set<Examination> getExaminations() { return examinations; }
+
+    public void setExaminations(Set<Examination> examinations) { this.examinations = examinations; }
+
+    public Examination getExamination() { return examination; }
+
+    public void setExamination(Examination examination) { this.examination = examination; }
 }

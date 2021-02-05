@@ -131,7 +131,6 @@ public class ExaminationService {
         //Integer pharmacyId = examination.getExaminationAppointment().getPharmacy_appointment().getId();
 
         //Set<Medication> medications = pharmacy.getMedication();
-        //jeste ahahhahahaha hahahah ne nadje definitivno apoteke od samo sekund pliz tati trebam EVO ME na 2
         //Set<Pharmacy> pharmaciesSet = medication.getPharmacies();
 
         Set<Medication> medications = examination.getExaminationAppointment().getPharmacy_appointment().getMedication();

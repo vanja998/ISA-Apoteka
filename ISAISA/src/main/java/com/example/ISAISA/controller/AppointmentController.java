@@ -46,6 +46,11 @@ public class AppointmentController {
         this.appointmentService = appointmentService;
     }
 
+    @Autowired
+    public void setDermatologistService(DermatologistService dermatologistService) {
+        this.dermatologistService = dermatologistService;
+    }
+
     @PostMapping(value="/checkIfAppointmentExists", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('DERMATOLOGIST')")
     public ResponseEntity<IdDto> checkIfAppointmentExists(@RequestBody IdDto PatientIdDto) throws Exception {
@@ -83,10 +88,7 @@ public class AppointmentController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
-    @Autowired
-    public void setDermatologistService(DermatologistService dermatologistService) {
-        this.dermatologistService = dermatologistService;
-    }
+
 
     @PostMapping(value="/createAvailableAppointment", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")

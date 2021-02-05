@@ -50,12 +50,15 @@ public class AppointmentService {
         LocalDate today = LocalDate.now();
 
         List<Appointment> appointments = appointmentRepository.findAll();
+
         for (Appointment i : appointments){
-            if(i.getPatient().getId() == idPatient){
-                if(today.isEqual(i.getBeginofappointment().toLocalDate())){
-                    if(now.isAfter(i.getBeginofappointment().toLocalTime()) && now.isBefore(i.getEndofappointment().toLocalTime())){
-                        if(i.getDermatologist().getId() == dermatologist.getId()) {
-                            return i;
+            if(i.getPatient() != null) {
+                if (i.getPatient().getId().equals(idPatient)) {
+                    if (today.isEqual(i.getBeginofappointment().toLocalDate())) {
+                        if (now.isAfter(i.getBeginofappointment().toLocalTime()) && now.isBefore(i.getEndofappointment().toLocalTime())) {
+                            if (i.getDermatologist().getId() == dermatologist.getId()) {
+                                return i;
+                            }
                         }
                     }
                 }

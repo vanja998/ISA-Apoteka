@@ -144,7 +144,7 @@ $(document).on('click', '.btnAddPharmacistAdminPharmacy', function () {
 
 });
 
-$(document).on('click', '.btnAddSavePharmacistAdminPharmacy', function () {
+$(document).on('click', '#btnAddSavePharmacistAdminPharmacy', function () {
 
     var firstName = $("#firstName").val();
     var lastName = $("#lastName").val();

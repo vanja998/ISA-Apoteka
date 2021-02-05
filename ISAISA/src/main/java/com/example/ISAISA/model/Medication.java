@@ -52,7 +52,7 @@ public class Medication {
 
     //@JsonIgnore
     @ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "med_pharmacies", joinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"))
+    @JoinTable(name = "med_pharmacies", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
     private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
 
     @JsonIgnore
