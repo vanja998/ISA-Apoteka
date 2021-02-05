@@ -40,8 +40,16 @@ public class Medication {
     private String notes;
 
     @JsonIgnore
+    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Orderr_Medication> orderr_medications = new HashSet<Orderr_Medication>();
+
+    @JsonIgnore
     @ManyToMany(mappedBy = "medication")
     private Set<Patient> patients = new HashSet<Patient>();
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "medication",fetch=FetchType.EAGER)
+    private Set<Supplier> suppliers = new HashSet<Supplier>();
 
     @ManyToMany
     @JoinTable(name = "medication_altmedication", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "altmedication_id", referencedColumnName = "id"))

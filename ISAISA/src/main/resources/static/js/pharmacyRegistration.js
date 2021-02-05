@@ -8,7 +8,7 @@ $(document).on("submit", "form", function (event) {           // kada je submito
     var newUserJSON = formToJSON(name,address,description);
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/auth/signupPharmacy",
+        url: "http://localhost:8081/systemadmins/signupPharmacy",
         dataType: "json",
         contentType: "application/json",
         data: newUserJSON,

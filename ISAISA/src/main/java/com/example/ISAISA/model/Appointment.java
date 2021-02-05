@@ -18,11 +18,9 @@ public class Appointment {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_appointment")
     private Integer id;
 
-    @JsonIgnore
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Patient patient;
 
-    @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Dermatologist dermatologist;
 
@@ -63,9 +61,6 @@ public class Appointment {
         this.endofappointment = endofappointment;
         this.price = price;
     }
-
-    /*public Appointment(Integer id, Patient patient, String firstName, LocalDateTime beginofappointment, LocalDateTime endofappointment, Integer price) {
-    }*/
 
     public Appointment() {
 

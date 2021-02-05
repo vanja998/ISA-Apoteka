@@ -38,6 +38,9 @@ $(document).ready(function () {
 				else if(data['role']==='adminsystem'){
 					window.location.href = "adminSystemHomePage.html";
 				}
+				else if(data['role']==='supplier'){
+					window.location.href = "supplierHomePage.html";
+				}
 				else{
 					window.location.href = "error.html";
 				}

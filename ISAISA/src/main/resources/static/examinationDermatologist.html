@@ -29,6 +29,7 @@
 
    <div class="prescriptMedication" >
        <h2>Proveri dostupnost leka</h2>
+       <h3>Prikazani su lekovi na koje pacijent nije alergican</h3>
        <label>Izaberite lek:</label>
        <!--<table id="tableMeds">
            <thead>
@@ -102,6 +103,22 @@
         <button id='btnSelectExistingAppointment'>Izaberi unapred definisani termin</button>
         <button id='btnCreateAppointment'>Izaberi datum i vreme novog termina</button>
     </div>
+
+   <div class="existingAppointments">
+       <div class="container">
+           <table id="tableExistingAppointments">
+               <thead>
+               <tr>
+                   <th>beginofappointment</th>
+                   <th>endofappointment</th>
+                   <th>price</th>
+               </tr>
+               </thead>
+           </table>
+       </div>
+   </div>
+
+
 
 </body>
 </html>

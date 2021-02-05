@@ -17,6 +17,8 @@ $(document).ready(function () {
     alternativeMedication.hide();
     var howToScheduleAppointment = $(".howToScheduleAppointment")
     howToScheduleAppointment.hide();
+    var existingAppointments = $(".existingAppointments")
+    existingAppointments.hide();
 
     $.ajax({
         type: "GET",
@@ -54,6 +56,8 @@ $(document).on('click', '#btnReport', function () {
     alternativeMedication.hide();
     var howToScheduleAppointment = $(".howToScheduleAppointment")
     howToScheduleAppointment.hide();
+    var existingAppointments = $(".existingAppointments")
+    existingAppointments.hide();
 
     $(document).on('click', '#btnSubmitReport', function () {
         var report = $("#chReport").val();
@@ -101,6 +105,8 @@ $(document).on('click', '#btnPrescript', function () {
     alternativeMedication.hide();
     var howToScheduleAppointment = $(".howToScheduleAppointment")
     howToScheduleAppointment.hide();
+    var existingAppointments = $(".existingAppointments")
+    existingAppointments.hide();
 
     $("#idDropDown").empty();
 
@@ -242,6 +248,8 @@ $(document).on('click', '#btnCanclePrescription', function () {
     alternativeMedication.hide();
     var howToScheduleAppointment = $(".howToScheduleAppointment")
     howToScheduleAppointment.hide();
+    var existingAppointments = $(".existingAppointments")
+    existingAppointments.hide();
 });
 
 $(document).on('click', '#btnCancle', function () {
@@ -262,6 +270,8 @@ $(document).on('click', '#btnCancle', function () {
     alternativeMedication.hide();
     var howToScheduleAppointment = $(".howToScheduleAppointment")
     howToScheduleAppointment.hide();
+    var existingAppointments = $(".existingAppointments")
+    existingAppointments.hide();
 });
 
 $(document).on('click', '#btnAlternative', function () {
@@ -281,7 +291,8 @@ $(document).on('click', '#btnAlternative', function () {
     alternativeMedication.show();
     var howToScheduleAppointment = $(".howToScheduleAppointment")
     howToScheduleAppointment.hide();
-
+    var existingAppointments = $(".existingAppointments")
+    existingAppointments.hide();
 
     $("#idAlternativeDropDown").empty();
 
@@ -337,6 +348,8 @@ $(document).on('click', '#btnCancleAlternative', function () {
     alternativeMedication.hide();
     var howToScheduleAppointment = $(".howToScheduleAppointment")
     howToScheduleAppointment.hide();
+    var existingAppointments = $(".existingAppointments")
+    existingAppointments.hide();
 });
 
 
@@ -388,13 +401,64 @@ $(document).on('click', '#btnNewAppointment', function () {
     alternativeMedication.hide();
     var howToScheduleAppointment = $(".howToScheduleAppointment")
     howToScheduleAppointment.show();
+    var existingAppointments = $(".existingAppointments")
+    existingAppointments.hide();
 })
 
-$(document).on('click', '#btnNewAppointment', function () {
+$(document).on('click', '#btnSelectExistingAppointment', function () {
+    var examination = $(".examination");
+    examination.hide();
+    var writeReport = $(".writeReport");
+    writeReport.hide();
+    var prescriptMedication = $(".prescriptMedication");
+    prescriptMedication.hide();
+    var scheduleNewAppointment = $(".scheduleNewAppointment");
+    scheduleNewAppointment.hide();
+    var medInPharmacy = $(".medInPharmacy");
+    medInPharmacy.hide();
+    var medNotInPharmacy = $(".medNotInPharmacy");
+    medNotInPharmacy.hide();
+    var alternativeMedication = $(".alternativeMedication");
+    alternativeMedication.hide();
+    var howToScheduleAppointment = $(".howToScheduleAppointment")
+    howToScheduleAppointment.show();
+    var existingAppointments = $(".existingAppointments")
+    existingAppointments.show();
 
-    
+    var myJSON = JSON.stringify({"id":examinationId});
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/appointments/existingAppointmentsDermatologist",
+        dataType: "json",
+        contentType: "application/json",
+        data: myJSON,
+        beforeSend: function(xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log("SUCCESS : ", data);
+            for (i = 0; i < data.length; i++) {
+                var row = "<tr>";
+                row += "<td>" + data[i]['beginofappointment'] + "</td>";
+                row += "<td>" + data[i]['endofappointment'] + "</td>";
+                row += "<td>" + data[i]['price'] + "</td>";
 
 
+                var btn = "<button class='btnRegisterAppointment' id = " + data[i]['id'] + ">Rezervisi termin</button>";
+
+
+                row += "<td>" + btn + "</td>";
+                $('#tableAppointmentExists').append(row);
+
+            }
+        },
+        error: function (data) {
+            console.log("ERROR : ", data);
+        }
+    });
 });
 
 /*$(document).on('change', '#idDropDown', function () {
