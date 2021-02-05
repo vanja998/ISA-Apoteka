@@ -2,10 +2,7 @@ package com.example.ISAISA.controller;
 
 import com.example.ISAISA.DTO.AdminSystemRegDto;
 import com.example.ISAISA.DTO.PharmacyRegDTO;
-import com.example.ISAISA.model.Complaint;
-import com.example.ISAISA.model.PatientDto;
-import com.example.ISAISA.model.Pharmacy;
-import com.example.ISAISA.model.User;
+import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.ConfirmationTokenRepository;
 import com.example.ISAISA.repository.OfferRepository;
 import com.example.ISAISA.repository.OrderRepository;
@@ -19,10 +16,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/systemadmins")
@@ -39,7 +39,8 @@ public class AdminSystemController {
     @Autowired
     private PharmacyService pharmacyService;
 
-
+    @Autowired
+    private UserServiceDetails userDetailsService;
 
 
     @Autowired
@@ -51,6 +52,7 @@ public class AdminSystemController {
     }
 
     @PostMapping(value="/signupAdminPharmacy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINSYSTEM')")
     public ResponseEntity<User> addAdminPharmacy(@RequestBody AdminSystemRegDto adminSystemRegDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
 
         User existUser = this.userService.findByEmail(adminSystemRegDto.getEmail());
@@ -80,7 +82,7 @@ public class AdminSystemController {
     }
 
     @GetMapping(value="/allcomplaints",produces = MediaType.APPLICATION_JSON_VALUE)
-
+    @PreAuthorize("hasRole('ADMINSYSTEM')")
     public ResponseEntity<List<Complaint>> getComplaints() {
         List<Complaint> complaintList = this.complaintService.findAll();
 
@@ -92,7 +94,7 @@ public class AdminSystemController {
     }
 
     @PostMapping(value="/signupPharmacy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-
+    @PreAuthorize("hasRole('ADMINSYSTEM')")
     public ResponseEntity<Pharmacy> addPharmacy(@RequestBody PharmacyRegDTO pharmacyDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
 
         Pharmacy existPharmacy = this.pharmacyService.findByAddress(pharmacyDto.getAddress());
@@ -107,10 +109,29 @@ public class AdminSystemController {
     }
 
 
+    @RequestMapping(value="/admin", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINSYSTEM')")
+    public ResponseEntity<AdminSystem> getAdminSystem() {
+        AdminSystem user = (AdminSystem) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+    @PostMapping(value = "/change-password-firsttime", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINSYSTEM')")
+    public ResponseEntity<?> changePasswordFirstTime(@RequestBody AuthenticationController.PasswordChanger passwordChanger) {
 
 
+
+        AdminSystem user = (AdminSystem) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user1=userService.changeFlagSystemAdmin(user);
+        userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
+
+        Map<String, String> result = new HashMap<String, String>();
+        result.put("result", "success");
+
+        return ResponseEntity.accepted().body(result);
+    }
     @PostMapping(value="/signupSupplier",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-
+    @PreAuthorize("hasRole('ADMINSYSTEM')")
     public ResponseEntity<User> addSupplier(@RequestBody PatientDto patientDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
 
         User existUser = this.userService.findByEmail(patientDto.getEmail());

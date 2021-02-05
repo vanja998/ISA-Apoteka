@@ -17,7 +17,12 @@ $(document).on("submit", "form", function (event) {           // kada je submito
         url: "http://localhost:8081/systemadmins/signupSupplier",                 // URL na koji se šalju podaci
         dataType: "json",                                           // tip povratne vrednosti
         contentType: "application/json",                            // tip podataka koje šaljemo
-        data: newUserJSON,                                      // Šaljemo novog zaposlenog
+        data: newUserJSON,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },                                      // Šaljemo novog zaposlenog
         success: function () {
             alert("success");
             window.location.href = "adminSystemHomePage.html";

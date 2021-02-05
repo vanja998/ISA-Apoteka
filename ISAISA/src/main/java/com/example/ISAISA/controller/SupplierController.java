@@ -3,12 +3,10 @@ package com.example.ISAISA.controller;
 import com.example.ISAISA.DTO.OfferDTO;
 import com.example.ISAISA.DTO.OrderrDTO;
 import com.example.ISAISA.DTO.StatusDTO;
+import com.example.ISAISA.DTO.UserChangeDTO;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.*;
-import com.example.ISAISA.service.OfferService;
-import com.example.ISAISA.service.OrderService;
-import com.example.ISAISA.service.SupplierService;
-import com.example.ISAISA.service.UserService;
+import com.example.ISAISA.service.*;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -31,6 +29,8 @@ public class SupplierController {
     @Autowired
     private OfferService offerService;
 
+    @Autowired
+    private UserServiceDetails userDetailsService;
     @Autowired
     public void setSupplierService(SupplierService supplierService) {
         this.supplierService = supplierService;
@@ -79,6 +79,50 @@ public class SupplierController {
         return new ResponseEntity<>(orderrDTOS, HttpStatus.OK);
     }
 
+    @RequestMapping(value="/supplier", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('SUPPLIER')")
+    public ResponseEntity<Supplier> getSupplier() {
+        Supplier user = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/supplierChangeInfo", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('SUPPLIER')")
+    public ResponseEntity<Supplier> changeSupplierInfo(@RequestBody UserChangeDTO userDTO) {
+
+        Supplier user = supplierService.changeSupplierInfo(userDTO);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/change-password", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('SUPPLIER')")
+    public ResponseEntity<?> changePassword(@RequestBody AuthenticationController.PasswordChanger passwordChanger) {
+
+        userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
+
+        Map<String, String> result = new HashMap<String, String>();
+        result.put("result", "success");
+
+        return ResponseEntity.accepted().body(result);
+    }
+    @PostMapping(value = "/change-password-firsttime", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('SUPPLIER')")
+    public ResponseEntity<?> changePasswordFirstTime(@RequestBody AuthenticationController.PasswordChanger passwordChanger) {
+
+
+
+        Supplier user = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user1=userService.changeFlag(user);
+        userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
+
+        Map<String, String> result = new HashMap<String, String>();
+        result.put("result", "success");
+
+        return ResponseEntity.accepted().body(result);
+    }
+
+
     @PostMapping(value="/filter",produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('SUPPLIER')")
     public ResponseEntity<List<OrderrDTO>> filterOrders(@RequestBody StatusDTO statusDTO) {
@@ -105,6 +149,7 @@ public class SupplierController {
         }
         return new ResponseEntity<>(orderrDTOS, HttpStatus.OK);
     }
+
 
     @PostMapping("/addOffer")
     public ResponseEntity<Offer> addOffer(@RequestBody OfferDTO offerDTO, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
@@ -156,6 +201,8 @@ public class SupplierController {
         headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<Offer>(offer, HttpStatus.CREATED);
     }
+
+
 
 
 

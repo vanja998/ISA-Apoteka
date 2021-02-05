@@ -71,6 +71,7 @@ public class UserService {
         u.setCity(userRequest.getCity());
         u.setCountry(userRequest.getCountry());
         u.setPhone(userRequest.getPhoneNumber());
+        u.setFlag(0);
 
         List<Authority> auth = authService.findByname("ROLE_DERMATOLOGIST");
 
@@ -92,6 +93,7 @@ public class UserService {
         u.setCity(userRequest.getCity());
         u.setCountry(userRequest.getCountry());
         u.setPhone(userRequest.getPhoneNumber());
+        u.setFlag(0);
 
         List<Authority> auth = authService.findByname("ROLE_ADMINSYSTEM");
 
@@ -99,6 +101,18 @@ public class UserService {
 
         u = this.userRepository.save(u);
         return u;
+    }
+
+    public User changeFlag(Supplier user){
+        user.setFlag(1);
+        user=userRepository.save(user);
+        return user;
+    }
+
+    public User changeFlagSystemAdmin(AdminSystem user){
+        user.setFlag(1);
+        user=userRepository.save(user);
+        return user;
     }
 
 
@@ -114,6 +128,7 @@ public class UserService {
         u.setCity(userRequest.getCity());
         u.setCountry(userRequest.getCountry());
         u.setPhone(userRequest.getPhoneNumber());
+        u.setFlag(0);
 
         List<Authority> auth = authService.findByname("ROLE_SUPPLIER");
 

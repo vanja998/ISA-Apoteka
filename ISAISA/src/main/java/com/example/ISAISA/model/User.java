@@ -50,6 +50,11 @@ public class User implements UserDetails {
     @Column(name = "enabled")
     private boolean enabled;
 
+    @Column
+    private Integer flag;
+
+
+
     @Column(name = "last_password_reset_date")
     private Timestamp lastPasswordResetDate;
 
@@ -66,6 +71,8 @@ public class User implements UserDetails {
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"))
     private List<Authority> authorities;
+
+
 
     public User() {}
 
@@ -151,6 +158,14 @@ public class User implements UserDetails {
         Timestamp now = new Timestamp(new Date().getTime());
         this.setLastPasswordResetDate(now);
         this.password = password;
+    }
+
+    public Integer getFlag() {
+        return flag;
+    }
+
+    public void setFlag(Integer flag) {
+        this.flag = flag;
     }
 
     public Timestamp getLastPasswordResetDate() {
