@@ -61,13 +61,13 @@ $(document).on('click', '.btnCreateAvailableAppointmentForDermatologist', functi
     var dermatologist_id = this.id;
 
     $(document).on('click', '#btnSubmitNewAvailableAppointment', function () {
-        var beginofwork = $("#dateBegin").val();
+        var beginofappointment = $("#dateBegin").val();
         var duration = $("#duration").val();
         var price = $("#price").val();
 
-        console.log(beginofwork, duration);
+        console.log(beginofappointment, duration);
 
-        var myJSON = formToJSON(dermatologist_id, beginofwork, duration, price);
+        var myJSON = formToJSON(dermatologist_id, beginofappointment, duration, price);
 
         $.ajax({
             type: "POST",
@@ -97,14 +97,14 @@ $(document).on('click', '.btnCreateAvailableAppointmentForDermatologist', functi
                     var unsuccessfulAppointmentCreation = $(".unsuccessfulAppointmentCreation");
                     unsuccessfulAppointmentCreation.show();
                     var response = JSON.parse(jqXHR.responseText);
-                    $('#responseMessageAppointmentCreation').append(response['message']);
+                    $('#errorDeletePharmacist').append(response['message']);
                 }
             }
         });
     });
 });
 
-function formToJSON(dermatologist_id, beginofwork, duration, price) {
+function formToJSON(dermatologist_id, beginofappointment, duration, price) {
     return JSON.stringify(
         {
             "dermatologist" : dermatologist_id,

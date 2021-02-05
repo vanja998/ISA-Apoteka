@@ -3,8 +3,11 @@ package com.example.ISAISA.DTO;
 import com.example.ISAISA.model.Pharmacy;
 
 import javax.persistence.Column;
+import java.time.LocalTime;
 
 public class PharmacistDTO {
+
+    private Integer id;
 
     private String firstName;
 
@@ -26,10 +29,15 @@ public class PharmacistDTO {
 
     private Float rating;
 
+    private LocalTime beginofwork;
+
+    private LocalTime endofwork;
+
     public PharmacistDTO() {
     }
 
-    public PharmacistDTO(String firstName, String lastName, Pharmacy pharmacy, Float rating) {
+    public PharmacistDTO(Integer id, String firstName, String lastName, Pharmacy pharmacy, Float rating) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.pharmacy = pharmacy;
@@ -52,6 +60,24 @@ public class PharmacistDTO {
         this.country = country;
         this.pharmacy = pharmacy;
     }
+
+    public PharmacistDTO(String firstName, String lastName, String email, String password, String address, String phone, String city, String country, Pharmacy pharmacy, LocalTime beginofwork, LocalTime endofwork) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.address = address;
+        this.phone = phone;
+        this.city = city;
+        this.country = country;
+        this.pharmacy = pharmacy;
+        this.beginofwork = beginofwork;
+        this.endofwork = endofwork;
+    }
+
+    public Integer getId() { return id; }
+
+    public void setId(Integer id) { this.id = id; }
 
     public String getFirstName() { return firstName; }
 
@@ -92,4 +118,12 @@ public class PharmacistDTO {
     public String getCountry() { return country; }
 
     public void setCountry(String country) { this.country = country; }
+
+    public LocalTime getBeginofwork() { return beginofwork; }
+
+    public void setBeginofwork(LocalTime beginofwork) { this.beginofwork = beginofwork; }
+
+    public LocalTime getEndofwork() { return endofwork; }
+
+    public void setEndofwork(LocalTime endofwork) { this.endofwork = endofwork; }
 }

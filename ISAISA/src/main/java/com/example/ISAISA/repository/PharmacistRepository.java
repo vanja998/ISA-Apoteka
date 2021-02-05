@@ -18,4 +18,6 @@ public interface PharmacistRepository extends JpaRepository<Pharmacist, Integer>
 
     Set<Pharmacist> findAllByRatingBetween(Float ratingOver, Float ratingUnder);
 
+    Pharmacist findOneById(Integer id);
+
 }
