@@ -22,6 +22,9 @@ insert into "medication_altmedication"(medication_id,altmedication_id) values(1,
 insert into "med_pharmacies" (pharmacy_id,medication_id) values (1,1);
 insert into "allergy_patient" (patient_id,medication_id) values (1,1);
 insert into "complaint"(id,question,answered,patient_id,user_id) values(1,'Zasto dermatolog stalno kasni??',false,1,6);
+insert into "appointment" (id,patient_id,dermatologist_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),1, 6 ,'2007-12-03 10:15:30','2007-12-03 10:16:30',4000);
+insert into "appointment" (id,patient_id,dermatologist_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),1, 6 ,'2021-06-02 10:15:30','2021-06-02 10:16:30',5000);
+insert into "appointment" (id,patient_id,dermatologist_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),1, 6 ,'2021-12-03 10:15:30','2021-12-03 10:16:30',5000);
 
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_PATIENT');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_ADMINSYSTEM');
