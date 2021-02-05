@@ -21,10 +21,10 @@ public class Appointment {
     @ManyToOne(fetch = FetchType.EAGER)
     private Patient patient;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Dermatologist dermatologist;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Pharmacy pharmacy_appointment;
 
     @JsonIgnore

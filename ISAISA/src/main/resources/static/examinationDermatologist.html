@@ -102,22 +102,42 @@
     <div class="howToScheduleAppointment">
         <button id='btnSelectExistingAppointment'>Izaberi unapred definisani termin</button>
         <button id='btnCreateAppointment'>Izaberi datum i vreme novog termina</button>
+        <button id='btnCancleScheduling'>Odustani od zakazivanja</button>
     </div>
 
    <div class="existingAppointments">
-       <div class="container">
+       <h3>Izlistani su svi slobodni termini dermatologa i termini u kojima pacijent nema zakazane preglede.</h3>
            <table id="tableExistingAppointments">
                <thead>
                <tr>
-                   <th>beginofappointment</th>
-                   <th>endofappointment</th>
-                   <th>price</th>
+                   <th>Pocetak termina</th>
+                   <th>Kraj termina</th>
+                   <th>Cena</th>
                </tr>
                </thead>
+               <tbody>
+
+               </tbody>
            </table>
-       </div>
+       <button id='btnCancleSchedulingFreeAppointments'>Odustani od zakazivanja</button>
    </div>
 
+    <div class="createAppointment">
+        <h3>Format unosa pocetka i kraja pregleda: YYYY-MM-DD HH:MM:SS</h3>
+
+        <h2>Pocetak pregleda: </h2>
+        <input type="datetime-local" id="chStartOfAppointment">
+        <br>
+        <h2>Kraj pregleda: </h2>
+        <input type="datetime-local" id="chEndOfAppointment">
+
+        <br>
+        <h2>Cena: </h2><input id="chPrice" type="text"/>
+
+        <button id="btnCreateAppointmentNow">Zakazi</button>
+        <button id='btnCancleCreatingAppointments'>Odustani od zakazivanja</button>
+
+    </div>
 
 
 </body>
