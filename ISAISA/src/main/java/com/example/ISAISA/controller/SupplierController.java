@@ -2,6 +2,7 @@ package com.example.ISAISA.controller;
 
 import com.example.ISAISA.DTO.OfferDTO;
 import com.example.ISAISA.DTO.OrderrDTO;
+import com.example.ISAISA.DTO.StatusDTO;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.*;
 import com.example.ISAISA.service.OfferService;
@@ -20,10 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/suppliers")
@@ -56,8 +54,35 @@ public class SupplierController {
 
     @GetMapping(value="/allorders",produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('SUPPLIER')")// value nije naveden, jer koristimo bazni url
-    public ResponseEntity<List<OrderrDTO>> getPharmacies() {
+    public ResponseEntity<List<OrderrDTO>> getOrders() {
         List<Orderr> orderList = this.orderService.findAll();
+
+
+        List<OrderrDTO> orderrDTOS = new ArrayList<>();
+
+        for (Orderr orderr : orderList) {
+            AdminPharmacy adminPharmacy= orderr.getAdminPharmacy();
+            Pharmacy pharmacy=adminPharmacy.getPharmacy();
+            String emailAdmin=adminPharmacy.getEmail();
+            String pharmacyName=pharmacy.getName();
+            String address=pharmacy.getAddress();
+
+            Supplier user = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            Offer offer= offerRepository.findOneByOrderrAndSupplier(orderr,user);
+            Integer ponuda=0;
+            if(offer!=null) {
+                ponuda=offer.getOfferPrice();
+            }
+            OrderrDTO orderrDTO = new OrderrDTO(orderr.getId(),orderr.getDateDeadline(),orderr.getStatusSupplier(),emailAdmin,pharmacyName,address,ponuda,user);
+            orderrDTOS.add(orderrDTO);
+        }
+        return new ResponseEntity<>(orderrDTOS, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/filter",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('SUPPLIER')")
+    public ResponseEntity<List<OrderrDTO>> filterOrders(@RequestBody StatusDTO statusDTO) {
+        List<Orderr> orderList = this.orderRepository.findAllByStatusSupplier(statusDTO.getStatus());
 
 
         List<OrderrDTO> orderrDTOS = new ArrayList<>();
@@ -103,11 +128,20 @@ public class SupplierController {
                 }
 
             }
+
             if (n==0){
-                throw new ResourceConflictException(medication1.getId(), "Username already exists");
+                throw new Exception("Nedostaju lekovi");
             }
+            n=0;
 
 
+        }
+
+        Date date= new Date();
+        Date date1=order.getDateDeadline();
+
+        if (date.after(date1)){
+            throw new Exception("Zakasnili ste sa ponudom,istekao je rok za ponudu");
         }
 
 
@@ -122,4 +156,19 @@ public class SupplierController {
         headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<Offer>(offer, HttpStatus.CREATED);
     }
+
+
+
+
+
+    @PostMapping(value = "/changeoffer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('SUPPLIER')")
+    public ResponseEntity<?> changeOffer(@RequestBody OfferDTO offerDTO) {
+
+            Offer offer = offerService.changeOfferInfo(offerDTO);
+
+            return new ResponseEntity<>(offer, HttpStatus.OK);
+        }
+
+
 }
