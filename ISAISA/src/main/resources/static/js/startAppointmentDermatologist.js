@@ -1,5 +1,6 @@
 $(document).ready(function () {
-
+    unesiPretragu = $(".unesiPretragu")
+    unesiPretragu.show();
     var patientsShowAll = $(".patientsShowAll")
     patientsShowAll.show();
     var patientsShowSearch = $(".patientsShowSearch")
@@ -41,6 +42,8 @@ $(document).ready(function () {
 
 $(document).on('click', '#btnSearchPatient', function () {
 
+    unesiPretragu = $(".unesiPretragu")
+    unesiPretragu.show();
     var patientsShowAll = $(".patientsShowAll")
     patientsShowAll.hide();
     var patientsShowSearch = $(".patientsShowSearch")
@@ -82,7 +85,7 @@ $(document).on('click', '#btnSearchPatient', function () {
                 row += "<td>" + data[i]['phone'] + "</td>";
 
 
-                var btn = "<button class='btnStartAppointment' id = " + data[i]['id'] + ">Zapocni pregled</button>";
+                var btn = "<button class='btnStartAppointment' id = " + data[i]['id'] + ">Zapocni pregled ako postoji</button>";
                 row += "<td>" + btn + "</td>";
                 $('#tablepatientsShowSearch').append(row);
             }
@@ -107,6 +110,8 @@ function formToJSON(firstName, lastName) {
 
 $(document).on('click', '.btnStartAppointment', function () {
 
+    unesiPretragu = $(".unesiPretragu")
+    unesiPretragu.hide();
     var patientsShowAll = $(".patientsShowAll")
     patientsShowAll.hide();
     var patientsShowSearch = $(".patientsShowSearch")

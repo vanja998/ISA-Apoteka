@@ -8,9 +8,10 @@
 </head>
 <body>
 
-
-    <input type="search" id="patientSearch" name="q" placeholder="Unesite ime i prezime pacijenta"/>
-    <input type="submit" id="btnSearchPatient"/>
+    <div class="unesiPretragu">
+        <input type="search" id="patientSearch" name="q" placeholder="Unesite ime i prezime pacijenta"/>
+        <input type="submit" id="btnSearchPatient"/>
+    </div>
 
     <div class="patientsShowAll">
         <table id="tablePatientsShow">
@@ -27,6 +28,7 @@
     </div>
 
     <div class="patientsShowSearch">
+        <h3>Proveri da li pacijent ima termin.</h3>
         <table id="tablepatientsShowSearch">
             <h1>Rezulati za: </h1><h1 id="searchPatient"></h1>
             <thead>

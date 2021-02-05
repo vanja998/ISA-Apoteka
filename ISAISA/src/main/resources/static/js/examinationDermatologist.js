@@ -15,6 +15,8 @@ $(document).ready(function () {
     medNotInPharmacy.hide();
     var alternativeMedication = $(".alternativeMedication");
     alternativeMedication.hide();
+    var howToScheduleAppointment = $(".howToScheduleAppointment")
+    howToScheduleAppointment.hide();
 
     $.ajax({
         type: "GET",
@@ -50,6 +52,8 @@ $(document).on('click', '#btnReport', function () {
     medNotInPharmacy.hide();
     var alternativeMedication = $(".alternativeMedication");
     alternativeMedication.hide();
+    var howToScheduleAppointment = $(".howToScheduleAppointment")
+    howToScheduleAppointment.hide();
 
     $(document).on('click', '#btnSubmitReport', function () {
         var report = $("#chReport").val();
@@ -95,6 +99,8 @@ $(document).on('click', '#btnPrescript', function () {
     medNotInPharmacy.hide();
     var alternativeMedication = $(".alternativeMedication");
     alternativeMedication.hide();
+    var howToScheduleAppointment = $(".howToScheduleAppointment")
+    howToScheduleAppointment.hide();
 
     $("#idDropDown").empty();
 
@@ -148,6 +154,7 @@ $(document).on('change', '#idDropDown', function () {
     medInPharmacy.hide();
     var medNotInPharmacy = $(".medNotInPharmacy");
     medNotInPharmacy.hide();
+
 
 
     $.ajax({
@@ -233,6 +240,8 @@ $(document).on('click', '#btnCanclePrescription', function () {
     medNotInPharmacy.hide();
     var alternativeMedication = $(".alternativeMedication");
     alternativeMedication.hide();
+    var howToScheduleAppointment = $(".howToScheduleAppointment")
+    howToScheduleAppointment.hide();
 });
 
 $(document).on('click', '#btnCancle', function () {
@@ -251,6 +260,8 @@ $(document).on('click', '#btnCancle', function () {
     medNotInPharmacy.hide();
     var alternativeMedication = $(".alternativeMedication");
     alternativeMedication.hide();
+    var howToScheduleAppointment = $(".howToScheduleAppointment")
+    howToScheduleAppointment.hide();
 });
 
 $(document).on('click', '#btnAlternative', function () {
@@ -268,6 +279,8 @@ $(document).on('click', '#btnAlternative', function () {
     medNotInPharmacy.hide();
     var alternativeMedication = $(".alternativeMedication");
     alternativeMedication.show();
+    var howToScheduleAppointment = $(".howToScheduleAppointment")
+    howToScheduleAppointment.hide();
 
 
     $("#idAlternativeDropDown").empty();
@@ -322,6 +335,8 @@ $(document).on('click', '#btnCancleAlternative', function () {
     medNotInPharmacy.hide();
     var alternativeMedication = $(".alternativeMedication");
     alternativeMedication.hide();
+    var howToScheduleAppointment = $(".howToScheduleAppointment")
+    howToScheduleAppointment.hide();
 });
 
 
@@ -348,7 +363,7 @@ $(document).on('change', '#idAlternativeDropDown', function () {
             alternativeMedication.hide();
             var examination = $(".examination");
             examination.show();
-            alert('Lek je prepisan');
+            alert('Lek je prepisan');l
         },
         error: function (data) {
             console.log('Error', data);
@@ -356,7 +371,31 @@ $(document).on('change', '#idAlternativeDropDown', function () {
     });
 });
 
+$(document).on('click', '#btnNewAppointment', function () {
+    var examination = $(".examination");
+    examination.hide();
+    var writeReport = $(".writeReport");
+    writeReport.hide();
+    var prescriptMedication = $(".prescriptMedication");
+    prescriptMedication.hide();
+    var scheduleNewAppointment = $(".scheduleNewAppointment");
+    scheduleNewAppointment.hide();
+    var medInPharmacy = $(".medInPharmacy");
+    medInPharmacy.hide();
+    var medNotInPharmacy = $(".medNotInPharmacy");
+    medNotInPharmacy.hide();
+    var alternativeMedication = $(".alternativeMedication");
+    alternativeMedication.hide();
+    var howToScheduleAppointment = $(".howToScheduleAppointment")
+    howToScheduleAppointment.show();
+})
 
+$(document).on('click', '#btnNewAppointment', function () {
+
+    
+
+
+});
 
 /*$(document).on('change', '#idDropDown', function () {
     //console.log('Something');
