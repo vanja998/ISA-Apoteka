@@ -60,7 +60,7 @@ $(document).on('click', '.btnRegisterAdminPharmacy', function () {
         var newUserJSON = formToJSON(namee,lastName, password,  adress, email, city, country, phoneNumber, pharmacyID);
         $.ajax({
             type: "POST",
-            url: "http://localhost:8081/auth/signupAdminPharmacy",
+            url: "http://localhost:8081/systemadmins/signupAdminPharmacy",
             dataType: "json",
             contentType: "application/json",
             data: newUserJSON,

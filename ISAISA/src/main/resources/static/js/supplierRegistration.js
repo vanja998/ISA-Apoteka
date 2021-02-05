@@ -14,7 +14,7 @@ $(document).on("submit", "form", function (event) {           // kada je submito
 
     $.ajax({
         type: "POST",                                               // HTTP metoda je POST
-        url: "http://localhost:8081/auth/signupSupplier",                 // URL na koji se šalju podaci
+        url: "http://localhost:8081/systemadmins/signupSupplier",                 // URL na koji se šalju podaci
         dataType: "json",                                           // tip povratne vrednosti
         contentType: "application/json",                            // tip podataka koje šaljemo
         data: newUserJSON,                                      // Šaljemo novog zaposlenog

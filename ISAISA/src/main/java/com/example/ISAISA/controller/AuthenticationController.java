@@ -3,6 +3,8 @@ package com.example.ISAISA.controller;
 import com.example.ISAISA.DTO.*;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.ConfirmationTokenRepository;
+import com.example.ISAISA.repository.OfferRepository;
+import com.example.ISAISA.repository.OrderRepository;
 import com.example.ISAISA.repository.UserRepository;
 import com.example.ISAISA.model.User;
 import com.example.ISAISA.model.UserRequest;
@@ -21,15 +23,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
 @RequestMapping(value="/auth", produces= MediaType.APPLICATION_JSON_VALUE)
@@ -50,14 +50,25 @@ public class AuthenticationController {
     private PharmacyService pharmacyService;
 
     @Autowired
+    private OfferService offerService;
+
+    @Autowired
     private ConfirmationTokenRepository confirmationTokenRepository;
 
     @Autowired
     private UserServiceDetails userDetailsService;
 
+    @Autowired
+    private OrderService orderService;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private OrderRepository orderRepository;
+
+    @Autowired
+    private OfferRepository offerRepository;
 
     @Autowired
     private UserService userService;
@@ -107,63 +118,8 @@ public class AuthenticationController {
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
     }
 
-    @PostMapping("/signupPharmacy")
-    public ResponseEntity<Pharmacy> addPharmacy(@RequestBody PharmacyRegDTO pharmacyDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
-
-        Pharmacy existPharmacy = this.pharmacyService.findByAddress(pharmacyDto.getAddress());
-        if (existPharmacy != null) {
-            throw new Exception("Postoji User");
-        }
-
-        Pharmacy pharmacy = this.pharmacyService.save(pharmacyDto);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(pharmacy.getId()).toUri());
-        return new ResponseEntity<Pharmacy>(pharmacy, HttpStatus.CREATED);
-    }
-
-    @PostMapping("/signupAdminSystem")
-    public ResponseEntity<User> addAdminSystem(@RequestBody PatientDto patientDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
-
-        User existUser = this.userService.findByEmail(patientDto.getEmail());
-        if (existUser != null) {
-            throw new Exception("Postoji User");
-        }
-
-        User user = this.userService.saveAdminSystem(patientDto);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-        return new ResponseEntity<User>(user, HttpStatus.CREATED);
-    }
 
 
-    @PostMapping("/signupSupplier")
-    public ResponseEntity<User> addSupplier(@RequestBody PatientDto patientDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
-
-        User existUser = this.userService.findByEmail(patientDto.getEmail());
-        if (existUser != null) {
-            throw new Exception("Postoji User");
-        }
-
-        User user = this.userService.saveSupplier(patientDto);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-        return new ResponseEntity<User>(user, HttpStatus.CREATED);
-    }
-
-
-    @PostMapping("/signupAdminPharmacy")
-    public ResponseEntity<User> addAdminPharmacy(@RequestBody AdminSystemRegDto adminSystemRegDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
-
-        User existUser = this.userService.findByEmail(adminSystemRegDto.getEmail());
-        if (existUser != null) {
-            throw new Exception("Postoji User");
-        }
-
-        User user = this.userService.saveAdminPharmacy(adminSystemRegDto);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-        return new ResponseEntity<User>(user, HttpStatus.CREATED);
-    }
 
     @PostMapping("/reply")
     public ResponseEntity<Complaint> addReply(@RequestBody ReplyDTO replyDTO, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
@@ -183,19 +139,7 @@ public class AuthenticationController {
     }
 
 
-    @PostMapping("/signupDermatologist")
-    public ResponseEntity<User> addAdminPharmacy(@RequestBody PatientDto patientDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
 
-        User existUser = this.userService.findByEmail(patientDto.getEmail());
-        if (existUser != null) {
-            throw new Exception("Postoji User");
-        }
-
-        User user = this.userService.saveDermatologist(patientDto);
-        HttpHeaders headers = new HttpHeaders();
-        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
-        return new ResponseEntity<User>(user, HttpStatus.CREATED);
-    }
 
 
 
@@ -281,14 +225,7 @@ public class AuthenticationController {
         public String newPassword;
     }
 
-    @GetMapping(value="/allcomplaints",produces = MediaType.APPLICATION_JSON_VALUE)                                           // value nije naveden, jer koristimo bazni url
-    public ResponseEntity<List<Complaint>> getComplaints() {
-        List<Complaint> complaintList = this.complaintService.findAll();
-
-        // Kreiramo listu DTO objekata
 
 
 
-        return new ResponseEntity<>(complaintList, HttpStatus.OK);
-    }
 }
