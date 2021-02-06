@@ -645,6 +645,7 @@ $(document).on('click', '#btnCreateAppointmentNow', function () {
 
     var startOfAppointment = $("#chStartOfAppointment").val();
     var endOfAppointment = $("#chEndOfAppointment").val();
+
     var price = $("#chPrice").val();
 
     var myJSON = JSON.stringify({"id":examinationId, "startOfAppointment":startOfAppointment , "endOfAppointment":endOfAppointment, "price":price});
@@ -674,9 +675,11 @@ $(document).on('click', '#btnCreateAppointmentNow', function () {
             alert(error);
         }
     });
+});
 
-
-
+$(document).on('click', '#btnExaminationDone', function () {
+    alert('Pregled je odradjen');
+    window.location.href="welcomeDermatologist.html";
 
 });
 

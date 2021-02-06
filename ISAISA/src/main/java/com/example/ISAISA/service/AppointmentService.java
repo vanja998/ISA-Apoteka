@@ -1,11 +1,13 @@
 package com.example.ISAISA.service;
 
 import com.example.ISAISA.DTO.BooleanDto;
+import com.example.ISAISA.DTO.CalendarDTO;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.AppointmentRepository;
 import com.example.ISAISA.repository.Dermatologist_PharmacyyRepository;
 import com.example.ISAISA.repository.ExaminationRepository;
 import com.example.ISAISA.repository.PatientRepository;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -105,7 +107,8 @@ public class AppointmentService {
 
         Appointment appointment = appointmentRepository.getOne(appointmentId);
         Patient patient = appointment.getPatient();
-        patient.setPenalty(patient.getPenalty() + 1);
+        Integer newPenalty = patient.getPenalty()+1;
+        patient.setPenalty(newPenalty);
         patient = patientRepository.save(patient);
         return patient.getId();
 
@@ -316,8 +319,104 @@ public class AppointmentService {
     }
 
 
+    public List<CalendarDTO> getAppointmentsWeek(Dermatologist user){
+        Set<Appointment> appointments = appointmentRepository.findAllByDermatologist(user);
 
+        //DateTime lastWeek = new DateTime().minusDays(7);
 
+        LocalDate today = LocalDate.now();
+        LocalDate nextWeek = today.plusDays(7);
+        //.plusDays(7);
+
+        List<Appointment> weekAppointments = new ArrayList<>();
+        for(Appointment i: appointments){
+            if(i.getBeginofappointment().toLocalDate().isAfter(today) && i.getBeginofappointment().toLocalDate().isBefore(nextWeek)){
+                weekAppointments.add(i);
+            }
+        }
+
+        List<CalendarDTO> calendarDTOS = new ArrayList<>();
+
+        for(Appointment i:weekAppointments){
+            if(i.getPatient()!=null){
+                CalendarDTO calendarDTO = new CalendarDTO(i.getPatient().getFirstName(), i.getPatient().getLastName(), i.getBeginofappointment().toLocalDate(), i.getBeginofappointment().toLocalTime(), i.getEndofappointment().toLocalTime());
+                calendarDTOS.add(calendarDTO);
+            }
+            else {
+                CalendarDTO calendarDTO = new CalendarDTO("Termin nije zakazan", "Termin nije zakazan", i.getBeginofappointment().toLocalDate(), i.getBeginofappointment().toLocalTime(), i.getEndofappointment().toLocalTime());
+                calendarDTOS.add(calendarDTO);
+            }
+        }
+
+        return calendarDTOS;
+
+    }
+
+    public List<CalendarDTO> getAppointmentsMonth(Dermatologist user){
+        Set<Appointment> appointments = appointmentRepository.findAllByDermatologist(user);
+
+        //DateTime lastWeek = new DateTime().minusDays(7);
+
+        LocalDate today = LocalDate.now();
+        LocalDate nextWeek = today.plusDays(30);
+        //.plusDays(7);
+
+        List<Appointment> weekAppointments = new ArrayList<>();
+        for(Appointment i: appointments){
+            if(i.getBeginofappointment().toLocalDate().isAfter(today) && i.getBeginofappointment().toLocalDate().isBefore(nextWeek)){
+                weekAppointments.add(i);
+            }
+        }
+
+        List<CalendarDTO> calendarDTOS = new ArrayList<>();
+
+        for(Appointment i:weekAppointments){
+            if(i.getPatient()!=null){
+                CalendarDTO calendarDTO = new CalendarDTO(i.getPatient().getFirstName(), i.getPatient().getLastName(), i.getBeginofappointment().toLocalDate(), i.getBeginofappointment().toLocalTime(), i.getEndofappointment().toLocalTime());
+                calendarDTOS.add(calendarDTO);
+            }
+            else {
+                CalendarDTO calendarDTO = new CalendarDTO("Termin nije zakazan", "Termin nije zakazan", i.getBeginofappointment().toLocalDate(), i.getBeginofappointment().toLocalTime(), i.getEndofappointment().toLocalTime());
+                calendarDTOS.add(calendarDTO);
+            }
+        }
+
+        return calendarDTOS;
+
+    }
+
+    public List<CalendarDTO> getAppointmentsYear(Dermatologist user){
+        Set<Appointment> appointments = appointmentRepository.findAllByDermatologist(user);
+
+        //DateTime lastWeek = new DateTime().minusDays(7);
+
+        LocalDate today = LocalDate.now();
+        LocalDate nextWeek = today.plusDays(365);
+        //.plusDays(7);
+
+        List<Appointment> weekAppointments = new ArrayList<>();
+        for(Appointment i: appointments){
+            if(i.getBeginofappointment().toLocalDate().isAfter(today) && i.getBeginofappointment().toLocalDate().isBefore(nextWeek)){
+                weekAppointments.add(i);
+            }
+        }
+
+        List<CalendarDTO> calendarDTOS = new ArrayList<>();
+
+        for(Appointment i:weekAppointments){
+            if(i.getPatient()!=null){
+                CalendarDTO calendarDTO = new CalendarDTO(i.getPatient().getFirstName(), i.getPatient().getLastName(), i.getBeginofappointment().toLocalDate(), i.getBeginofappointment().toLocalTime(), i.getEndofappointment().toLocalTime());
+                calendarDTOS.add(calendarDTO);
+            }
+            else {
+                CalendarDTO calendarDTO = new CalendarDTO("Termin nije zakazan", "Termin nije zakazan", i.getBeginofappointment().toLocalDate(), i.getBeginofappointment().toLocalTime(), i.getEndofappointment().toLocalTime());
+                calendarDTOS.add(calendarDTO);
+            }
+        }
+
+        return calendarDTOS;
+
+    }
 
 }
 

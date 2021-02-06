@@ -32,6 +32,7 @@ import java.util.List;
 
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value="/appointments")
@@ -226,8 +227,34 @@ public class AppointmentController {
         return new ResponseEntity<>(booleanDto, HttpStatus.OK);
     }
 
+    @GetMapping(value="/getAppointmentsWeek",produces = MediaType.APPLICATION_JSON_VALUE)// value nije naveden, jer koristimo bazni url
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<List<CalendarDTO>> getAppointmentsWeek() {
 
+        Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<CalendarDTO> calendarDTOS = appointmentService.getAppointmentsWeek(user);
 
+        return new ResponseEntity<>(calendarDTOS, HttpStatus.OK);
+    }
 
+    @GetMapping(value="/getAppointmentsMonth",produces = MediaType.APPLICATION_JSON_VALUE)// value nije naveden, jer koristimo bazni url
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<List<CalendarDTO>> getAppointmentsMonth() {
+
+        Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<CalendarDTO> calendarDTOS = appointmentService.getAppointmentsMonth(user);
+
+        return new ResponseEntity<>(calendarDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/getAppointmentsYear",produces = MediaType.APPLICATION_JSON_VALUE)// value nije naveden, jer koristimo bazni url
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<List<CalendarDTO>> getAppointmentsYear() {
+
+        Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<CalendarDTO> calendarDTOS = appointmentService.getAppointmentsYear(user);
+
+        return new ResponseEntity<>(calendarDTOS, HttpStatus.OK);
+    }
 
 }

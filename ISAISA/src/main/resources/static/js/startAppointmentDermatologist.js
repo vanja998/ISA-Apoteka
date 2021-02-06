@@ -5,7 +5,7 @@ $(document).ready(function () {
     patientsShowAll.show();
     var patientsShowSearch = $(".patientsShowSearch")
     patientsShowSearch.hide();
-    var appointmentStart = $(".appointentStart")
+    var appointmentStart = $(".appointmentStart")
     appointmentStart.hide();
     var appoinmtentDoesNotExist = $(".appoinmtentDoesNotExist")
     appoinmtentDoesNotExist.hide();
@@ -48,7 +48,7 @@ $(document).on('click', '#btnSearchPatient', function () {
     patientsShowAll.hide();
     var patientsShowSearch = $(".patientsShowSearch")
     patientsShowSearch.show();
-    var appointmentStart = $(".appointentStart")
+    var appointmentStart = $(".appointmentStart")
     appointmentStart.hide();
     var appoinmtentDoesNotExist = $(".appoinmtentDoesNotExist")
     appoinmtentDoesNotExist.hide();
@@ -116,7 +116,7 @@ $(document).on('click', '.btnStartAppointment', function () {
     patientsShowAll.hide();
     var patientsShowSearch = $(".patientsShowSearch")
     patientsShowSearch.hide();
-    var appointmentStart = $(".appointentStart")
+    var appointmentStart = $(".appointmentStart")
     appointmentStart.hide();
     var appoinmtentDoesNotExist = $(".appoinmtentDoesNotExist")
     appoinmtentDoesNotExist.hide();
@@ -141,10 +141,13 @@ $(document).on('click', '.btnStartAppointment', function () {
                 appointmentStart.show();
                 var btnStart = "<button class='btnStart' id = " + data['id'] + ">Zapocni pregled</button>";
                 var btnPenal = "<button class='btnPenal' id = " + data['id'] + ">Pacijent se nije pojavio</button>";
+                var btnCancle = "<button class='btnCancle' id = " + data['id'] + ">Odustani od pregleda</button>";
 
                 var row = "<tr>";
                 row += "<td>" + btnStart + "</td>";
                 row += "<td>" + btnPenal + "</td>";
+                row += "<td>" + btnCancle + "</td>";
+
                 $('#tableAppointmentExists').append(row);
             }
             },
@@ -154,6 +157,10 @@ $(document).on('click', '.btnStartAppointment', function () {
     });
 });
 
+$(document).on('click', '.btnCancle', function () {
+    window.location.href = "welcomeDermatologist.html";
+
+});
 $(document).on('click', '.btnPenal', function () {
 
     /*var patientsShowAll = $(".patientsShowAll")

@@ -4,6 +4,7 @@ import com.example.ISAISA.DTO.*;
 import com.example.ISAISA.model.Appointment;
 import com.example.ISAISA.model.Dermatologist;
 import com.example.ISAISA.model.Medication;
+import com.example.ISAISA.model.Patient;
 import com.example.ISAISA.service.ExaminationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -109,5 +110,50 @@ public class ExaminationController {
         return new ResponseEntity<>(booleanDto, HttpStatus.OK);
     }
 
+    @GetMapping(value="/getExaminatedPatientsDermatologist",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<List<ExaminPatientDto>> getExaminatedPatientsDermatologist() {
+        Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
+        List<Appointment> appointments = examinationService.getExaminatedPatients(user);
+
+        List<ExaminPatientDto> examinPatientDtos = new ArrayList<>();
+        for(Appointment i: appointments){
+            ExaminPatientDto examinPatientDto = new ExaminPatientDto(i.getPatient().getFirstName(), i.getPatient().getLastName(), i.getBeginofappointment().toLocalDate());
+            examinPatientDtos.add(examinPatientDto);
+        }
+
+        return new ResponseEntity<>(examinPatientDtos, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value="/getExaminatedPatientsDermatologistSortName",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<List<ExaminPatientDto>> getExaminatedPatientsDermatologistSortName() {
+        Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<ExaminPatientDto> examinPatientDtos = examinationService.getExaminatedPatientsSortName(user);
+
+        return new ResponseEntity<>(examinPatientDtos, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/getExaminatedPatientsDermatologistSortLastName",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<List<ExaminPatientDto>> getExaminatedPatientsDermatologistSortLastName() {
+        Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<ExaminPatientDto> examinPatientDtos = examinationService.getExaminatedPatientsSortLastName(user);
+
+        return new ResponseEntity<>(examinPatientDtos, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/getExaminatedPatientsDermatologistSortDate",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<List<ExaminPatientDto>> getExaminatedPatientsDermatologistSortDate() {
+        Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<ExaminPatientDto> examinPatientDtos = examinationService.getExaminatedPatientsSortLastName(user);
+
+        return new ResponseEntity<>(examinPatientDtos, HttpStatus.OK);
+    }
 }

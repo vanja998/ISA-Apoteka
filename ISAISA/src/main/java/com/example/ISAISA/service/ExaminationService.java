@@ -1,6 +1,7 @@
 package com.example.ISAISA.service;
 
 import com.example.ISAISA.DTO.BooleanDto;
+import com.example.ISAISA.DTO.ExaminPatientDto;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.AppointmentRepository;
 import com.example.ISAISA.repository.ExaminationRepository;
@@ -10,10 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ExaminationService {
@@ -238,4 +236,110 @@ public class ExaminationService {
 
         return true;
     }
+
+    public List<Appointment> getExaminatedPatients(Dermatologist dermatologist){
+
+        List<Examination> examinations = examinationRepository.findAll();
+        Integer dermatologistId = dermatologist.getId();
+
+        List<Examination> examinationsDermatologist = new ArrayList<>();
+        for(Examination i: examinations){
+            if (i.getExaminationAppointment().getDermatologist().getId() == dermatologistId){
+                examinationsDermatologist.add(i);
+            }
+        }
+
+        List<Appointment> termini = new ArrayList<>();
+        for (Examination i: examinationsDermatologist){
+            termini.add(i.getExaminationAppointment());
+        }
+
+        return termini;
+    }
+
+    public List<ExaminPatientDto> getExaminatedPatientsSortName(Dermatologist dermatologist){
+
+        List<Examination> examinations = examinationRepository.findAll();
+        Integer dermatologistId = dermatologist.getId();
+
+        List<Examination> examinationsDermatologist = new ArrayList<>();
+        for(Examination i: examinations){
+            if (i.getExaminationAppointment().getDermatologist().getId() == dermatologistId){
+                examinationsDermatologist.add(i);
+            }
+        }
+
+        List<Appointment> termini = new ArrayList<>();
+        for (Examination i: examinationsDermatologist){
+            termini.add(i.getExaminationAppointment());
+        }
+
+        List<ExaminPatientDto> examinPatientDtos = new ArrayList<>();
+        for(Appointment i: termini){
+            ExaminPatientDto examinPatientDto = new ExaminPatientDto(i.getPatient().getFirstName(), i.getPatient().getLastName(), i.getBeginofappointment().toLocalDate());
+            examinPatientDtos.add(examinPatientDto);
+        }
+
+        Collections.sort(examinPatientDtos, Comparator.comparing(ExaminPatientDto::getName));
+
+        return examinPatientDtos;
+    }
+
+
+    public List<ExaminPatientDto> getExaminatedPatientsSortLastName(Dermatologist dermatologist){
+
+        List<Examination> examinations = examinationRepository.findAll();
+        Integer dermatologistId = dermatologist.getId();
+
+        List<Examination> examinationsDermatologist = new ArrayList<>();
+        for(Examination i: examinations){
+            if (i.getExaminationAppointment().getDermatologist().getId() == dermatologistId){
+                examinationsDermatologist.add(i);
+            }
+        }
+
+        List<Appointment> termini = new ArrayList<>();
+        for (Examination i: examinationsDermatologist){
+            termini.add(i.getExaminationAppointment());
+        }
+
+        List<ExaminPatientDto> examinPatientDtos = new ArrayList<>();
+        for(Appointment i: termini){
+            ExaminPatientDto examinPatientDto = new ExaminPatientDto(i.getPatient().getFirstName(), i.getPatient().getLastName(), i.getBeginofappointment().toLocalDate());
+            examinPatientDtos.add(examinPatientDto);
+        }
+
+        Collections.sort(examinPatientDtos, Comparator.comparing(ExaminPatientDto::getLastName));
+
+        return examinPatientDtos;
+    }
+
+    public List<ExaminPatientDto> getExaminatedPatientsSortDate(Dermatologist dermatologist){
+
+        List<Examination> examinations = examinationRepository.findAll();
+        Integer dermatologistId = dermatologist.getId();
+
+        List<Examination> examinationsDermatologist = new ArrayList<>();
+        for(Examination i: examinations){
+            if (i.getExaminationAppointment().getDermatologist().getId() == dermatologistId){
+                examinationsDermatologist.add(i);
+            }
+        }
+
+        List<Appointment> termini = new ArrayList<>();
+        for (Examination i: examinationsDermatologist){
+            termini.add(i.getExaminationAppointment());
+        }
+
+        List<ExaminPatientDto> examinPatientDtos = new ArrayList<>();
+        for(Appointment i: termini){
+            ExaminPatientDto examinPatientDto = new ExaminPatientDto(i.getPatient().getFirstName(), i.getPatient().getLastName(), i.getBeginofappointment().toLocalDate());
+            examinPatientDtos.add(examinPatientDto);
+        }
+
+        Collections.sort(examinPatientDtos, Comparator.comparing(ExaminPatientDto::getDate));
+
+        return examinPatientDtos;
+    }
+
 }
