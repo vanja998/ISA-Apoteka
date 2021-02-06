@@ -44,6 +44,8 @@ public class PharmacyService {
         return pharmacyRepository.findAll();
     }
 
+    public List<Pharmacy> findallByMedication(Medication medication) { return pharmacyRepository.findAllByMedication(medication);}
+
     public Pharmacy findByName(String name) { return pharmacyRepository.findByName(name); }
 
     public Pharmacy findByRating(Float rating){return  pharmacyRepository.findByRating(rating);}

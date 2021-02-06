@@ -1,10 +1,8 @@
 package com.example.ISAISA.controller;
 
-import com.example.ISAISA.DTO.PatientSearchDto;
-import com.example.ISAISA.DTO.PharmacistDTO;
-import com.example.ISAISA.DTO.PharmacyDTO;
-import com.example.ISAISA.DTO.UserChangeDTO;
+import com.example.ISAISA.DTO.*;
 import com.example.ISAISA.model.*;
+import com.example.ISAISA.service.MedicationService;
 import com.example.ISAISA.service.PatientService;
 import com.example.ISAISA.service.UserServiceDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +20,14 @@ import java.util.*;
 public class PatientController {
 
     private PatientService patientService;
+    private MedicationService medicationService;
+
 
     @Autowired
     private UserServiceDetails userDetailsService;
+
+    @Autowired
+    public void setMedicationService(MedicationService medicationService) {this.medicationService=medicationService;}
 
     @Autowired
     public void setPatientService(PatientService patientService) {
@@ -82,6 +85,19 @@ public class PatientController {
         Set<PatientSearchDto> patients = patientService.getPatientByFirstNameAndLastName(patientSearchDto.getFirstName(), patientSearchDto.getLastName());
 
         return new ResponseEntity<>(patients, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/allergiemedication", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Patient> Setallergiemedication(@RequestBody StringDto allergiemedication) {
+
+        Set<Medication> medicationslist = medicationService.findAllByName(allergiemedication.getAllergiemedication());
+        Patient user = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        user.setMedication(medicationslist);
+        patientService.save(user);
+
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 }

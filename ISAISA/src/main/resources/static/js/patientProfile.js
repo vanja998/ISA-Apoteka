@@ -12,6 +12,9 @@ $(document).ready(function () {
     var passwordChangeError = $(".passwordChangeError")
     passwordChangeError.hide();
 
+    var alergiepatient=$(".alergiePatient")
+    alergiepatient.show();
+
     var profilePatient = $(".profilePatient")
     profilePatient.show();
 
@@ -59,6 +62,10 @@ $(document).on('click', '#btnChangeProfilePatient', function () {
 
     var passwordChangeError = $(".passwordChangeError")
     passwordChangeError.hide();
+
+    var alergiepatient=$(".alergiePatient")
+    alergiepatient.hide();
+
 
     var profilePatient = $(".profilePatient")
     profilePatient.hide();
@@ -127,6 +134,9 @@ $(document).on('click', '#btnCancelChanges', function () {
     var profilePatient = $(".profilePatient")
     profilePatient.hide();
 
+    var alergiepatient=$(".alergiePatient")
+    alergiepatient.hide();
+
     var changeProfilePatient = $(".changeProfilePatient")
     changeProfilePatient.hide();
 
@@ -170,6 +180,8 @@ $(document).on('click', '#btnChangePasswordPatient', function () {
 
     var passwordChangeError = $(".passwordChangeError")
     passwordChangeError.hide();
+    var alergiepatient=$(".alergiePatient")
+    alergiepatient.hide();
 
     var changePasswordPatient = $(".changePasswordPatient")
     changePasswordPatient.show();
@@ -238,6 +250,35 @@ $(document).on('click', '#btnCancelPassword', function () {
     profilePatient.show();
 });
 
+$(document).on('click', '#btnSaveAlergie', function () {
+
+    var allergiemedication = $("#allergiemedication").val();
+
+
+    var myJSON = formToJSON2(allergiemedication);
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/patients/allergiemedication",
+        dataType: "json",
+        contentType: "application/json",
+        data: myJSON,
+        beforeSend: function(xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log("SUCCESS: ", data);
+
+            window.location.href="patientProfile.html";
+        },
+        error: function () {
+            window.location.href="error.html";
+        }
+    });
+});
+
 function formToJSON1(oldPassword, newPassword) {
     return JSON.stringify(
         {
@@ -246,5 +287,12 @@ function formToJSON1(oldPassword, newPassword) {
         }
     );
 }
+function formToJSON2(allergiemedication) {
+    return JSON.stringify(
+        {
+            "allergiemedication" : allergiemedication
 
+        }
+    );
+}
 

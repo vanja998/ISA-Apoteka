@@ -1,8 +1,11 @@
 package com.example.ISAISA.controller;
 
+import com.example.ISAISA.DTO.MedicationDto;
 import com.example.ISAISA.DTO.PharmacyDTO;
 import com.example.ISAISA.model.AdminPharmacy;
+import com.example.ISAISA.model.Medication;
 import com.example.ISAISA.model.Pharmacy;
+import com.example.ISAISA.service.MedicationService;
 import com.example.ISAISA.service.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,6 +26,11 @@ import java.util.Set;
 public class PharmacyController {
 
     private PharmacyService pharmacyService;
+    private MedicationService medicationService;
+    @Autowired
+    public void setMedicationService(MedicationService medicationService) {
+        this.medicationService = medicationService;
+    }
 
     @Autowired
     public void setPharmacistService(PharmacyService pharmacyService) {
@@ -128,6 +137,20 @@ public class PharmacyController {
         return new ResponseEntity<>(pharmaciesDTOS, HttpStatus.OK);
     }
 
+    @PostMapping(value="/PharmaciesSearchforReservations", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<List<Pharmacy>> findallPharmaciesByMedication(@RequestBody MedicationDto medicationDto) {
 
+        List<Medication> medications= (List<Medication>) medicationService.findAllByName(medicationDto.getName());
+
+        List<Pharmacy> listofpharmacies = pharmacyService.findAll();
+
+        List<Pharmacy> pharmacies = new ArrayList<>();
+
+
+
+
+        return new ResponseEntity<>(pharmacies, HttpStatus.OK);
+    }
 
 }
