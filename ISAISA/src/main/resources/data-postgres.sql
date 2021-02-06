@@ -30,7 +30,8 @@ insert into "med_pharmacies" (pharmacy_id,medication_id) values (1,2);
 insert into "allergy_patient" (patient_id,medication_id) values (1,1);
 
 
-insert into "complaint"(id,question,answered,patient_id,user_id) values(nextval('seq_complaint'),'Zasto dermatolog stalno kasni??',false,1,6);
+insert into "complaint"(id,question,answered,patient_id,user_id,ishospital) values(nextval('seq_complaint'),'Zasto dermatolog stalno kasni??',false,1,6,false);
+insert into "complaint"(id,question,answered,patient_id,pharmacy_id,ishospital) values(nextval('seq_complaint'),'Zasto dermatolog stalno kasni??',false,1,1,true);
 
 insert into "orderr"(id,dateDeadline,statusAdmin,statusSupplier,admin_id) values(nextval('seq_orderr'),'2021-12-31','ceka_na_ponude','ceka_na_odgovor',4);
 
@@ -57,6 +58,8 @@ insert into "dermatologist_pharmacyy" (id,beginofwork,endofwork,dermatologist_id
 insert into "promotion" (id, description, validFrom, validUntil, pharmacy_id) values (nextval('seq_promotion'), 'Akcija na sve proizvode za dentalnu higijenu', '2021-02-01', '2021-02-28', 1);
 
 insert into "promotion_patients" (patient_id, pharmacy_id) values (1, 1);
+
+insert into "counseling" (id,patient_id,pharmacist_id) values (nextval('seq_promotion'),2,10);
 
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_PATIENT');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_ADMINSYSTEM');

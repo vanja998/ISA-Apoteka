@@ -19,8 +19,8 @@ $(document).on("submit", "form", function (event) {           // kada je submito
         contentType: "application/json",                            // tip podataka koje šaljemo
         data: newUserJSON,                                      // Šaljemo novog zaposlenog
         success: function () {
-            alert("success");
-            window.location.href = "welcomeAdminSystem.html";
+            alert("Uspesna registracija");
+            window.location.href = "welcome.html";
         },
         error: function (error) {
             alert(error);

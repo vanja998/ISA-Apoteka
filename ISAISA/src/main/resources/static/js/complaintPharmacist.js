@@ -1,8 +1,7 @@
 $(document).ready(function () {
-    $('#complaints tbody').empty();
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/systemadmins/allcomplaints",
+        url: "http://localhost:8081/patients/allcomplaintpharmacists",
         dataType: "json",
         beforeSend: function(xhr) {
             if (localStorage.token) {
@@ -12,24 +11,18 @@ $(document).ready(function () {
         success: function (data) {
             console.log("SUCCESS : ", data);
             for (i = 0; i < data.length; i++) {
-                if(data[i]['answered']===false){
 
-                        var row = "<tr>";
-                        row += "<td>" + data[i]['emailPatient'] + "</td>";
-                        row += "<td>" + data[i]['emailUser'] + "</td>";
-                        row += "<td>" + data[i]['question'] + "</td>";
-                        var btn = "<button class='btnReply' id = " + data[i]['id'] + ">Odgovori na zalbu</button>";
-
-
-                        row += "<td>" + btn + "</td>";
-                        $('#complaints').append(row);
-                    
+                    var row = "<tr>";
+                    row += "<td>" + data[i]['firstName'] + "</td>";
+                    row += "<td>" + data[i]['email'] + "</td>";
 
 
 
-                };
+                var btn = "<button class='btnComplaint' id = " + data[i]['id'] + ">Pisi zalbu</button>";
 
-                
+
+                row += "<td>" + btn + "</td>";
+                $('#complaints').append(row);
 
             }
 
@@ -41,8 +34,7 @@ $(document).ready(function () {
     });
 });
 
-
-$(document).on('click', '.btnReply', function () {
+$(document).on('click', '.btnComplaint', function () {
 
     var pharmacyDiv = $(".complaintsall");
     pharmacyDiv.hide();
@@ -52,13 +44,13 @@ $(document).on('click', '.btnReply', function () {
 
     $(document).on("submit", "form", function (event) {           // kada je submitovana forma za kreiranje novog zaposlenog
         event.preventDefault();
-        var reply = $("#reply").val();
-        var complaintID=id;
+        var reply = $("#complaint").val();
+        var adminID=id;
 
-        var newComplaintJSON = formToJSON(reply,complaintID);
+        var newComplaintJSON = formToJSON(reply,adminID);
         $.ajax({
             type: "POST",
-            url: "http://localhost:8081/systemadmins/reply",
+            url: "http://localhost:8081/patients/complaintPharmacist",
             dataType: "json",
             contentType: "application/json",
             data: newComplaintJSON,
@@ -69,7 +61,7 @@ $(document).on('click', '.btnReply', function () {
             },
             success: function () {
                 alert("success");
-                window.location.href = "adminSystemHomePage.html";
+                window.location.href = "patientWelcome.html";
             },
             error: function (error) {
                 alert(error);
@@ -79,11 +71,11 @@ $(document).on('click', '.btnReply', function () {
 });
 
 
-function formToJSON(reply,complaintID) {
+function formToJSON(reply,adminID) {
     return JSON.stringify(
         {
             "reply": reply,
-            "complaintID": complaintID
+            "complaintID": adminID
 
         }
     );

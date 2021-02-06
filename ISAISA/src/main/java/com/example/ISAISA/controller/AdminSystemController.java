@@ -1,12 +1,11 @@
 package com.example.ISAISA.controller;
 
 import com.example.ISAISA.DTO.AdminSystemRegDto;
+import com.example.ISAISA.DTO.ComplainttDTO;
 import com.example.ISAISA.DTO.PharmacyRegDTO;
+import com.example.ISAISA.DTO.ReplyDTO;
 import com.example.ISAISA.model.*;
-import com.example.ISAISA.repository.ConfirmationTokenRepository;
-import com.example.ISAISA.repository.OfferRepository;
-import com.example.ISAISA.repository.OrderRepository;
-import com.example.ISAISA.repository.UserRepository;
+import com.example.ISAISA.repository.*;
 import com.example.ISAISA.security.TokenUtils;
 import com.example.ISAISA.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +13,14 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,8 @@ public class AdminSystemController {
     @Autowired
     private AdminSystemService adminSystemService;
 
+    @Autowired
+    private ComplaintsRepository complaintsRepository;
 
     @Autowired
     private ComplaintService complaintService;
@@ -42,6 +45,8 @@ public class AdminSystemController {
     @Autowired
     private UserServiceDetails userDetailsService;
 
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     @Autowired
     private UserService userService;
@@ -83,14 +88,66 @@ public class AdminSystemController {
 
     @GetMapping(value="/allcomplaints",produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINSYSTEM')")
-    public ResponseEntity<List<Complaint>> getComplaints() {
-        List<Complaint> complaintList = this.complaintService.findAll();
+    public ResponseEntity<List<ComplainttDTO>> getComplaints() {
+        List<Complaint> complaintList = complaintsRepository.findAllByIshospital(false);
 
-        // Kreiramo listu DTO objekata
+        List<ComplainttDTO> complainttDTOS= new ArrayList<ComplainttDTO>();
+
+        for (Complaint complaint: complaintList){
+            Patient patient=complaint.getPatient();
+            String emailpatient= patient.getEmail();
+            User user=complaint.getUser();
+            String emailuser= user.getEmail();
+
+            ComplainttDTO complainttDTO= new ComplainttDTO(complaint.getId(),complaint.isAnswered(),complaint.getQuestion(),complaint.getReply(),emailuser,emailpatient,complaint.isIshospital());
+            complainttDTOS.add(complainttDTO);
+        }
 
 
 
-        return new ResponseEntity<>(complaintList, HttpStatus.OK);
+        return new ResponseEntity<>(complainttDTOS, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value="/allcomplaintspharmacy",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINSYSTEM')")
+    public ResponseEntity<List<ComplainttDTO>> getComplaintsPharmacy() {
+        List<Complaint> complaintList = complaintsRepository.findAllByIshospital(true);
+
+        List<ComplainttDTO> complainttDTOS= new ArrayList<ComplainttDTO>();
+
+
+        for (Complaint complaint: complaintList){
+            Patient patient=complaint.getPatient();
+            String emailpatient= patient.getEmail();
+            Pharmacy pharmacy= complaint.getPharmacy();
+            String nazivApoteke=pharmacy.getName();
+
+
+            ComplainttDTO complainttDTO= new ComplainttDTO(complaint.getId(),complaint.isAnswered(),complaint.getQuestion(),complaint.getReply(),complaint.isIshospital(),emailpatient,nazivApoteke);
+            complainttDTOS.add(complainttDTO);
+        }
+
+
+
+        return new ResponseEntity<>(complainttDTOS, HttpStatus.OK);
+    }
+
+    @PostMapping("/reply")
+    public ResponseEntity<Complaint> addReply(@RequestBody ReplyDTO replyDTO, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
+
+        Complaint complaint = this.complaintService.saveReply(replyDTO);
+        Patient patient= complaint.getPatient();
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(patient.getEmail());
+        mailMessage.setSubject("Odgovor na zalbu");
+        mailMessage.setFrom("isaverifikacija@gmail.com");
+        mailMessage.setText(complaint.getReply());
+
+        emailSenderService.sendEmail(mailMessage);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(complaint.getId()).toUri());
+        return new ResponseEntity<Complaint>(complaint, HttpStatus.CREATED);
     }
 
     @PostMapping(value="/signupPharmacy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -13,8 +13,9 @@ public class Patient extends User{
     @Column
     private Integer penalty;
 
-    @OneToOne(mappedBy = "patient")
-    private Complaint complaint;
+    @JsonIgnore
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Complaint> complaints;
 
     @JsonIgnore
     @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.ALL)

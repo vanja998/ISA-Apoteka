@@ -1,5 +1,6 @@
 package com.example.ISAISA.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -8,6 +9,7 @@ import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.DiscriminatorType.STRING;
 
@@ -63,8 +65,9 @@ public class User implements UserDetails {
         return this.getClass().getAnnotation(DiscriminatorValue.class).value();
     }
 
-    @OneToOne(mappedBy = "user")
-    private Complaint complaint;
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Complaint> complaints;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_authority",

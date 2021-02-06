@@ -14,5 +14,6 @@ public interface PharmacyRepository extends JpaRepository<Pharmacy, Integer> {
     Pharmacy findByName(String name);
     Pharmacy findByRating(Float rating);
 
+
     Set<Pharmacy> findAllByName(String name);
 }

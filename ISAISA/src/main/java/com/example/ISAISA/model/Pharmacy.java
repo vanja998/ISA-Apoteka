@@ -27,6 +27,10 @@ public class Pharmacy {
     private Float rating;
 
     @JsonIgnore
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Complaint> complaints;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<AdminPharmacy> adminPharmacySet = new HashSet<AdminPharmacy>();
 

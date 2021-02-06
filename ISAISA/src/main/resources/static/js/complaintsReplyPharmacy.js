@@ -2,7 +2,7 @@ $(document).ready(function () {
     $('#complaints tbody').empty();
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/systemadmins/allcomplaints",
+        url: "http://localhost:8081/systemadmins/allcomplaintspharmacy",
         dataType: "json",
         beforeSend: function(xhr) {
             if (localStorage.token) {
@@ -14,22 +14,22 @@ $(document).ready(function () {
             for (i = 0; i < data.length; i++) {
                 if(data[i]['answered']===false){
 
-                        var row = "<tr>";
-                        row += "<td>" + data[i]['emailPatient'] + "</td>";
-                        row += "<td>" + data[i]['emailUser'] + "</td>";
-                        row += "<td>" + data[i]['question'] + "</td>";
-                        var btn = "<button class='btnReply' id = " + data[i]['id'] + ">Odgovori na zalbu</button>";
+                    var row = "<tr>";
+                    row += "<td>" + data[i]['emailPatient'] + "</td>";
+                    row += "<td>" + data[i]['nameHospital'] + "</td>";
+                    row += "<td>" + data[i]['question'] + "</td>";
+                    var btn = "<button class='btnReply' id = " + data[i]['id'] + ">Odgovori na zalbu</button>";
 
 
-                        row += "<td>" + btn + "</td>";
-                        $('#complaints').append(row);
-                    
+                    row += "<td>" + btn + "</td>";
+                    $('#complaints').append(row);
+
 
 
 
                 };
 
-                
+
 
             }
 
