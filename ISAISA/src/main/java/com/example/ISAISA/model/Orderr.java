@@ -10,12 +10,13 @@ import java.util.Set;
 
 @Entity
 public class Orderr {
+
     @Id
     @SequenceGenerator(name="seq_orderr", sequenceName = "seq_orderr", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_orderr")
     private Integer id;
 
-
+    //@JsonFormat(pattern="yyyy-MM-dd")
     private Date dateDeadline;
 
     private String statusAdmin;
@@ -23,14 +24,14 @@ public class Orderr {
     private String statusSupplier;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "orderr", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "orderr", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Orderr_Medication> orderr_medications = new HashSet<Orderr_Medication>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "orderr", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Offer> offers = new HashSet<Offer>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "admin_id", referencedColumnName = "id")
     private AdminPharmacy adminPharmacy;
 
@@ -39,6 +40,13 @@ public class Orderr {
         this.dateDeadline = dateDeadline;
         this.statusAdmin = statusAdmin;
         this.statusSupplier = statusSupplier;
+    }
+
+    public Orderr(Date dateDeadline, Set<Orderr_Medication> orderr_medications, AdminPharmacy adminPharmacy, String statusAdmin) {
+        this.dateDeadline = dateDeadline;
+        this.orderr_medications = orderr_medications;
+        this.adminPharmacy = adminPharmacy;
+        this.statusAdmin = statusAdmin;
     }
 
     public Orderr() {
@@ -88,9 +96,7 @@ public class Orderr {
         return orderr_medications;
     }
 
-    public void setOrderr_medications(Set<Orderr_Medication> orderr_medications) {
-        this.orderr_medications = orderr_medications;
-    }
+    public void setOrderr_medications(Set<Orderr_Medication> orderr_medications) { this.orderr_medications = orderr_medications; }
 
     public Set<Offer> getOffers() {
         return offers;

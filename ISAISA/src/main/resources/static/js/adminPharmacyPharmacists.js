@@ -122,7 +122,6 @@ $(document).on('click', '.btnSearchPharmacistsAdminPharmacy', function () {
             }
         }
     });
-
 });
 
 function formToJSON(firstName, lastName) {

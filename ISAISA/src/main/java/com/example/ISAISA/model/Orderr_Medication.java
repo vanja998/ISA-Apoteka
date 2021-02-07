@@ -1,6 +1,8 @@
 package com.example.ISAISA.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,7 +15,7 @@ public class Orderr_Medication {
     @Column
     private Integer amount;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Orderr orderr;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
@@ -26,6 +28,11 @@ public class Orderr_Medication {
         this.id = id;
         this.amount = amount;
         this.orderr = orderr;
+        this.medication = medication;
+    }
+
+    public Orderr_Medication(Integer amount, Medication medication) {
+        this.amount = amount;
         this.medication = medication;
     }
 

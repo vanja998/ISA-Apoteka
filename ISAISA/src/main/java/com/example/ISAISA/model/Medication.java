@@ -35,7 +35,6 @@ public class Medication {
     @Column(nullable = false)
     private Boolean prescription;
 
-
     @Column(nullable = false)
     private String notes;
 
