@@ -69,6 +69,7 @@ public class OrderService {
 
     public Set<Orderr> getOrdersByPharmacy(AdminPharmacy adminPharmacy) {
         return orderRepository.findByAdminPharmacy(adminPharmacy);
+        //return  orderRepository.findByAdminPharmacyAndOrderr_medications(adminPharmacy, orderr_medication);
     }
 
 }

@@ -15,10 +15,12 @@ public class Orderr_Medication {
     @Column
     private Integer amount;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
     private Orderr orderr;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
     private Medication medication;
 
     public Orderr_Medication() {

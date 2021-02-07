@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="9652161f-5acf-4977-8b56-c1a40d446705" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/DTO/UserPasswordDTO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/controller/AppointmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/controller/AppointmentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/controller/DermatologistController.java" beforeDir="false" afterPath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/controller/DermatologistController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/model/Appointment.java" beforeDir="false" afterPath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/model/Appointment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/model/Dermatologist.java" beforeDir="false" afterPath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/model/Dermatologist.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/model/Dermatologist_Pharmacyy.java" beforeDir="false" afterPath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/model/Dermatologist_Pharmacyy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/model/Pharmacy.java" beforeDir="false" afterPath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/model/Pharmacy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/repository/AppointmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/repository/AppointmentRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/repository/DermatologistRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/repository/DermatologistRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/service/AppointmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/service/AppointmentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/service/DermatologistService.java" beforeDir="false" afterPath="$PROJECT_DIR$/ISAISA/src/main/java/com/example/ISAISA/service/DermatologistService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ISAISA/src/main/resources/data-postgres.sql" beforeDir="false" afterPath="$PROJECT_DIR$/ISAISA/src/main/resources/data-postgres.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ISAISA/src/main/resources/static/adminPharmacyWelcome.html" beforeDir="false" afterPath="$PROJECT_DIR$/ISAISA/src/main/resources/static/adminPharmacyWelcome.html" afterDir="false" />
-    </list>
+    <list default="true" id="9652161f-5acf-4977-8b56-c1a40d446705" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -51,6 +37,7 @@
       <updated>1612179580807</updated>
       <workItem from="1612179586246" duration="79000" />
       <workItem from="1612308910727" duration="50000" />
+      <workItem from="1612690076762" duration="49000" />
     </task>
     <servers />
   </component>

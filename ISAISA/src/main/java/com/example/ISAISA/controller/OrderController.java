@@ -1,10 +1,12 @@
 package com.example.ISAISA.controller;
 
 import com.example.ISAISA.DTO.OrderDTO;
+import com.example.ISAISA.DTO.OrderMedicationDTO;
 import com.example.ISAISA.DTO.OrderrDTO;
 import com.example.ISAISA.DTO.UserChangeDTO;
 import com.example.ISAISA.model.AdminPharmacy;
 import com.example.ISAISA.model.Orderr;
+import com.example.ISAISA.model.Orderr_Medication;
 import com.example.ISAISA.service.AdminPharmacyService;
 import com.example.ISAISA.service.MedicationService;
 import com.example.ISAISA.service.OrderService;
@@ -17,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @RestController
@@ -46,11 +49,20 @@ public class OrderController {
 
     @GetMapping(value="/ordersByPharmacy", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
-    public ResponseEntity<Set<Orderr>> getOrdersByPharmacy(){
+    public ResponseEntity<Set<OrderMedicationDTO>> getOrdersByPharmacy(){
         AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Set<Orderr> orderrs = orderService.getOrdersByPharmacy(user);
+        Set<OrderMedicationDTO> orderMedicationDTOS = new HashSet<>();
 
-        return new ResponseEntity<>(orderrs, HttpStatus.OK);
+        for (Orderr orderr : orderrs) {
+            for (Orderr_Medication orderr_medication : orderr.getOrderr_medications()) {
+                OrderMedicationDTO om = new OrderMedicationDTO(orderr_medication.getId(), orderr.getDateDeadline(), orderr_medication.getAmount(),
+                        orderr_medication.getOrderr(), orderr_medication.getMedication());
+                orderMedicationDTOS.add(om);
+            }
+        }
+
+        return new ResponseEntity<>(orderMedicationDTOS, HttpStatus.OK);
     }
 
 }

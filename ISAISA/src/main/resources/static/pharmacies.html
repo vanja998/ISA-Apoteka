@@ -7,52 +7,73 @@
     <script src="js/pharmacies.js"></script>
 </head>
 <body>
+    <div class="allPharmacies">
+        <div id="pharmacies">
+            <h1>Sve Apoteke</h1>
+            <br><br>
+            <div class="container">
+                <table id="pharmacy">
+                    <tr>
+                        <th>Ime</th>
+                        <th>adresa</th>
+                        <th>opis</th>
+                        <th>ocena</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div id="onepharmacy" hidden>
+            <div class="card">
+                <h1 id="name"></h1>
+                <h1 id="address"></h1>
+                <h1 id="description"></h1>
+                <h1 id="rating"></h1>
+            </div>
+        </div>
+        <div class="pharmaciessearch">
+            <input type="search" id="searchMedication" name="q" placeholder="Unesite ime apoteke po kojoj pretrazujete"/>
+            <input type="submit" id="btnSearchMedication"/>
 
-<div id="pharmacies">
-    <h1>Sve Apoteke</h1>
-    <br><br>
-    <div class="container">
-        <table id="pharmacy">
-            <tr>
-                <th>Ime</th>
-                <th>adresa</th>
-                <th>opis</th>
-                <th>ocena</th>
-            </tr>
-        </table>
-    </div>
-</div>
-<div id="onepharmacy" hidden>
-    <div class="card">
-        <h1 id="name"></h1>
-        <h1 id="address"></h1>
-        <h1 id="description"></h1>
-        <h1 id="rating"></h1>
-    </div>
-</div>
-<div class="pharmaciessearch">
-    <input type="search" id="searchMedication" name="q" placeholder="Unesite ime apoteke po kojoj pretrazujete"/>
-    <input type="submit" id="btnSearchMedication"/>
+            <div class="medicationsShowMeds">
+                <table id="tableMedicationsSearch">
+                    <h1>apoteka po pretrazi</h1>
+                    <tr>
+                        <th>Ime</th>
+                        <th>adresa</th>
+                        <th>opis</th>
+                        <th>ocena</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="pharmaciessort">
+            <h1>Sortiraj po imenima</h1>
+            <input type="submit"  id="btnSortbyPharmacy"/>
+            <h2>Sortiraj po mestu</h2>
+            <input type="submit"  id="btnSortbyaddressPharmacy"/>
 
-    <div class="medicationsShowMeds">
-        <table id="tableMedicationsSearch">
-            <h1>apoteka po pretrazi</h1>
-            <tr>
-                <th>Ime</th>
-                <th>adresa</th>
-                <th>opis</th>
-                <th>ocena</th>
-            </tr>
-        </table>
+        </div>
     </div>
-</div>
-<div class="pharmaciessort">
-    <h1>Sortiraj po imenima</h1>
-    <input type="submit"  id="btnSortbyPharmacy"/>
-    <h2>Sortiraj po mestu</h2>
-    <input type="submit"  id="btnSortbyaddressPharmacy"/>
 
-</div>
+    <div class="onePharmacy">
+        <div class="card">
+            <div class="bio">
+                <h2 id="pharmacyName"></h2>
+                <h3 id="address1"></h3>
+                <h3 id="description1"></h3>
+                <h3>Ocena</h3><h3 id="rating1"></h3>
+            </div>
+            <div class="buttons">
+                <ul style="list-style-type:none">
+                    <li><button id="patientAllAvailableAppointments">Termini kod dermatologa</button></li>
+                    <li><button id="patientAllPharmacists">Farmaceuti</button></li>
+                    <li><button id="patientAllDermatologists">Dermatolozi</button></li>
+                    <li><button id="patientAllMedicine">Lekovi</button></li>
+                    <li><button id="patientAllPromotions">Pretplati se na akcije</button></li>
+                </ul>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>

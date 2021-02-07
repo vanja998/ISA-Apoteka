@@ -50,11 +50,13 @@ public class Medication {
     @ManyToMany(mappedBy = "medication",fetch=FetchType.EAGER)
     private Set<Supplier> suppliers = new HashSet<Supplier>();
 
-    @ManyToMany
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "medication_altmedication", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "altmedication_id", referencedColumnName = "id"))
     private Set<Medication> medication = new HashSet<Medication>();
 
-    @ManyToMany(mappedBy = "medication")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "medication", fetch = FetchType.EAGER)
     private Set<Medication> alternate_medication = new HashSet<Medication>();
 
     //@JsonIgnore
