@@ -1,5 +1,6 @@
 package com.example.ISAISA.controller;
 
+import com.example.ISAISA.DTO.IdDto;
 import com.example.ISAISA.DTO.PharmacyDTO;
 import com.example.ISAISA.model.AdminPharmacy;
 import com.example.ISAISA.model.Pharmacy;
@@ -28,11 +29,11 @@ public class PharmacyController {
         this.pharmacyService = pharmacyService;
     }
 
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMINPHARMACY')")
-    public ResponseEntity<Pharmacy> getPharmacy() {
-        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Pharmacy pharmacy = user.getPharmacy();
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Pharmacy> getPharmacyById(@RequestBody IdDto idDto) {
+        //AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Pharmacy pharmacy = pharmacyService.findById(idDto.getId());
         return new ResponseEntity<>(pharmacy, HttpStatus.OK);
     }
 

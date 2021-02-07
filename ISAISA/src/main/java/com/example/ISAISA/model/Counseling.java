@@ -6,8 +6,6 @@ import java.time.LocalDateTime;
 @Entity
 public class Counseling {
 
-
-
     @Id
     @SequenceGenerator(name="seq_counseling", sequenceName = "seq_counseling", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_counseling")
@@ -27,7 +25,6 @@ public class Counseling {
 
     @Column
     private Integer price;
-
 
     public Counseling(Integer id, Patient patient, Pharmacist pharmacist, LocalDateTime beginofappointment, LocalDateTime endofappointment, Integer price) {
         this.id = id;
@@ -88,4 +85,5 @@ public class Counseling {
     public void setPrice(Integer price) {
         this.price = price;
     }
+
 }

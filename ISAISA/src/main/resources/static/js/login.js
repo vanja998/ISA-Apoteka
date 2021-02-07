@@ -22,6 +22,7 @@ $(document).ready(function () {
 	            alert(email + " je uspešno ulogovan");
 
 				localStorage.setItem('token', data['accessToken']);
+				localStorage.setItem('role', data['role']);
 
 				if (data['role']==='adminpharmacy'){
 					window.location.href = "adminPharmacyWelcome.html";

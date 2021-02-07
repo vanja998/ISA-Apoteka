@@ -50,6 +50,11 @@ insert into "appointment"(id,patient_id,dermatologist_id,pharmacy_appointment_id
 insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),1, 6,1,'2021-06-02 10:15:30','2021-06-02 10:16:30',5000);
 insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),1, 6,1,'2021-12-03 10:15:30','2021-12-03 10:16:30',5000);
 
+insert into "counseling" (id,patient_id,pharmacist_id,beginofappointment,endofappointment,price) values (nextval('seq_counseling'), null, 10, '2021-02-07 00:00:00','2021-02-07 23:59:00', 20);
+insert into "counseling" (id,patient_id,pharmacist_id,beginofappointment,endofappointment,price) values (nextval('seq_counseling'), 1, 10, '2021-02-07 00:00:00','2021-02-07 23:59:00', 20);
+insert into "counseling" (id,patient_id,pharmacist_id,beginofappointment,endofappointment,price) values (nextval('seq_counseling'), null, 1, '2021-02-05 00:00:00','2021-02-05 23:59:00', 20);
+insert into "counseling" (id,patient_id,pharmacist_id) values (nextval('seq_counseling'),2,10);
+
 insert into "dermatologist_pharmacyy" (id,beginofwork,endofwork,dermatologist_id,pharmacy_id) values (nextval('seq_dermatologist_pharmacy'),'00:00:00','23:59:00',6,1);
 --insert into "dermatologist_pharmacyy" (id,beginofwork,endofwork,dermatologist_id,pharmacy_id) values (nextval('seq_dermatologist_pharmacy'),'16:00:00','17:00:00',6,1);
 
@@ -58,8 +63,6 @@ insert into "dermatologist_pharmacyy" (id,beginofwork,endofwork,dermatologist_id
 insert into "promotion" (id, description, validFrom, validUntil, pharmacy_id) values (nextval('seq_promotion'), 'Akcija na sve proizvode za dentalnu higijenu', '2021-02-01', '2021-02-28', 1);
 
 insert into "promotion_patients" (patient_id, pharmacy_id) values (1, 1);
-
-insert into "counseling" (id,patient_id,pharmacist_id) values (nextval('seq_promotion'),2,10);
 
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_PATIENT');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_ADMINSYSTEM');

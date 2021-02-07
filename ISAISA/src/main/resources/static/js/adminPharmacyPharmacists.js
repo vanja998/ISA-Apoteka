@@ -1,25 +1,23 @@
+//Prikaz svih farmaceuta
 $(document).ready(function () {
+    var pharmacistsAdminPharmacy = $(".pharmacistsAdminPharmacy");
+    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy");
+    var pharmacistsSearchAdminPharmacy = $(".pharmacistsSearchAdminPharmacy");
+    var addNewPharmacistAdminPharmacy= $(".addNewPharmacistAdminPharmacy");
+    var successAddPharmacist = $(".successAddPharmacist");
+    var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
+    var errorAddPharmacist = $(".errorAddPharmacist");
+    var errorDeletePharmacist = $(".errorDeletePharmacist");
 
-    var employeesAdminPharmacy = $(".employeesAdminPharmacy")
-    employeesAdminPharmacy.hide();
-
-    var pharmacistsAdminPharmacy = $(".pharmacistsAdminPharmacy")
     pharmacistsAdminPharmacy.show();
-
-    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy")
     pharmacistsShowAdminPharmacy.show();
 
-    var pharmacistsSearchAdminPharmacy = $(".pharmacistsSearchAdminPharmacy")
+    errorDeletePharmacist.hide();
     pharmacistsSearchAdminPharmacy.hide();
-
-    var addNewPharmacistAdminPharmacy= $(".addNewPharmacistAdminPharmacy")
     addNewPharmacistAdminPharmacy.hide();
-
-    var successAddPharmacist = $(".successAddPharmacist");
     successAddPharmacist.hide();
-
-    var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
     pharmacistsFilterAdminPharmacy.hide();
+    errorAddPharmacist.hide();
 
     $.ajax({
         type: "GET",
@@ -40,15 +38,18 @@ $(document).ready(function () {
                 row += "<td>" + data[i]['pharmacy']['name'] + "</td>";
                 row += "<td>" + data[i]['pharmacy']['address'] + "</td>";
 
+                var btnRemove = "<button class='btnRemove' id = " + data[i]['id'] + "> Ukloni farmaceuta </button>";
+                row += "<td>" + btnRemove + "</td>";
+
                 $('#tablePharmacistsAdminPharmacy').append(row);
             }
         },
         error: function (jqXHR) {
-            if(jqXHR.status == 403)
+            if(jqXHR.status === 403)
             {
                 window.location.href="error.html";
             }
-            if(jqXHR.status == 401)
+            if(jqXHR.status === 401)
             {
                 window.location.href="error.html";
             }
@@ -58,25 +59,28 @@ $(document).ready(function () {
 
 //Pretraga
 $(document).on('click', '.btnSearchPharmacistsAdminPharmacy', function () {
-
+    var pharmacistsAdminPharmacy = $(".pharmacistsAdminPharmacy")
     var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy")
-    pharmacistsShowAdminPharmacy.hide();
-
+    var pharmacistsSearchAdminPharmacy = $(".pharmacistsSearchAdminPharmacy")
     var addNewPharmacistAdminPharmacy= $(".addNewPharmacistAdminPharmacy")
-    addNewPharmacistAdminPharmacy.hide();
-
-    var pharmacistsSearchAdminPharmacy= $(".pharmacistsSearchAdminPharmacy")
-    pharmacistsSearchAdminPharmacy.show();
-
     var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
+    var errorDeletePharmacist = $(".errorDeletePharmacist");
+
+    pharmacistsShowAdminPharmacy.hide();
+    addNewPharmacistAdminPharmacy.hide();
     pharmacistsFilterAdminPharmacy.hide();
+    errorDeletePharmacist.hide();
+
+    pharmacistsSearchAdminPharmacy.show();
 
     var searchParam = $(".searchPharmacistsAdminPharmacy").val();
     searchParam = searchParam.split(" ");
 
     var myJSON = formToJSON(searchParam[0], searchParam[1])
 
-    $('.searchPharmacists').empty();
+    console.log(myJSON);
+
+    $('.searchPharmacistsAdminPharmacy').val("");
     $('#tablePharmacistsSearchAdminPharmacy tbody').empty();
 
     $.ajax({
@@ -92,7 +96,7 @@ $(document).on('click', '.btnSearchPharmacistsAdminPharmacy', function () {
         },
         success: function (data) {
             console.log("SUCCESS: ", data);
-            $('.searchPharmacists').append(searchParam[0], " ", searchParam[1]);
+            $('#searchPharmacists').append(searchParam[0], " ", searchParam[1]);
             for (i = 0; i < data.length; i++) {
                 var row = "<tr>";
                 row += "<td>" + data[i]['firstName'] + "</td>";
@@ -100,6 +104,9 @@ $(document).on('click', '.btnSearchPharmacistsAdminPharmacy', function () {
                 row += "<td>" + data[i]['rating'] + "</td>";
                 row += "<td>" + data[i]['pharmacy']['name'] + "</td>";
                 row += "<td>" + data[i]['pharmacy']['address'] + "</td>";
+
+                var btnRemove = "<button class='btnRemove' id = " + data[i]['id'] + "> Ukloni farmaceuta </button>";
+                row += "<td>" + btnRemove + "</td>";
 
                 $('#tablePharmacistsSearchAdminPharmacy').append(row);
             }
@@ -115,7 +122,6 @@ $(document).on('click', '.btnSearchPharmacistsAdminPharmacy', function () {
             }
         }
     });
-
 });
 
 function formToJSON(firstName, lastName) {
@@ -126,6 +132,7 @@ function formToJSON(firstName, lastName) {
         }
     );
 }
+
 
 //Registracija farmaceuta
 $(document).on('click', '.btnAddPharmacistAdminPharmacy', function () {
@@ -142,6 +149,9 @@ $(document).on('click', '.btnAddPharmacistAdminPharmacy', function () {
     var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
     pharmacistsFilterAdminPharmacy.hide();
 
+    var errorDeletePharmacist = $(".errorDeletePharmacist");
+    errorDeletePharmacist.hide();
+
 });
 
 $(document).on('click', '#btnAddSavePharmacistAdminPharmacy', function () {
@@ -153,8 +163,10 @@ $(document).on('click', '#btnAddSavePharmacistAdminPharmacy', function () {
     var phone = $("#phone").val();
     var city = $("#city").val();
     var country = $("#country").val();
+    var workingHoursFrom = $("#workingHoursFrom").val();
+    var workingHoursUntil = $("#workingHoursUntil").val();
 
-    var myJSON = formToJSON1(firstName, lastName, email, address, phone, city, country);
+    var myJSON = formToJSON1(firstName, lastName, email, address, phone, city, country, workingHoursFrom, workingHoursUntil);
 
     $.ajax({
         type: "POST",
@@ -169,6 +181,15 @@ $(document).on('click', '#btnAddSavePharmacistAdminPharmacy', function () {
         },
         success: function (data) {
             console.log("SUCCESS: ", data);
+            $("#firstName").val("");
+            $("#lastName").val("");
+            $("#email").val("");
+            $("#address").val("");
+            $("#phone").val("");
+            $("#city").val("");
+            $("#country").val("");
+            $("#workingHoursFrom").val("");
+            $("#workingHoursUntil").val("");
             var addNewPharmacistAdminPharmacy = $(".addNewPharmacistAdminPharmacy")
             addNewPharmacistAdminPharmacy.hide();
             var successAddPharmacist = $(".successAddPharmacist");
@@ -183,12 +204,19 @@ $(document).on('click', '#btnAddSavePharmacistAdminPharmacy', function () {
             {
                 window.location.href="error.html";
             }
+            if(jqXHR.status === 500)
+            {
+                var addNewPharmacistAdminPharmacy = $(".addNewPharmacistAdminPharmacy")
+                addNewPharmacistAdminPharmacy.hide();
+                var errorAddPharmacist = $(".errorAddPharmacist");
+                errorAddPharmacist.show();
+            }
         }
     });
 
 });
 
-function formToJSON1(firstName, lastName, email, address, phone, city, country) {
+function formToJSON1(firstName, lastName, email, address, phone, city, country, workingHoursFrom, workingHoursUntil) {
     return JSON.stringify(
         {
             "firstName" : firstName,
@@ -198,7 +226,9 @@ function formToJSON1(firstName, lastName, email, address, phone, city, country) 
             "address" : address,
             "phone" : phone,
             "city" : city,
-            "country" : country
+            "country" : country,
+            "beginofwork" : workingHoursFrom,
+            "endofwork" : workingHoursUntil
         }
     );
 }
@@ -215,6 +245,20 @@ $(document).on('click', '#returnToPharmacists', function () {
     pharmacistsFilterAdminPharmacy.hide();
 });
 
+$(document).on('click', '#returnToPharmacistsError', function () {
+
+    var errorAddPharmacist = $(".errorAddPharmacist");
+    errorAddPharmacist.show();
+
+    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy")
+    pharmacistsShowAdminPharmacy.show();
+
+    var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
+    pharmacistsFilterAdminPharmacy.hide();
+});
+
+
+//Filtriranje farmaceuta
 $(document).on('click', '.btnFilterPharmacistAdminPharmacy', function () {
 
     var employeesAdminPharmacy = $(".employeesAdminPharmacy")
@@ -271,7 +315,7 @@ $(document).on('click', '#btnSubmitFilterPharmacists', function () {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/pharmacists/adminPharmacistsFilter",
+        url: "http://localhost:8081/pharmacists/pharmacistsFilter",
         dataType: "json",
         contentType: "application/json",
         data: myJSON,
@@ -289,6 +333,9 @@ $(document).on('click', '#btnSubmitFilterPharmacists', function () {
                 row += "<td>" + data[i]['rating'] + "</td>";
                 row += "<td>" + data[i]['pharmacy']['name'] + "</td>";
                 row += "<td>" + data[i]['pharmacy']['address'] + "</td>";
+
+                var btnRemove = "<button class='btnRemove' id = " + data[i]['id'] + "> Ukloni farmaceuta </button>";
+                row += "<td>" + btnRemove + "</td>";
 
                 $('#tablePharmacistsAdminPharmacy').append(row);
             }
@@ -319,4 +366,93 @@ function formToJSON2(ratingOver, ratingUnder) {
 $(document).on('click', '#btnCancelFilterPharmacists', function () {
     var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
     pharmacistsFilterAdminPharmacy.hide();
+});
+
+//Brisanje farmaceuta
+$(document).on('click', '.btnRemove', function (){
+    var modal = document.getElementById("modalDelete");
+    modal.style.display = "block";
+
+    var pharmacistsAdminPharmacy = $(".pharmacistsAdminPharmacy");
+    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy");
+    var pharmacistsSearchAdminPharmacy = $(".pharmacistsSearchAdminPharmacy");
+    var addNewPharmacistAdminPharmacy= $(".addNewPharmacistAdminPharmacy");
+    var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
+
+    pharmacistsAdminPharmacy.hide();
+    pharmacistsShowAdminPharmacy.hide();
+    pharmacistsSearchAdminPharmacy.hide();
+    addNewPharmacistAdminPharmacy.hide();
+    pharmacistsFilterAdminPharmacy.hide();
+
+    var id = this.id;
+    var myJSON = JSON.stringify({"id" : id});
+
+    console.log(myJSON);
+
+    $(document).on('click', '#btnModalYes', function () {
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/pharmacists/pharmacistDelete",
+            contentType: "application/json",
+            data: myJSON,
+            beforeSend: function (xhr) {
+                if (localStorage.token) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+                }
+            },
+            success: function (data) {
+                console.log("SUCCESS", data);
+
+                window.location.href="adminPharmacyPharmacists.html";
+            },
+            error: function (jqXHR) {
+                if (jqXHR.status === 403) {
+                    window.location.href = "error.html";
+                }
+                if (jqXHR.status === 401) {
+                    window.location.href = "error.html";
+                }
+                if (jqXHR.status === 500) {
+                    var modal = document.getElementById("modalDelete");
+                    modal.style.display = "none";
+
+                    var pharmacistsAdminPharmacy = $(".pharmacistsAdminPharmacy");
+                    pharmacistsAdminPharmacy.hide();
+                    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy");
+                    pharmacistsShowAdminPharmacy.hide();
+
+                    var errorDeletePharmacist = $(".errorDeletePharmacist");
+                    errorDeletePharmacist.show();
+
+                    var response = JSON.parse(jqXHR.responseText);
+                    $('#errorDeletePharmacist').append(response['message']);
+                }
+            }
+
+
+        });
+    });
+
+    $(document).on('click', '#btnModalNo', function () {
+        var modal = document.getElementById("modalDelete");
+        modal.style.display = "none";
+
+        var pharmacistsAdminPharmacy = $(".pharmacistsAdminPharmacy");
+        pharmacistsAdminPharmacy.show();
+        var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy");
+        pharmacistsShowAdminPharmacy.show();
+
+    });
+});
+
+$(document).on('click', '#btnErrorDeletePharmacist', function () {
+    var pharmacistsAdminPharmacy = $(".pharmacistsAdminPharmacy");
+    pharmacistsAdminPharmacy.show();
+    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy");
+    pharmacistsShowAdminPharmacy.show();
+
+    var errorDeletePharmacist = $(".errorDeletePharmacist");
+    errorDeletePharmacist.hide();
 });

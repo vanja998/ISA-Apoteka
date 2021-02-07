@@ -48,7 +48,7 @@ public class PharmacyService {
 
     public Pharmacy findByRating(Float rating){return  pharmacyRepository.findByRating(rating);}
 
-
+    public Pharmacy findById(Integer id) {return pharmacyRepository.findOneById(id);}
 
     public Set<Pharmacy> getPharmaciesbyname(String name){
         Set<Pharmacy> pharmacies=pharmacyRepository.findAllByName(name);
