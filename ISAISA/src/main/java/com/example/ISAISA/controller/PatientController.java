@@ -2,9 +2,13 @@ package com.example.ISAISA.controller;
 
 import com.example.ISAISA.DTO.*;
 import com.example.ISAISA.model.*;
+
 import com.example.ISAISA.repository.AppointmentRepository;
 import com.example.ISAISA.repository.CounselingRepository;
 import com.example.ISAISA.service.ComplaintService;
+
+import com.example.ISAISA.service.MedicationService;
+
 import com.example.ISAISA.service.PatientService;
 import com.example.ISAISA.service.UserServiceDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,8 @@ import java.util.*;
 public class PatientController {
 
     private PatientService patientService;
+    private MedicationService medicationService;
+
 
     @Autowired
     private UserServiceDetails userDetailsService;
@@ -37,6 +43,10 @@ public class PatientController {
 
     @Autowired
     private CounselingRepository counselingRepository;
+
+    @Autowired
+    public void setMedicationService(MedicationService medicationService) {this.medicationService=medicationService;}
+
 
     @Autowired
     public void setPatientService(PatientService patientService) {
@@ -90,11 +100,11 @@ public class PatientController {
     @PreAuthorize("hasRole('DERMATOLOGIST')")
     public ResponseEntity<Set<PatientSearchDto>> getSearchPatientByFirstNameAndLastName(@RequestBody PatientSearchDto patientSearchDto) {
 
-        //AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Set<PatientSearchDto> patients = patientService.getPatientByFirstNameAndLastName(patientSearchDto.getFirstName(), patientSearchDto.getLastName());
 
         return new ResponseEntity<>(patients, HttpStatus.OK);
     }
+
 
     @GetMapping(value="/allcomplaintpharmacists")
     @PreAuthorize("hasRole('PATIENT')")
@@ -183,14 +193,47 @@ public class PatientController {
     public ResponseEntity<Complaint> addComplaintPharmacy(@RequestBody ReplyDTO replyDTO, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
 
         Patient user = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Complaint complaint = this.complaintService.saveComplaintPharmacy(replyDTO,user);
-
-
+        Complaint complaint = this.complaintService.saveComplaintPharmacy(replyDTO, user);
 
 
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(complaint.getId()).toUri());
         return new ResponseEntity<Complaint>(complaint, HttpStatus.CREATED);
+    }
+
+    @GetMapping(value="/allSearchPatientsPharma",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<PatientSearchDto>> getAllSearchPatientsPharma() {
+        //Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<PatientSearchDto> patients = patientService.getAllSearchPatients();
+
+        return new ResponseEntity<>(patients, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/searchPatientsPharma", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<Set<PatientSearchDto>> getSearchPatientByFirstNameAndLastNamePharma(@RequestBody PatientSearchDto patientSearchDto) {
+
+        Set<PatientSearchDto> patients = patientService.getPatientByFirstNameAndLastName(patientSearchDto.getFirstName(), patientSearchDto.getLastName());
+
+        return new ResponseEntity<>(patients, HttpStatus.OK);
+    }
+
+
+
+    @PostMapping(value="/allergiemedication", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Patient> Setallergiemedication(@RequestBody StringDto allergiemedication) {
+
+        Medication medication = medicationService.findByName(allergiemedication.getAllergiemedication());
+        Patient user = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<Medication> medicationList = user.getMedication();
+        medicationList.add(medication);
+        user.setMedication(medicationList);
+        patientService.save(user);
+
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 

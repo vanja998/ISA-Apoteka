@@ -6,7 +6,6 @@ import java.util.Date;
 @Entity
 public class Offer {
 
-
     @Id
     @SequenceGenerator(name="seq_offer", sequenceName = "seq_offer", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_offer")

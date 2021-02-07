@@ -1,8 +1,10 @@
 package com.example.ISAISA.service;
 
 import com.example.ISAISA.DTO.BooleanDto;
+import com.example.ISAISA.DTO.ExaminPatientDto;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.AppointmentRepository;
+import com.example.ISAISA.repository.CounselingRepository;
 import com.example.ISAISA.repository.ExaminationRepository;
 import com.example.ISAISA.repository.MedicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class ExaminationService {
@@ -21,6 +20,7 @@ public class ExaminationService {
     private ExaminationRepository examinationRepository;
     private AppointmentRepository appointmentRepository;
     private MedicationRepository medicationRepository;
+    private CounselingRepository counselingRepository;
 
     @Autowired
     public void setExaminationRepository(ExaminationRepository examinationRepository) {
@@ -35,6 +35,11 @@ public class ExaminationService {
     @Autowired
     public void setMedicationRepository(MedicationRepository medicationRepository) {
         this.medicationRepository = medicationRepository;
+    }
+
+    @Autowired
+    public void setCounselingRepository(CounselingRepository counselingRepository) {
+        this.counselingRepository = counselingRepository;
     }
 
     public Appointment findAppointment(Dermatologist dermatologist){
@@ -83,7 +88,14 @@ public class ExaminationService {
 
         Examination examination = examinationRepository.findOneById(examinationId);
 
-        Patient patient = examination.getExaminationAppointment().getPatient();
+        Patient patient; //= new Patient();
+        if(examination.getExaminationAppointment() != null) {
+            patient = examination.getExaminationAppointment().getPatient();
+        }
+        else {
+             patient = examination.getExaminationCounseling().getPatient();
+        }
+
         Set<Medication> allergy = patient.getMedication();
 
         List<Medication> medications = medicationRepository.findAll();
@@ -132,9 +144,13 @@ public class ExaminationService {
 
         //Set<Medication> medications = pharmacy.getMedication();
         //Set<Pharmacy> pharmaciesSet = medication.getPharmacies();
-
-        Set<Medication> medications = examination.getExaminationAppointment().getPharmacy_appointment().getMedication();
-
+        Set<Medication> medications = new HashSet<>();
+        if(examination.getExaminationAppointment() != null) {
+             medications = examination.getExaminationAppointment().getPharmacy_appointment().getMedication();
+        }
+        else {
+             medications = examination.getExaminationCounseling().getPharmacist().getPharmacy().getMedication();
+        }
         List<Integer> lekoviId = new ArrayList<>();
         for(Medication j : medications){
             lekoviId.add(j.getId());
@@ -148,6 +164,7 @@ public class ExaminationService {
             }
         }
 
+        return false;
 
         /*
         for(Pharmacy i: pharmaciesSet){
@@ -169,7 +186,7 @@ public class ExaminationService {
                 return true;
             }
         }*/
-        return false;
+
         /*List<Integer> lekoviId = new ArrayList<>();
         for(Medication j : medications){
             lekoviId.add(j.getId());
@@ -238,4 +255,139 @@ public class ExaminationService {
 
         return true;
     }
+
+    public List<Appointment> getExaminatedPatients(Dermatologist dermatologist){
+
+        List<Examination> examinations = examinationRepository.findAll();
+        Integer dermatologistId = dermatologist.getId();
+
+        List<Examination> examinationsDermatologist = new ArrayList<>();
+        for(Examination i: examinations){
+            if (i.getExaminationAppointment().getDermatologist().getId() == dermatologistId){
+                examinationsDermatologist.add(i);
+            }
+        }
+
+        List<Appointment> termini = new ArrayList<>();
+        for (Examination i: examinationsDermatologist){
+            termini.add(i.getExaminationAppointment());
+        }
+
+        return termini;
+    }
+
+    public List<ExaminPatientDto> getExaminatedPatientsSortName(Dermatologist dermatologist){
+
+        List<Examination> examinations = examinationRepository.findAll();
+        Integer dermatologistId = dermatologist.getId();
+
+        List<Examination> examinationsDermatologist = new ArrayList<>();
+        for(Examination i: examinations){
+            if (i.getExaminationAppointment().getDermatologist().getId() == dermatologistId){
+                examinationsDermatologist.add(i);
+            }
+        }
+
+        List<Appointment> termini = new ArrayList<>();
+        for (Examination i: examinationsDermatologist){
+            termini.add(i.getExaminationAppointment());
+        }
+
+        List<ExaminPatientDto> examinPatientDtos = new ArrayList<>();
+        for(Appointment i: termini){
+            ExaminPatientDto examinPatientDto = new ExaminPatientDto(i.getPatient().getFirstName(), i.getPatient().getLastName(), i.getBeginofappointment().toLocalDate());
+            examinPatientDtos.add(examinPatientDto);
+        }
+
+        Collections.sort(examinPatientDtos, Comparator.comparing(ExaminPatientDto::getName));
+
+        return examinPatientDtos;
+    }
+
+
+    public List<ExaminPatientDto> getExaminatedPatientsSortLastName(Dermatologist dermatologist){
+
+        List<Examination> examinations = examinationRepository.findAll();
+        Integer dermatologistId = dermatologist.getId();
+
+        List<Examination> examinationsDermatologist = new ArrayList<>();
+        for(Examination i: examinations){
+            if (i.getExaminationAppointment().getDermatologist().getId() == dermatologistId){
+                examinationsDermatologist.add(i);
+            }
+        }
+
+        List<Appointment> termini = new ArrayList<>();
+        for (Examination i: examinationsDermatologist){
+            termini.add(i.getExaminationAppointment());
+        }
+
+        List<ExaminPatientDto> examinPatientDtos = new ArrayList<>();
+        for(Appointment i: termini){
+            ExaminPatientDto examinPatientDto = new ExaminPatientDto(i.getPatient().getFirstName(), i.getPatient().getLastName(), i.getBeginofappointment().toLocalDate());
+            examinPatientDtos.add(examinPatientDto);
+        }
+
+        Collections.sort(examinPatientDtos, Comparator.comparing(ExaminPatientDto::getLastName));
+
+        return examinPatientDtos;
+    }
+
+    public List<ExaminPatientDto> getExaminatedPatientsSortDate(Dermatologist dermatologist){
+
+        List<Examination> examinations = examinationRepository.findAll();
+        Integer dermatologistId = dermatologist.getId();
+
+        List<Examination> examinationsDermatologist = new ArrayList<>();
+        for(Examination i: examinations){
+            if (i.getExaminationAppointment().getDermatologist().getId() == dermatologistId){
+                examinationsDermatologist.add(i);
+            }
+        }
+
+        List<Appointment> termini = new ArrayList<>();
+        for (Examination i: examinationsDermatologist){
+            termini.add(i.getExaminationAppointment());
+        }
+
+        List<ExaminPatientDto> examinPatientDtos = new ArrayList<>();
+        for(Appointment i: termini){
+            ExaminPatientDto examinPatientDto = new ExaminPatientDto(i.getPatient().getFirstName(), i.getPatient().getLastName(), i.getBeginofappointment().toLocalDate());
+            examinPatientDtos.add(examinPatientDto);
+        }
+
+        Collections.sort(examinPatientDtos, Comparator.comparing(ExaminPatientDto::getDate));
+
+        return examinPatientDtos;
+    }
+
+    //*************
+
+    public Counseling findCounseling(Pharmacist pharmacist){
+
+        LocalTime now = LocalTime.now();
+        LocalDate today = LocalDate.now();
+
+        List<Counseling> counselings = counselingRepository.findAll();
+
+        for (Counseling i : counselings){
+            if(today.isEqual(i.getBeginofappointment().toLocalDate())){
+                if(now.isAfter(i.getBeginofappointment().toLocalTime()) && now.isBefore(i.getEndofappointment().toLocalTime())){
+                    if(i.getPharmacist().getId() == pharmacist.getId()) {
+                        return i;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
+    public Integer SaveCounseling(Counseling counseling, Pharmacist user) {
+        Examination examination = new Examination();
+        examination.setExaminationCounseling(counseling);
+        examination = examinationRepository.save(examination);
+        return examination.getId();
+    }
+
 }

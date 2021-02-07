@@ -1,5 +1,6 @@
 package com.example.ISAISA.controller;
 
+import com.example.ISAISA.DTO.IdDto;
 import com.example.ISAISA.DTO.UserChangeDTO;
 import com.example.ISAISA.DTO.FilterEmployeesDTO;
 import com.example.ISAISA.DTO.PharmacistDTO;
@@ -101,7 +102,7 @@ public class PharmacistController {
         return new ResponseEntity<>(pharmacist, HttpStatus.OK);
     }
 
-    @PostMapping(value="/adminPharmacistsFilter", produces = MediaType.APPLICATION_JSON_VALUE)
+   /* @PostMapping(value="/adminPharmacistsFilter", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByRatingBetween(@RequestBody FilterEmployeesDTO pharmacistDTO) {
 
@@ -112,7 +113,7 @@ public class PharmacistController {
 
         return new ResponseEntity<>(pharmacists, HttpStatus.OK);
     }
-
+*/
     @GetMapping(value="/allPharmacists", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public ResponseEntity<Set<PharmacistDTO>> getAllPharmacists() {
@@ -133,9 +134,9 @@ public class PharmacistController {
         return new ResponseEntity<>(pharmacists, HttpStatus.OK);
     }
 
-    @PostMapping(value="/allPharmacistsFilter", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/pharmacistsFilter", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
-    public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByRatingBetweenAndPharmacy(@RequestBody FilterEmployeesDTO pharmacistDTO) {
+    public ResponseEntity<Set<PharmacistDTO>> filterPharmacists(@RequestBody FilterEmployeesDTO pharmacistDTO) {
 
         Pharmacy pharmacy = pharmacyService.findByName(pharmacistDTO.getPharmacyName());
         Float ratingUnder = (float) pharmacistDTO.getRatingUnder();
@@ -145,6 +146,12 @@ public class PharmacistController {
                 ratingOver, ratingUnder, pharmacy);
 
         return new ResponseEntity<>(pharmacists, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/pharmacistDelete", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public void deletePharmacist(@RequestBody IdDto idDto) throws Exception {
+        pharmacistService.deletePharmacist(idDto.getId());
     }
 
 }

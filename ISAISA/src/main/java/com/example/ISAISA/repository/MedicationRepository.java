@@ -8,6 +8,7 @@ import java.util.Set;
 
 public interface MedicationRepository extends JpaRepository<Medication, Integer> {
 
+   Medication findOneById(Integer id);
 
 
    Set<Medication> findAllByName(String name);

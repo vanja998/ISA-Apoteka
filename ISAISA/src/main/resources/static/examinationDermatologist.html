@@ -20,6 +20,8 @@
         <button id="btnReport">Napisi izvestaj</button>
         <button id="btnPrescript">Prepisi lek</button>
         <button id="btnNewAppointment">Zakazi novi termin</button>
+        <button id="btnExaminationDone">Zavrsi pregled</button>
+
     </div>
 
    <div class="writeReport" >
@@ -29,6 +31,7 @@
 
    <div class="prescriptMedication" >
        <h2>Proveri dostupnost leka</h2>
+       <h3>Prikazani su lekovi na koje pacijent nije alergican</h3>
        <label>Izaberite lek:</label>
        <!--<table id="tableMeds">
            <thead>
@@ -97,6 +100,45 @@
        <tr><button id='btnCancleAlternative'>Odustani od preporucivanja leka</button></tr>
    </div>
 
+
+    <div class="howToScheduleAppointment">
+        <button id='btnSelectExistingAppointment'>Izaberi unapred definisani termin</button>
+        <button id='btnCreateAppointment'>Izaberi datum i vreme novog termina</button>
+        <button id='btnCancleScheduling'>Odustani od zakazivanja</button>
+    </div>
+
+   <div class="existingAppointments">
+       <h3>Izlistani su svi slobodni termini dermatologa i termini u kojima pacijent nema zakazane preglede.</h3>
+           <table id="tableExistingAppointments">
+               <thead>
+               <tr>
+                   <th>Pocetak termina</th>
+                   <th>Kraj termina</th>
+                   <th>Cena</th>
+               </tr>
+               </thead>
+               <tbody>
+
+               </tbody>
+           </table>
+       <button id='btnCancleSchedulingFreeAppointments'>Odustani od zakazivanja</button>
+   </div>
+
+    <div class="createAppointment">
+        
+        <h2>Pocetak pregleda: </h2>
+        <input type="datetime-local" id="chStartOfAppointment">
+        <br>
+        <h2>Kraj pregleda: </h2>
+        <input type="datetime-local" id="chEndOfAppointment">
+
+        <br>
+        <h2>Cena: </h2><input id="chPrice" type="text"/>
+
+        <button id="btnCreateAppointmentNow">Zakazi</button>
+        <button id='btnCancleCreatingAppointments'>Odustani od zakazivanja</button>
+
+    </div>
 
 
 </body>

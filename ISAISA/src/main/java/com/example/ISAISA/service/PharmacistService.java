@@ -4,13 +4,17 @@ import com.example.ISAISA.DTO.PharmacistDTO;
 import com.example.ISAISA.DTO.UserChangeDTO;
 import com.example.ISAISA.model.Pharmacist;
 import com.example.ISAISA.model.Pharmacy;
+import com.example.ISAISA.repository.AppointmentRepository;
+import com.example.ISAISA.repository.CounselingRepository;
 import com.example.ISAISA.repository.PharmacistRepository;
+import org.apache.tomcat.websocket.pojo.PojoMessageHandlerPartialText;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.example.ISAISA.model.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +25,7 @@ public class PharmacistService {
     private PharmacistRepository pharmacistRepository;
     private AuthorityService authService;
     private PasswordEncoder passwordEncoder;
+    private CounselingRepository counselingRepository;
 
     @Autowired
     public void setPharmacistRepository(PharmacistRepository pharmacistRepository) {
@@ -37,13 +42,16 @@ public class PharmacistService {
         this.passwordEncoder = passwordEncoder;
     }
 
+    @Autowired
+    public void setCounselingRepository(CounselingRepository counselingRepository) { this.counselingRepository = counselingRepository; }
+
     public Set<PharmacistDTO> getPharmacistsByPharmacy(Pharmacy pharmacy) {
 
         Set<Pharmacist> pharmacists = pharmacistRepository.findAllByPharmacy(pharmacy);
 
         Set<PharmacistDTO> pharmacistDTOS = new HashSet<>();
         for(Pharmacist p : pharmacists) {
-            PharmacistDTO pharmacistDTO = new PharmacistDTO(p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
+            PharmacistDTO pharmacistDTO = new PharmacistDTO(p.getId(), p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
             pharmacistDTOS.add(pharmacistDTO);
         }
 
@@ -56,7 +64,7 @@ public class PharmacistService {
 
         Set<com.example.ISAISA.DTO.PharmacistDTO> pharmacistDTOS = new HashSet<>();
         for(Pharmacist p : pharmacists) {
-            com.example.ISAISA.DTO.PharmacistDTO pharmacistDTO = new com.example.ISAISA.DTO.PharmacistDTO(p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
+            com.example.ISAISA.DTO.PharmacistDTO pharmacistDTO = new com.example.ISAISA.DTO.PharmacistDTO(p.getId(), p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
             pharmacistDTOS.add(pharmacistDTO);
         }
 
@@ -74,6 +82,8 @@ public class PharmacistService {
         pharmacist.setCity(pharmacistDTO.getCity());
         pharmacist.setCountry(pharmacistDTO.getCountry());
         pharmacist.setPharmacy(pharmacistDTO.getPharmacy());
+        pharmacist.setBeginofwork(pharmacistDTO.getBeginofwork());
+        pharmacist.setEndofwork(pharmacistDTO.getEndofwork());
 
         pharmacist.setEnabled(true);
 
@@ -91,7 +101,7 @@ public class PharmacistService {
         Set<com.example.ISAISA.DTO.PharmacistDTO> pharmacistDTOS = new HashSet<>();
 
         for(Pharmacist p : pharmacists) {
-            com.example.ISAISA.DTO.PharmacistDTO pharmacistDTO = new com.example.ISAISA.DTO.PharmacistDTO(p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
+            com.example.ISAISA.DTO.PharmacistDTO pharmacistDTO = new com.example.ISAISA.DTO.PharmacistDTO(p.getId(), p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
             pharmacistDTOS.add(pharmacistDTO);
         }
 
@@ -120,7 +130,7 @@ public class PharmacistService {
 
         Set<com.example.ISAISA.DTO.PharmacistDTO> pharmacistDTOS = new HashSet<>();
         for(Pharmacist p : pharmacists) {
-            com.example.ISAISA.DTO.PharmacistDTO pharmacistDTO = new com.example.ISAISA.DTO.PharmacistDTO(p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
+            com.example.ISAISA.DTO.PharmacistDTO pharmacistDTO = new com.example.ISAISA.DTO.PharmacistDTO(p.getId(), p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
             pharmacistDTOS.add(pharmacistDTO);
         }
 
@@ -141,7 +151,7 @@ public class PharmacistService {
 
         Set<com.example.ISAISA.DTO.PharmacistDTO> pharmacistDTOS = new HashSet<>();
         for(Pharmacist p : pharmacists) {
-            com.example.ISAISA.DTO.PharmacistDTO pharmacistDTO = new com.example.ISAISA.DTO.PharmacistDTO(p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
+            com.example.ISAISA.DTO.PharmacistDTO pharmacistDTO = new com.example.ISAISA.DTO.PharmacistDTO(p.getId(), p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
             pharmacistDTOS.add(pharmacistDTO);
         }
 
@@ -154,11 +164,31 @@ public class PharmacistService {
 
         Set<com.example.ISAISA.DTO.PharmacistDTO> pharmacistDTOS = new HashSet<>();
         for(Pharmacist p : pharmacists) {
-            com.example.ISAISA.DTO.PharmacistDTO pharmacistDTO = new com.example.ISAISA.DTO.PharmacistDTO(p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
+            com.example.ISAISA.DTO.PharmacistDTO pharmacistDTO = new com.example.ISAISA.DTO.PharmacistDTO(p.getId(), p.getFirstName(), p.getLastName(), p.getPharmacy(), p.getRating());
             pharmacistDTOS.add(pharmacistDTO);
         }
 
         return pharmacistDTOS;
+    }
+
+    public void deletePharmacist(Integer id) throws Exception {
+        Pharmacist pharmacist = pharmacistRepository.findOneById(id);
+
+        Set<Counseling> counselings = counselingRepository.findByPharmacist(pharmacist);
+        Set<Counseling> reservedCounselings = new HashSet<>();
+
+        for (Counseling counseling : counselings) {
+            if (counseling.getPatient() != null && counseling.getBeginofappointment().isAfter(LocalDateTime.now())) {
+                reservedCounselings.add(counseling);
+            }
+        }
+
+        if(reservedCounselings.isEmpty()) {
+            this.pharmacistRepository.delete(pharmacist);
+        } else {
+            throw new Exception("Farmaceut ima zakazane termine, nije moguce ukloniti ga!");
+        }
+
     }
 
 }

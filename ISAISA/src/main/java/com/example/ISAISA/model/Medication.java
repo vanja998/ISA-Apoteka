@@ -35,7 +35,6 @@ public class Medication {
     @Column(nullable = false)
     private Boolean prescription;
 
-
     @Column(nullable = false)
     private String notes;
 
@@ -51,14 +50,20 @@ public class Medication {
     @ManyToMany(mappedBy = "medication",fetch=FetchType.EAGER)
     private Set<Supplier> suppliers = new HashSet<Supplier>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Reservation> reservations = new HashSet<Reservation>();
+
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "medication_altmedication", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "altmedication_id", referencedColumnName = "id"))
     private Set<Medication> medication = new HashSet<Medication>();
 
-    @ManyToMany(mappedBy = "medication")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "medication", fetch = FetchType.EAGER)
     private Set<Medication> alternate_medication = new HashSet<Medication>();
 
-    //@JsonIgnore
+    @JsonIgnore
     @ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "med_pharmacies", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
     private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
