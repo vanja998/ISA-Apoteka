@@ -1,9 +1,8 @@
 package com.example.ISAISA.controller;
 
-import com.example.ISAISA.DTO.IdDto;
+import com.example.ISAISA.DTO.*;
 import com.example.ISAISA.model.Appointment;
 import com.example.ISAISA.model.Dermatologist;
-import com.example.ISAISA.DTO.AppointmentDTO;
 import com.example.ISAISA.model.AdminPharmacy;
 import com.example.ISAISA.model.Pharmacy;
 import com.example.ISAISA.service.AppointmentService;
@@ -33,6 +32,7 @@ import java.util.List;
 
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value="/appointments")
@@ -192,4 +192,69 @@ public class AppointmentController {
 
         return new ResponseEntity(appointment, HttpStatus.OK);
     }
+
+    @PostMapping(value="/existingAppointmentsDermatologist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<List<Appointment>> existingFreeAppointmentsDermatologist(@RequestBody IdDto examinationId) throws Exception {
+
+        Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<Appointment> appointments = appointmentService.findFreeAppointmentsForDermatologist(user, examinationId.getId());
+
+
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
+    }
+
+
+    @PostMapping(value="/saveAppointmentDermatologist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<Appointment> saveAppointmentDermatologist(@RequestBody SaveAppointment saveAppointment) throws Exception {
+
+        Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Appointment appointment = appointmentService.saveAppointmentDermatologist(saveAppointment.getId(), saveAppointment.getAppointmentId());
+
+        return new ResponseEntity<>(appointment, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/createAppointmentDermatologist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<BooleanDto> createAppointmentDermatologist(@RequestBody CreateAppointmentDto createAppointmentDto) throws Exception {
+
+        Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Boolean appointment = appointmentService.createAppointmentDermatologist(user, createAppointmentDto.getId(),  createAppointmentDto.getStartOfAppointment(), createAppointmentDto.getEndOfAppointment(), createAppointmentDto.getPrice());
+
+        BooleanDto booleanDto = new BooleanDto(appointment);
+
+        return new ResponseEntity<>(booleanDto, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/getAppointmentsWeek",produces = MediaType.APPLICATION_JSON_VALUE)// value nije naveden, jer koristimo bazni url
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<List<CalendarDTO>> getAppointmentsWeek() {
+
+        Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<CalendarDTO> calendarDTOS = appointmentService.getAppointmentsWeek(user);
+
+        return new ResponseEntity<>(calendarDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/getAppointmentsMonth",produces = MediaType.APPLICATION_JSON_VALUE)// value nije naveden, jer koristimo bazni url
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<List<CalendarDTO>> getAppointmentsMonth() {
+
+        Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<CalendarDTO> calendarDTOS = appointmentService.getAppointmentsMonth(user);
+
+        return new ResponseEntity<>(calendarDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/getAppointmentsYear",produces = MediaType.APPLICATION_JSON_VALUE)// value nije naveden, jer koristimo bazni url
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<List<CalendarDTO>> getAppointmentsYear() {
+
+        Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<CalendarDTO> calendarDTOS = appointmentService.getAppointmentsYear(user);
+
+        return new ResponseEntity<>(calendarDTOS, HttpStatus.OK);
+    }
+
 }

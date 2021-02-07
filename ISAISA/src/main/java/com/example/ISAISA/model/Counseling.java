@@ -1,7 +1,11 @@
 package com.example.ISAISA.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Counseling {
@@ -26,6 +30,17 @@ public class Counseling {
     @Column
     private Integer price;
 
+
+    @OneToOne(mappedBy = "examinationCounseling")
+    private Examination counseling;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "newCounseling", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Examination> examinations = new HashSet<Examination>();
+
+    public Counseling() {
+    }
+
     public Counseling(Integer id, Patient patient, Pharmacist pharmacist, LocalDateTime beginofappointment, LocalDateTime endofappointment, Integer price) {
         this.id = id;
         this.patient = patient;
@@ -33,9 +48,6 @@ public class Counseling {
         this.beginofappointment = beginofappointment;
         this.endofappointment = endofappointment;
         this.price = price;
-    }
-
-    public Counseling() {
     }
 
     public Integer getId() {
@@ -86,4 +98,19 @@ public class Counseling {
         this.price = price;
     }
 
+    public Examination getCounseling() {
+        return counseling;
+    }
+
+    public void setCounseling(Examination counseling) {
+        this.counseling = counseling;
+    }
+
+    public Set<Examination> getExaminations() {
+        return examinations;
+    }
+
+    public void setExaminations(Set<Examination> examinations) {
+        this.examinations = examinations;
+    }
 }

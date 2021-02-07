@@ -5,14 +5,14 @@ $(document).ready(function () {
     patientsShowAll.show();
     var patientsShowSearch = $(".patientsShowSearch")
     patientsShowSearch.hide();
-    var appointmentStart = $(".appointmentStart")
-    appointmentStart.hide();
-    var appoinmtentDoesNotExist = $(".appoinmtentDoesNotExist")
-    appoinmtentDoesNotExist.hide();
+    var counselingStart = $(".counselingStart")
+    counselingStart.hide();
+    var counselingDoesNotExist = $(".counselingDoesNotExist")
+    counselingDoesNotExist.hide();
 
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/patients/allSearchPatientsDerma",
+        url: "http://localhost:8081/patients/allSearchPatientsPharma",
         dataType: "json",
         beforeSend: function (xhr) {
             if (localStorage.token) {
@@ -48,10 +48,10 @@ $(document).on('click', '#btnSearchPatient', function () {
     patientsShowAll.hide();
     var patientsShowSearch = $(".patientsShowSearch")
     patientsShowSearch.show();
-    var appointmentStart = $(".appointmentStart")
-    appointmentStart.hide();
-    var appoinmtentDoesNotExist = $(".appoinmtentDoesNotExist")
-    appoinmtentDoesNotExist.hide();
+    var counselingStart = $(".counselingStart")
+    counselingStart.hide();
+    var counselingDoesNotExist = $(".counselingDoesNotExist")
+    counselingDoesNotExist.hide();
 
     var searchParam = $("#patientSearch").val();
     searchParam = searchParam.split(" ");
@@ -63,7 +63,7 @@ $(document).on('click', '#btnSearchPatient', function () {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/patients/searchPatientsDerma",
+        url: "http://localhost:8081/patients/searchPatientsPharma",
         dataType: "json",
         contentType: "application/json",
         data: myJSON,
@@ -85,7 +85,7 @@ $(document).on('click', '#btnSearchPatient', function () {
                 row += "<td>" + data[i]['phone'] + "</td>";
 
 
-                var btn = "<button class='btnStartAppointment' id = " + data[i]['id'] + ">Zapocni pregled ako postoji</button>";
+                var btn = "<button class='btnStartConseling' id = " + data[i]['id'] + ">Zapocni pregled ako postoji</button>";
                 row += "<td>" + btn + "</td>";
                 $('#tablepatientsShowSearch').append(row);
             }
@@ -108,7 +108,7 @@ function formToJSON(firstName, lastName) {
     );
 }
 
-$(document).on('click', '.btnStartAppointment', function () {
+$(document).on('click', '.btnStartConseling', function () {
 
     unesiPretragu = $(".unesiPretragu")
     unesiPretragu.hide();
@@ -116,17 +116,17 @@ $(document).on('click', '.btnStartAppointment', function () {
     patientsShowAll.hide();
     var patientsShowSearch = $(".patientsShowSearch")
     patientsShowSearch.hide();
-    var appointmentStart = $(".appointmentStart")
-    appointmentStart.hide();
-    var appoinmtentDoesNotExist = $(".appoinmtentDoesNotExist")
-    appoinmtentDoesNotExist.hide();
+    var counselingStart = $(".counselingStart")
+    counselingStart.hide();
+    var counselingDoesNotExist = $(".counselingDoesNotExist")
+    counselingDoesNotExist.hide();
     var id = this.id;
     //var idd = formToJSON(id);
     var idd= JSON.stringify({"id":id});
     //console.log(idd);
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/appointments/checkIfAppointmentExists",
+        url: "http://localhost:8081/counselings/checkIfCounselingExists",
         dataType: "json",
         contentType: "application/json",
         data: idd,
@@ -138,7 +138,7 @@ $(document).on('click', '.btnStartAppointment', function () {
             console.log("SUCCESS : ", data);
             if( data['id'] != null) {
                 console.log("SUCCESS : ", data);
-                appointmentStart.show();
+                counselingStart.show();
                 var btnStart = "<button class='btnStart' id = " + data['id'] + ">Zapocni pregled</button>";
                 var btnPenal = "<button class='btnPenal' id = " + data['id'] + ">Pacijent se nije pojavio</button>";
                 var btnCancle = "<button class='btnCancle' id = " + data['id'] + ">Odustani od pregleda</button>";
@@ -148,17 +148,17 @@ $(document).on('click', '.btnStartAppointment', function () {
                 row += "<td>" + btnPenal + "</td>";
                 row += "<td>" + btnCancle + "</td>";
 
-                $('#tableAppointmentExists').append(row);
+                $('#tableCounselingExists').append(row);
             }
-            },
+        },
         error: function () {
-            appoinmtentDoesNotExist.show();
+            counselingDoesNotExist.show();
         }
     });
 });
 
 $(document).on('click', '.btnCancle', function () {
-    window.location.href = "welcomeDermatologist.html";
+    window.location.href = "welcomePharmacist.html";
 
 });
 $(document).on('click', '.btnPenal', function () {
@@ -177,7 +177,7 @@ $(document).on('click', '.btnPenal', function () {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/appointments/penalPatient",
+        url: "http://localhost:8081/counselings/penalPatient",
         dataType: "json",
         contentType: "application/json",
         data: idd,
@@ -187,7 +187,8 @@ $(document).on('click', '.btnPenal', function () {
             }},
         success: function (data) {
             console.log("SUCCESS : ", data);
-            window.location.href="welcomeDermatologist.html";
+            window.location.href="welcomePharmacist.html";
+            alert('Pacijent penal')
 
         },
         error: function () {
@@ -198,6 +199,6 @@ $(document).on('click', '.btnPenal', function () {
 });
 
 $(document).on('click', '.btnStart', function () {
-    window.location.href="examinationDermatologist.html";
+    window.location.href="examinationPharmacist.html";
 
 });

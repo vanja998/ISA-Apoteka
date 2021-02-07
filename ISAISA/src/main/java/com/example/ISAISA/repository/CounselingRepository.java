@@ -12,4 +12,5 @@ public interface CounselingRepository extends JpaRepository<Counseling, Integer>
     List<Counseling> findAllByPatient(Patient patient);
 
     Set<Counseling> findByPharmacist(Pharmacist pharmacist);
+
 }

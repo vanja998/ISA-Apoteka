@@ -10,6 +10,7 @@ import java.util.Set;
 @DiscriminatorValue("patient")
 public class Patient extends User{
 
+    @JsonIgnore
     @Column
     private Integer penalty;
 

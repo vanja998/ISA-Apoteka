@@ -24,11 +24,19 @@ public class Examination {
     @JoinColumn(name = "examinationAppointment_id", referencedColumnName = "id")
     private Appointment examinationAppointment;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "examinationCounseling_id", referencedColumnName = "id")
+    private Counseling examinationCounseling;
+
+
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Medication prescriptedMedication;
 
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Appointment newAppointment;
+
+    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    private Counseling newCounseling;
 
     public Examination() {
     }
@@ -79,5 +87,21 @@ public class Examination {
 
     public void setNewAppointment(Appointment newAppointment) {
         this.newAppointment = newAppointment;
+    }
+
+    public Counseling getExaminationCounseling() {
+        return examinationCounseling;
+    }
+
+    public void setExaminationCounseling(Counseling examinationCounseling) {
+        this.examinationCounseling = examinationCounseling;
+    }
+
+    public Counseling getNewCounseling() {
+        return newCounseling;
+    }
+
+    public void setNewCounseling(Counseling newCounseling) {
+        this.newCounseling = newCounseling;
     }
 }
