@@ -3,6 +3,7 @@ package com.example.ISAISA.controller;
 import com.example.ISAISA.DTO.MedicationDto;
 import com.example.ISAISA.DTO.PharmacyDTO;
 import com.example.ISAISA.model.AdminPharmacy;
+import com.example.ISAISA.model.Appointment;
 import com.example.ISAISA.model.Medication;
 import com.example.ISAISA.model.Pharmacy;
 import com.example.ISAISA.service.MedicationService;
@@ -139,15 +140,20 @@ public class PharmacyController {
 
     @PostMapping(value="/PharmaciesSearchforReservations", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PATIENT')")
+
     public ResponseEntity<List<Pharmacy>> findallPharmaciesByMedication(@RequestBody MedicationDto medicationDto) {
 
-        List<Medication> medications= (List<Medication>) medicationService.findAllByName(medicationDto.getName());
+        Medication medication=medicationService.findByName(medicationDto.getName());
 
-        List<Pharmacy> listofpharmacies = pharmacyService.findAll();
+        List<Pharmacy> listofpharmacies = pharmacyService.findallByMedication(medication);
 
         List<Pharmacy> pharmacies = new ArrayList<>();
 
+        for (Pharmacy phramacy: listofpharmacies){
 
+                pharmacies.add(phramacy);
+
+        }
 
 
         return new ResponseEntity<>(pharmacies, HttpStatus.OK);

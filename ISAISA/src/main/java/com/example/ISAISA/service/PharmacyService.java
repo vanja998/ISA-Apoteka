@@ -23,6 +23,8 @@ public class PharmacyService {
         this.pharmacyRepository = pharmacyRepository;
     }
 
+    public Pharmacy findById (Integer id){return pharmacyRepository.findOneById(id);}
+
     public Pharmacy findByAddress(String address) throws AccessDeniedException {
         Pharmacy p = pharmacyRepository.findByAddress(address);
         return p;

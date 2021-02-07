@@ -8,21 +8,18 @@
 </head>
 <body>
 <div class="medicationssearch">
-    <input type="search" id="name" name="q" placeholder="Unesite ime i prezime farmaceuta"/>
+    <h1>unesi ime leka koje zelis da rezervises</h1>
+    <input type="search" id="name" name="q" placeholder="Unesite ime leka"/>
     <input type="submit" id="btnSearchMedication"/>
-
+    <h2> unesi datum rezervacije</h2>
+    <input type="date" id="dateofreservation"/>
     <div class="medicationsShowMeds">
         <table id="tableMedicationsSearch">
-            <h1>lekovi</h1>
+            <h1>Izaberi apoteku iz koje zelis da porucis lek</h1>
             <tr>
-                <th>sifra</th>
-                <th>ime</th>
-                <th>tip leka</th>
-                <th>oblik</th>
-                <th>sastojci</th>
-                <th>proizvodjac</th>
-                <th>recept</th>
-                <th>beleske</th>
+                <th>id</th>
+                <th>ime apoteke</th>
+                <th>adresa</th>
             </tr>
         </table>
     </div>

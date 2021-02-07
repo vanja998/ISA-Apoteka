@@ -12,23 +12,45 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_reservation")
     private Integer id;
 
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Patient patient;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Pharmacy pharmacy;
 
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Medication medication;
 
+    @Column
     private Date dateofreservation;
 
+    @Column
     private Boolean medicationtaken;
+
+    public Medication getMedication() {
+        return medication;
+    }
+
+    public void setMedication(Medication medication) {
+        this.medication = medication;
+    }
 
     public Reservation(Integer id, Patient patient, Pharmacy pharmacy, Date dateofreservation, Boolean medicationtaken) {
         this.id = id;
         this.patient = patient;
         this.pharmacy = pharmacy;
+        this.dateofreservation = dateofreservation;
+        this.medicationtaken = medicationtaken;
+    }
+
+    public Reservation(Integer id, Patient patient, Pharmacy pharmacy, Medication medication, Date dateofreservation, Boolean medicationtaken) {
+        this.id = id;
+        this.patient = patient;
+        this.pharmacy = pharmacy;
+        this.medication = medication;
         this.dateofreservation = dateofreservation;
         this.medicationtaken = medicationtaken;
     }
