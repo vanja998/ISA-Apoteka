@@ -18,6 +18,9 @@ public class Offer {
     @Column
     private Date deliveryDate;
 
+    @Column
+    private String statusSupplier;
+
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Orderr orderr;
 
@@ -25,6 +28,15 @@ public class Offer {
     private Supplier supplier;
 
     public Offer() {
+    }
+
+    public Offer(Integer id, Integer offerPrice, Date deliveryDate, String statusSupplier, Orderr orderr, Supplier supplier) {
+        this.id = id;
+        this.offerPrice = offerPrice;
+        this.deliveryDate = deliveryDate;
+        this.statusSupplier = statusSupplier;
+        this.orderr = orderr;
+        this.supplier = supplier;
     }
 
     public Offer(Integer id, Integer offerPrice, Date deliveryDate, Orderr orderr, Supplier supplier) {
@@ -73,5 +85,13 @@ public class Offer {
 
     public void setSupplier(Supplier supplier) {
         this.supplier = supplier;
+    }
+
+    public String getStatusSupplier() {
+        return statusSupplier;
+    }
+
+    public void setStatusSupplier(String statusSupplier) {
+        this.statusSupplier = statusSupplier;
     }
 }

@@ -33,7 +33,7 @@ insert into "allergy_patient" (patient_id,medication_id) values (1,1);
 insert into "complaint"(id,question,answered,patient_id,user_id,ishospital) values(nextval('seq_complaint'),'Zasto dermatolog stalno kasni??',false,1,6,false);
 insert into "complaint"(id,question,answered,patient_id,pharmacy_id,ishospital) values(nextval('seq_complaint'),'Zasto dermatolog stalno kasni??',false,1,1,true);
 
-insert into "orderr"(id,dateDeadline,statusAdmin,statusSupplier,admin_id) values(nextval('seq_orderr'),'2021-12-31','ceka_na_ponude','ceka_na_odgovor',4);
+insert into "orderr"(id,dateDeadline,statusAdmin,admin_id) values(nextval('seq_orderr'),'2021-12-31','ceka_na_ponude',4);
 
 insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,1,1);
 insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,2,1);

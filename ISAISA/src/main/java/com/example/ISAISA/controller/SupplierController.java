@@ -8,6 +8,7 @@ import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.*;
 import com.example.ISAISA.service.*;
 import org.hibernate.Hibernate;
+import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -69,11 +70,13 @@ public class SupplierController {
 
             Supplier user = (Supplier) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Offer offer= offerRepository.findOneByOrderrAndSupplier(orderr,user);
+            String str="nema ponudu";
             Integer ponuda=0;
             if(offer!=null) {
                 ponuda=offer.getOfferPrice();
+                str=offer.getStatusSupplier();
             }
-            OrderrDTO orderrDTO = new OrderrDTO(orderr.getId(),orderr.getDateDeadline(),orderr.getStatusSupplier(),emailAdmin,pharmacyName,address,ponuda,user);
+            OrderrDTO orderrDTO = new OrderrDTO(orderr.getId(),orderr.getDateDeadline(),str,emailAdmin,pharmacyName,address,ponuda,user);
             orderrDTOS.add(orderrDTO);
         }
         return new ResponseEntity<>(orderrDTOS, HttpStatus.OK);
@@ -126,8 +129,11 @@ public class SupplierController {
     @PostMapping(value="/filter",produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('SUPPLIER')")
     public ResponseEntity<List<OrderrDTO>> filterOrders(@RequestBody StatusDTO statusDTO) {
-        List<Orderr> orderList = this.orderRepository.findAllByStatusSupplier(statusDTO.getStatus());
-
+        List<Offer> offerList = this.offerRepository.findAllByStatusSupplier(statusDTO.getStatus());
+        List<Orderr> orderList= new ArrayList<>();
+        for (Offer offer: offerList){
+            orderList.add(offer.getOrderr());
+        }
 
         List<OrderrDTO> orderrDTOS = new ArrayList<>();
 
@@ -144,7 +150,7 @@ public class SupplierController {
             if(offer!=null) {
                 ponuda=offer.getOfferPrice();
             }
-            OrderrDTO orderrDTO = new OrderrDTO(orderr.getId(),orderr.getDateDeadline(),orderr.getStatusSupplier(),emailAdmin,pharmacyName,address,ponuda,user);
+            OrderrDTO orderrDTO = new OrderrDTO(orderr.getId(),orderr.getDateDeadline(),offer.getStatusSupplier(),emailAdmin,pharmacyName,address,ponuda,user);
             orderrDTOS.add(orderrDTO);
         }
         return new ResponseEntity<>(orderrDTOS, HttpStatus.OK);

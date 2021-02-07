@@ -30,6 +30,7 @@ public class OfferService {
         offer.setOrderr(orderr);
         offer.setDeliveryDate(offerDTO.getDeliveryDate());
         offer.setSupplier(supplier);
+        offer.setStatusSupplier("ceka_na_odgovor");
         offer=this.offerRepository.save(offer);
         return offer;
 

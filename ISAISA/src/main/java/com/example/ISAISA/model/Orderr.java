@@ -15,12 +15,13 @@ public class Orderr {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_orderr")
     private Integer id;
 
-
+    @Column
     private Date dateDeadline;
 
+    @Column
     private String statusAdmin;
 
-    private String statusSupplier;
+
 
     @JsonIgnore
     @OneToMany(mappedBy = "orderr", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -34,11 +35,11 @@ public class Orderr {
     @JoinColumn(name = "admin_id", referencedColumnName = "id")
     private AdminPharmacy adminPharmacy;
 
-    public Orderr(Integer id, Date dateDeadline, String statusAdmin, String statusSupplier) {
+    public Orderr(Integer id, Date dateDeadline, String statusAdmin) {
         this.id = id;
         this.dateDeadline = dateDeadline;
         this.statusAdmin = statusAdmin;
-        this.statusSupplier = statusSupplier;
+
     }
 
     public Orderr() {
@@ -66,14 +67,6 @@ public class Orderr {
 
     public void setStatusAdmin(String statusAdmin) {
         this.statusAdmin = statusAdmin;
-    }
-
-    public String getStatusSupplier() {
-        return statusSupplier;
-    }
-
-    public void setStatusSupplier(String statusSupplier) {
-        this.statusSupplier = statusSupplier;
     }
 
     public AdminPharmacy getAdminPharmacy() {
