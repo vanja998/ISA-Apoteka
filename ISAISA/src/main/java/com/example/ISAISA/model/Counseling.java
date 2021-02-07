@@ -1,7 +1,11 @@
 package com.example.ISAISA.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Counseling {
@@ -28,6 +32,12 @@ public class Counseling {
     @Column
     private Integer price;
 
+    @OneToOne(mappedBy = "examinationCounseling")
+    private Examination counseling;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "newCounseling", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Examination> examinations = new HashSet<Examination>();
 
     public Counseling() {
     }

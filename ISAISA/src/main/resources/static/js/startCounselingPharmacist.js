@@ -198,7 +198,7 @@ $(document).on('click', '.btnPenal', function () {
     });
 });
 
-/*$(document).on('click', '.btnStart', function () {
-    window.location.href="examinationDermatologist.html";
+$(document).on('click', '.btnStart', function () {
+    window.location.href="examinationPharmacist.html";
 
-});*/
+});
