@@ -78,10 +78,28 @@ public class PatientController {
     @PreAuthorize("hasRole('DERMATOLOGIST')")
     public ResponseEntity<Set<PatientSearchDto>> getSearchPatientByFirstNameAndLastName(@RequestBody PatientSearchDto patientSearchDto) {
 
-        //AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Set<PatientSearchDto> patients = patientService.getPatientByFirstNameAndLastName(patientSearchDto.getFirstName(), patientSearchDto.getLastName());
 
         return new ResponseEntity<>(patients, HttpStatus.OK);
     }
+
+    @GetMapping(value="/allSearchPatientsPharma",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<PatientSearchDto>> getAllSearchPatientsPharma() {
+        //Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<PatientSearchDto> patients = patientService.getAllSearchPatients();
+
+        return new ResponseEntity<>(patients, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/searchPatientsPharma", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<Set<PatientSearchDto>> getSearchPatientByFirstNameAndLastNamePharma(@RequestBody PatientSearchDto patientSearchDto) {
+
+        Set<PatientSearchDto> patients = patientService.getPatientByFirstNameAndLastName(patientSearchDto.getFirstName(), patientSearchDto.getLastName());
+
+        return new ResponseEntity<>(patients, HttpStatus.OK);
+    }
+
 
 }
