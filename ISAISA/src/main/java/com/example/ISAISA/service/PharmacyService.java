@@ -23,6 +23,8 @@ public class PharmacyService {
         this.pharmacyRepository = pharmacyRepository;
     }
 
+    public Pharmacy findById (Integer id){return pharmacyRepository.findOneById(id);}
+
     public Pharmacy findByAddress(String address) throws AccessDeniedException {
         Pharmacy p = pharmacyRepository.findByAddress(address);
         return p;
@@ -44,11 +46,12 @@ public class PharmacyService {
         return pharmacyRepository.findAll();
     }
 
+    public List<Pharmacy> findallByMedication(Medication medication) { return pharmacyRepository.findAllByMedication(medication);}
+
     public Pharmacy findByName(String name) { return pharmacyRepository.findByName(name); }
 
     public Pharmacy findByRating(Float rating){return  pharmacyRepository.findByRating(rating);}
 
-    public Pharmacy findById(Integer id) {return pharmacyRepository.findOneById(id);}
 
     public Set<Pharmacy> getPharmaciesbyname(String name){
         Set<Pharmacy> pharmacies=pharmacyRepository.findAllByName(name);

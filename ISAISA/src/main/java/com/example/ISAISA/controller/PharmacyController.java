@@ -1,16 +1,18 @@
 package com.example.ISAISA.controller;
 
+
 import com.example.ISAISA.DTO.IdDto;
+import com.example.ISAISA.DTO.MedicationDto;
 import com.example.ISAISA.DTO.PharmacyDTO;
-import com.example.ISAISA.model.AdminPharmacy;
+import com.example.ISAISA.model.Medication;
 import com.example.ISAISA.model.Pharmacy;
+import com.example.ISAISA.service.MedicationService;
 import com.example.ISAISA.service.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
@@ -23,6 +25,11 @@ import java.util.Set;
 public class PharmacyController {
 
     private PharmacyService pharmacyService;
+    private MedicationService medicationService;
+    @Autowired
+    public void setMedicationService(MedicationService medicationService) {
+        this.medicationService = medicationService;
+    }
 
     @Autowired
     public void setPharmacistService(PharmacyService pharmacyService) {
@@ -129,6 +136,25 @@ public class PharmacyController {
         return new ResponseEntity<>(pharmaciesDTOS, HttpStatus.OK);
     }
 
+    @PostMapping(value="/PharmaciesSearchforReservations", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
 
+    public ResponseEntity<List<Pharmacy>> findallPharmaciesByMedication(@RequestBody MedicationDto medicationDto) {
+
+        Medication medication=medicationService.findByName(medicationDto.getName());
+
+        List<Pharmacy> listofpharmacies = pharmacyService.findallByMedication(medication);
+
+        List<Pharmacy> pharmacies = new ArrayList<>();
+
+        for (Pharmacy phramacy: listofpharmacies){
+
+                pharmacies.add(phramacy);
+
+        }
+
+
+        return new ResponseEntity<>(pharmacies, HttpStatus.OK);
+    }
 
 }

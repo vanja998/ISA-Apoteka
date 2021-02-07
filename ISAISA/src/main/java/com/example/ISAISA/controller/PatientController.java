@@ -2,9 +2,13 @@ package com.example.ISAISA.controller;
 
 import com.example.ISAISA.DTO.*;
 import com.example.ISAISA.model.*;
+
 import com.example.ISAISA.repository.AppointmentRepository;
 import com.example.ISAISA.repository.CounselingRepository;
 import com.example.ISAISA.service.ComplaintService;
+
+import com.example.ISAISA.service.MedicationService;
+
 import com.example.ISAISA.service.PatientService;
 import com.example.ISAISA.service.UserServiceDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,8 @@ import java.util.*;
 public class PatientController {
 
     private PatientService patientService;
+    private MedicationService medicationService;
+
 
     @Autowired
     private UserServiceDetails userDetailsService;
@@ -37,6 +43,10 @@ public class PatientController {
 
     @Autowired
     private CounselingRepository counselingRepository;
+
+    @Autowired
+    public void setMedicationService(MedicationService medicationService) {this.medicationService=medicationService;}
+
 
     @Autowired
     public void setPatientService(PatientService patientService) {
@@ -94,6 +104,7 @@ public class PatientController {
 
         return new ResponseEntity<>(patients, HttpStatus.OK);
     }
+
 
     @GetMapping(value="/allcomplaintpharmacists")
     @PreAuthorize("hasRole('PATIENT')")
@@ -206,6 +217,23 @@ public class PatientController {
         Set<PatientSearchDto> patients = patientService.getPatientByFirstNameAndLastName(patientSearchDto.getFirstName(), patientSearchDto.getLastName());
 
         return new ResponseEntity<>(patients, HttpStatus.OK);
+    }
+
+
+
+    @PostMapping(value="/allergiemedication", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Patient> Setallergiemedication(@RequestBody StringDto allergiemedication) {
+
+        Medication medication = medicationService.findByName(allergiemedication.getAllergiemedication());
+        Patient user = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<Medication> medicationList = user.getMedication();
+        medicationList.add(medication);
+        user.setMedication(medicationList);
+        patientService.save(user);
+
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
 

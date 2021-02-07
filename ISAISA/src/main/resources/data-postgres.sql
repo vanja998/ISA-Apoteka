@@ -73,6 +73,8 @@ insert into "promotion" (id, description, validFrom, validUntil, pharmacy_id) va
 
 insert into "promotion_patients" (patient_id, pharmacy_id) values (1, 1);
 
+insert into "reservation"(id,patient_id,pharmacy_id,medication_id,dateofreservation,medicationtaken) values (nextval('seq_reservation'),2,1,1,'2021-12-03',false);
+
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_PATIENT');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_ADMINSYSTEM');
 INSERT INTO AUTHORITY (name) VALUES ('ROLE_DERMATOLOGIST');

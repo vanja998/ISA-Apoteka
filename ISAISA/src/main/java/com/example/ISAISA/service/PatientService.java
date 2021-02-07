@@ -3,6 +3,7 @@ package com.example.ISAISA.service;
 import com.example.ISAISA.DTO.PatientSearchDto;
 import com.example.ISAISA.DTO.PharmacistDTO;
 import com.example.ISAISA.DTO.UserChangeDTO;
+import com.example.ISAISA.model.Appointment;
 import com.example.ISAISA.model.Patient;
 import com.example.ISAISA.model.Pharmacist;
 import com.example.ISAISA.model.Pharmacy;
@@ -26,7 +27,7 @@ public class PatientService {
     public Optional<Patient> findById(Integer patientId) {
         return patientRepository.findById(patientId);
     }
-
+    public Patient save(Patient patient){return patientRepository.save(patient);}
 
     public Patient changePatientInfo(UserChangeDTO userDTO) {
 

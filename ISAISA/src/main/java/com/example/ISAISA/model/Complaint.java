@@ -19,6 +19,7 @@ public class Complaint {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+
     @JsonIgnore
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_id", referencedColumnName = "id")

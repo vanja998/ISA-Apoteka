@@ -30,6 +30,13 @@ public class Pharmacy {
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Complaint> complaints;
 
+
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<Reservation> reservations = new HashSet<Reservation>();
+
+
     @JsonIgnore
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<AdminPharmacy> adminPharmacySet = new HashSet<AdminPharmacy>();
@@ -137,6 +144,30 @@ public class Pharmacy {
 
     public void setPatients_promotions(Set<Patient> patients_promotions) {
         this.patients_promotions = patients_promotions;
+    }
+
+    public Set<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(Set<Reservation> reservations) {
+        this.reservations = reservations;
+    }
+
+    public Set<Dermatologist_Pharmacyy> getDermatologist_pharmacies() {
+        return dermatologist_pharmacies;
+    }
+
+    public void setDermatologist_pharmacies(Set<Dermatologist_Pharmacyy> dermatologist_pharmacies) {
+        this.dermatologist_pharmacies = dermatologist_pharmacies;
+    }
+
+    public Set<Promotion> getPromotions() {
+        return promotions;
+    }
+
+    public void setPromotions(Set<Promotion> promotions) {
+        this.promotions = promotions;
     }
 
     @Override
