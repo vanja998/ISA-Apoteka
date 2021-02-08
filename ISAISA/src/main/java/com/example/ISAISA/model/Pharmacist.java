@@ -12,7 +12,7 @@ import java.util.Set;
 @DiscriminatorValue("pharmacist")
 public class Pharmacist extends User {
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Pharmacy pharmacy;
 
     @Column

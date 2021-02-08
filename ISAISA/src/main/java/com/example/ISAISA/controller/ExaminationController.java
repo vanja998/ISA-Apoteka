@@ -210,4 +210,31 @@ public class ExaminationController {
 
     }
 
+    @PostMapping(value="/savePrescriptionPharmacist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<BooleanDto> savePrescriptionPharmacist(@RequestBody SavePrescriptionDto savePrescriptionDto) throws Exception {
+
+        Boolean isDone = examinationService.savePrescription(savePrescriptionDto.getId(), savePrescriptionDto.getName(), savePrescriptionDto.getDuration());
+
+        BooleanDto booleanDto = new BooleanDto(isDone);
+        return new ResponseEntity<>(booleanDto, HttpStatus.OK);
+    }
+
+
+    @PostMapping(value="/getAlternativeMedicationsPharmacist",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<MedicationsForPrescriptionDto>> getAlternativeMedicationsPharmacist(@RequestBody MedicationExaminationDto medicationExaminationDto) {
+
+        List<String> alternativeMedications = examinationService.getAlternativeMedications(medicationExaminationDto.getId(), medicationExaminationDto.getName());
+
+        List<MedicationsForPrescriptionDto> listMedications = new ArrayList<>();
+
+        for(String i : alternativeMedications){
+            MedicationsForPrescriptionDto medicationsForPrescriptionDto = new MedicationsForPrescriptionDto(i);
+            listMedications.add(medicationsForPrescriptionDto);
+        }
+
+        return new ResponseEntity<>(listMedications, HttpStatus.OK);
+    }
+
 }

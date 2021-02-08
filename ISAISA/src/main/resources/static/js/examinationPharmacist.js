@@ -13,14 +13,12 @@ $(document).ready(function () {
     medInPharmacy.hide();
     var medNotInPharmacy = $(".medNotInPharmacy");
     medNotInPharmacy.hide();
-    /*var alternativeMedication = $(".alternativeMedication");
+    var alternativeMedication = $(".alternativeMedication");
     alternativeMedication.hide();
-    var howToScheduleAppointment = $(".howToScheduleAppointment")
-    howToScheduleAppointment.hide();
-    var existingAppointments = $(".existingAppointments")
-    existingAppointments.hide();
-    var createAppointment = $(".createAppointment")
-    createAppointment.hide();*/
+    var ScheduleCounseling = $(".ScheduleCounseling")
+    ScheduleCounseling.hide();
+    var createCounseling = $(".createCounseling")
+    createCounseling.hide();
 
     $.ajax({
         type: "GET",
@@ -55,14 +53,12 @@ $(document).on('click', '#btnReport', function () {
     medInPharmacy.hide();
     var medNotInPharmacy = $(".medNotInPharmacy");
     medNotInPharmacy.hide();
-    /*var alternativeMedication = $(".alternativeMedication");
+    var alternativeMedication = $(".alternativeMedication");
     alternativeMedication.hide();
-    var howToScheduleAppointment = $(".howToScheduleAppointment")
-    howToScheduleAppointment.hide();
-    var existingAppointments = $(".existingAppointments")
-    existingAppointments.hide();
-    var createAppointment = $(".createAppointment")
-    createAppointment.hide();*/
+    var ScheduleCounseling = $(".ScheduleCounseling")
+    ScheduleCounseling.hide();
+    var createCounseling = $(".createCounseling")
+    createCounseling.hide();
 
     $(document).on('click', '#btnSubmitReport', function () {
         var report = $("#chReport").val();
@@ -106,14 +102,12 @@ $(document).on('click', '#btnPrescript', function () {
     medInPharmacy.hide();
     var medNotInPharmacy = $(".medNotInPharmacy");
     medNotInPharmacy.hide();
-    /*var alternativeMedication = $(".alternativeMedication");
+    var alternativeMedication = $(".alternativeMedication");
     alternativeMedication.hide();
-    var howToScheduleAppointment = $(".howToScheduleAppointment")
-    howToScheduleAppointment.hide();
-    var existingAppointments = $(".existingAppointments")
-    existingAppointments.hide();
-    var createAppointment = $(".createAppointment")
-    createAppointment.hide();*/
+    var ScheduleCounseling = $(".ScheduleCounseling")
+    ScheduleCounseling.hide();
+    var createCounseling = $(".createCounseling")
+    createCounseling.hide();
 
     $("#idDropDown").empty();
 
@@ -208,12 +202,343 @@ $(document).on('change', '#idDropDown', function () {
 
 
 
+$(document).on('click', '#btnPrescriptMedication', function () {
+    //console.log('Something');
+    var duration = $("#chTherapyDuration").val();
+    var myJSON = JSON.stringify({"id":examinationId, "name":imeIzabranogLeka,"duration":duration});
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/examinations/savePrescriptionPharmacist",
+        dataType: "json",
+        contentType: "application/json",
+        data: myJSON,
+        beforeSend: function(xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log('Success', data);
+            var medInPharmacy = $(".medInPharmacy");
+            medInPharmacy.hide();
+            var prescriptMedication = $(".prescriptMedication");
+            prescriptMedication.hide();
+            var examination = $(".examination");
+            examination.show();
+            alert('Lek je prepisan');
+        },
+        error: function (data) {
+            console.log('Error', data);
+        }
+    });
+});
+
+$(document).on('click', '#btnCanclePrescription', function () {
+    console.log('opopo');
+    var examination = $(".examination");
+    examination.show();
+    var writeReport = $(".writeReport");
+    writeReport.hide();
+    var prescriptMedication = $(".prescriptMedication");
+    prescriptMedication.hide();
+    /*var scheduleNewAppointment = $(".scheduleNewAppointment");
+    scheduleNewAppointment.hide();*/
+    var medInPharmacy = $(".medInPharmacy");
+    medInPharmacy.hide();
+    var medNotInPharmacy = $(".medNotInPharmacy");
+    medNotInPharmacy.hide();
+    var alternativeMedication = $(".alternativeMedication");
+    alternativeMedication.hide();
+    var ScheduleCounseling = $(".ScheduleCounseling")
+    ScheduleCounseling.hide();
+    var createCounseling = $(".createCounseling")
+    createCounseling.hide();
+});
+
+
+
+$(document).on('click', '#btnCancle', function () {
+    console.log('opopo');
+    var examination = $(".examination");
+    examination.show();
+    var writeReport = $(".writeReport");
+    writeReport.hide();
+    var prescriptMedication = $(".prescriptMedication");
+    prescriptMedication.hide();
+    /*var scheduleNewAppointment = $(".scheduleNewAppointment");
+    scheduleNewAppointment.hide();*/
+    var medInPharmacy = $(".medInPharmacy");
+    medInPharmacy.hide();
+    var medNotInPharmacy = $(".medNotInPharmacy");
+    medNotInPharmacy.hide();
+    var alternativeMedication = $(".alternativeMedication");
+    alternativeMedication.hide();
+    var ScheduleCounseling = $(".ScheduleCounseling")
+    ScheduleCounseling.hide();
+    var createCounseling = $(".createCounseling")
+    createCounseling.hide();
+});
+
+
+$(document).on('click', '#btnAlternative', function () {
+    var examination = $(".examination");
+    examination.hide();
+    var writeReport = $(".writeReport");
+    writeReport.hide();
+    var prescriptMedication = $(".prescriptMedication");
+    prescriptMedication.hide();
+    /*var scheduleNewAppointment = $(".scheduleNewAppointment");
+    scheduleNewAppointment.hide();*/
+    var medInPharmacy = $(".medInPharmacy");
+    medInPharmacy.hide();
+    var medNotInPharmacy = $(".medNotInPharmacy");
+    medNotInPharmacy.hide();
+    var alternativeMedication = $(".alternativeMedication");
+    alternativeMedication.show();
+    var ScheduleCounseling = $(".ScheduleCounseling")
+    ScheduleCounseling.hide();
+    var createCounseling = $(".createCounseling")
+    createCounseling.hide();
+
+    $("#idAlternativeDropDown").empty();
+
+    var myJSON = JSON.stringify({"id":examinationId, "name":imeIzabranogLeka});
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/examinations/getAlternativeMedicationsPharmacist",
+        dataType: "json",
+        contentType: "application/json",
+        data: myJSON,
+        beforeSend: function(xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            $("#idAlternativeDropDown").append("<option> </option>");
+            console.log('Success', data);
+            for (i = 0; i < data.length; i++) {
+                /*var row = "<tr>";
+                row += "<td>" + data[i]['name'] + "</td>";
+                var btn = "<button class='btnButton' id = " + data[i]['name'] + ">Proveri</button>";
+                row += "<td>" + btn + "</td>";
+                $('#tableMeds').append(row);*/
+                var name = data[i]['name'];
+                $("#idAlternativeDropDown").append("<option value='"+name+"'>"+name+"</option>");
+            }
+        },
+        error: function (data) {
+            console.log('Error', data);
+        }
+    });
+
+});
 
 
 
 
 
+$(document).on('click', '#btnCancleAlternative', function () {
+    console.log('opopo');
+    var examination = $(".examination");
+    examination.show();
+    var writeReport = $(".writeReport");
+    writeReport.hide();
+    var prescriptMedication = $(".prescriptMedication");
+    prescriptMedication.hide();
+    /*var scheduleNewAppointment = $(".scheduleNewAppointment");
+    scheduleNewAppointment.hide();*/
+    var medInPharmacy = $(".medInPharmacy");
+    medInPharmacy.hide();
+    var medNotInPharmacy = $(".medNotInPharmacy");
+    medNotInPharmacy.hide();
+    var alternativeMedication = $(".alternativeMedication");
+    alternativeMedication.hide();
+    var ScheduleCounseling = $(".ScheduleCounseling")
+    ScheduleCounseling.hide();
+    var createCounseling = $(".createCounseling")
+    createCounseling.hide();
+});
 
 
 
+$(document).on('change', '#idAlternativeDropDown', function () {
+    //console.log('Something');
+    var name = $("#idAlternativeDropDown :selected").val();
+    var duration = $("#chTherapyDurationAlternative").val();
+    var myJSON = JSON.stringify({"id":examinationId, "name":name,"duration":duration});
 
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/examinations/savePrescriptionPharmacist",
+        dataType: "json",
+        contentType: "application/json",
+        data: myJSON,
+        beforeSend: function(xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log('Success', data);
+            var alternativeMedication = $(".alternativeMedication");
+            alternativeMedication.hide();
+            var examination = $(".examination");
+            examination.show();
+            alert('Lek je prepisan');l
+        },
+        error: function (data) {
+            console.log('Error', data);
+        }
+    });
+});
+
+
+$(document).on('click', '#btnNewAppointment', function () {
+    var examination = $(".examination");
+    examination.hide();
+    var writeReport = $(".writeReport");
+    writeReport.hide();
+    var prescriptMedication = $(".prescriptMedication");
+    prescriptMedication.hide();
+    var medInPharmacy = $(".medInPharmacy");
+    medInPharmacy.hide();
+    var medNotInPharmacy = $(".medNotInPharmacy");
+    medNotInPharmacy.hide();
+    var alternativeMedication = $(".alternativeMedication");
+    alternativeMedication.hide();
+    var ScheduleCounseling = $(".ScheduleCounseling")
+    ScheduleCounseling.show();
+    var createCounseling = $(".createCounseling")
+    createCounseling.hide();
+});
+
+
+$(document).on('click', '#btnCancleScheduling', function () {
+    var examination = $(".examination");
+    examination.show();
+    var writeReport = $(".writeReport");
+    writeReport.hide();
+    var prescriptMedication = $(".prescriptMedication");
+    prescriptMedication.hide();
+    var scheduleNewAppointment = $(".scheduleNewAppointment");
+    scheduleNewAppointment.hide();
+    var medInPharmacy = $(".medInPharmacy");
+    medInPharmacy.hide();
+    var medNotInPharmacy = $(".medNotInPharmacy");
+    medNotInPharmacy.hide();
+    var alternativeMedication = $(".alternativeMedication");
+    alternativeMedication.hide();
+    var ScheduleCounseling = $(".ScheduleCounseling")
+    ScheduleCounseling.hide();
+    var createCounseling = $(".createCounseling")
+    createCounseling.hide();
+});
+
+$(document).on('click', '#btnCreateCounseling', function () {
+    var examination = $(".examination");
+    examination.hide();
+    var writeReport = $(".writeReport");
+    writeReport.hide();
+    var prescriptMedication = $(".prescriptMedication");
+    prescriptMedication.hide();
+    var scheduleNewAppointment = $(".scheduleNewAppointment");
+    scheduleNewAppointment.hide();
+    var medInPharmacy = $(".medInPharmacy");
+    medInPharmacy.hide();
+    var medNotInPharmacy = $(".medNotInPharmacy");
+    medNotInPharmacy.hide();
+    var alternativeMedication = $(".alternativeMedication");
+    alternativeMedication.hide();
+    var ScheduleCounseling = $(".ScheduleCounseling")
+    ScheduleCounseling.hide();
+    var createCounseling = $(".createCounseling")
+    createCounseling.show();
+
+});
+
+$(document).on('click', '#btnCancleCreatingCounseling', function () {
+    var examination = $(".examination");
+    examination.show();
+    var writeReport = $(".writeReport");
+    writeReport.hide();
+    var prescriptMedication = $(".prescriptMedication");
+    prescriptMedication.hide();
+    var scheduleNewAppointment = $(".scheduleNewAppointment");
+    scheduleNewAppointment.hide();
+    var medInPharmacy = $(".medInPharmacy");
+    medInPharmacy.hide();
+    var medNotInPharmacy = $(".medNotInPharmacy");
+    medNotInPharmacy.hide();
+    var alternativeMedication = $(".alternativeMedication");
+    alternativeMedication.hide();
+    var ScheduleCounseling = $(".ScheduleCounseling")
+    ScheduleCounseling.hide();
+    var createCounseling = $(".createCounseling")
+    createCounseling.hide();
+});
+
+
+
+$(document).on('click', '#btnCreateCounselingNow', function () {
+
+    var examination = $(".examination");
+    examination.show();
+    var writeReport = $(".writeReport");
+    writeReport.hide();
+    var prescriptMedication = $(".prescriptMedication");
+    prescriptMedication.hide();
+    var scheduleNewAppointment = $(".scheduleNewAppointment");
+    scheduleNewAppointment.hide();
+    var medInPharmacy = $(".medInPharmacy");
+    medInPharmacy.hide();
+    var medNotInPharmacy = $(".medNotInPharmacy");
+    medNotInPharmacy.hide();
+    var alternativeMedication = $(".alternativeMedication");
+    alternativeMedication.hide();
+    var ScheduleCounseling = $(".ScheduleCounseling")
+    ScheduleCounseling.hide();
+    var createCounseling = $(".createCounseling")
+    createCounseling.hide();
+
+    var startOfCounseling = $("#chStartOfCounseling").val();
+    var endOfCounseling = $("#chEndOfCounseling").val();
+
+    var price = $("#chPrice").val();
+
+    var myJSON = JSON.stringify({"id":examinationId, "startOfAppointment":startOfCounseling , "endOfAppointment":endOfCounseling, "price":price});
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/counselings/createCounselingPharmacist",
+        dataType: "json",
+        contentType: "application/json",
+        data:myJSON,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            if(data['value']==true) {
+                console.log('Success:', data);
+                alert("Termin je zakazan");
+            }
+            else {
+                console.log('Success:', data);
+                alert("Termin nije zakazan. Zauzet je.");
+            }
+        },
+        error: function (error) {
+            alert(error);
+        }
+    });
+});
+
+$(document).on('click', '#btnExaminationDone', function () {
+    alert('Pregled je odradjen');
+    window.location.href="welcomePharmacist.html";
+
+});

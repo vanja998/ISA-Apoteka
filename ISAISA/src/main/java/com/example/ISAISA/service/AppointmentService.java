@@ -275,31 +275,36 @@ public class AppointmentService {
     public Boolean checkIfAppointmentIsAvailable(Pharmacy pharmacy, Dermatologist dermatologist, Patient patient, LocalDateTime startOfAppointment, LocalDateTime endOfAppointment){
 
         List<Appointment> patientAppointments = appointmentRepository.findByPatient(patient);
-        Boolean patientFree = false;
+        Boolean patientFree = true;
 
         for (Appointment i : patientAppointments) {
-            if ((startOfAppointment.isAfter(i.getBeginofappointment()) && startOfAppointment.isBefore(i.getEndofappointment())) || (endOfAppointment.isAfter(i.getBeginofappointment()) && endOfAppointment.isBefore(i.getEndofappointment()))) {
-                patientFree = false;
+            if(i.getBeginofappointment().toLocalDate().isEqual(startOfAppointment.toLocalDate())) {
+                if ((startOfAppointment.isAfter(i.getBeginofappointment()) && startOfAppointment.isBefore(i.getEndofappointment())) || (endOfAppointment.isAfter(i.getBeginofappointment()) && endOfAppointment.isBefore(i.getEndofappointment()))) {
+                    patientFree = false;
+                    //return false;
+                    break;
+                }
             }
         }
-        patientFree = true;
 
         Set<Appointment> dermatologistAppointments = appointmentRepository.findAllByDermatologist(dermatologist);
-        Boolean dermatologistFree = false;
+        Boolean dermatologistFree = true;
         List<Appointment> appointments1 = new ArrayList<>();
 
-        for (Appointment i:dermatologistAppointments){
+        for (Appointment i: dermatologistAppointments){
             if(i.getPatient()!=null){
                 appointments1.add(i);
             }
         }
 
         for (Appointment i : appointments1) {
-            if ((startOfAppointment.isAfter(i.getBeginofappointment()) && startOfAppointment.isBefore(i.getEndofappointment())) || (endOfAppointment.isAfter(i.getBeginofappointment()) && endOfAppointment.isBefore(i.getEndofappointment()))) {
-                dermatologistFree = false;
+            if(i.getBeginofappointment().toLocalDate().isEqual(startOfAppointment.toLocalDate())) {
+                if ((startOfAppointment.isAfter(i.getBeginofappointment()) && startOfAppointment.isBefore(i.getEndofappointment())) || (endOfAppointment.isAfter(i.getBeginofappointment()) && endOfAppointment.isBefore(i.getEndofappointment()))) {
+                    dermatologistFree = false;
+                    break;
+                }
             }
         }
-        dermatologistFree = true;
 
         Dermatologist_Pharmacyy dermafarma = dermafarmaRepository.findByDermatologistAndPharmacy(dermatologist, pharmacy);
         LocalTime dermatologistBeginOfWork = dermafarma.getBeginofwork();
@@ -310,7 +315,6 @@ public class AppointmentService {
                 dermatologistFree = false;
             }
         }
-        dermatologistFree = true;
 
         if(dermatologistFree && patientFree){
             return true;

@@ -1,5 +1,7 @@
 package com.example.ISAISA.controller;
 
+import com.example.ISAISA.DTO.BooleanDto;
+import com.example.ISAISA.DTO.CreateAppointmentDto;
 import com.example.ISAISA.DTO.IdDto;
 import com.example.ISAISA.model.Appointment;
 import com.example.ISAISA.model.Counseling;
@@ -66,6 +68,16 @@ public class CounselingController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
+    @PostMapping(value="/createCounselingPharmacist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<BooleanDto> createCounselingPharmacist(@RequestBody CreateAppointmentDto createCounselingDto) throws Exception {
 
+        Pharmacist user = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Boolean counseling = counselingService.createCounselingPharmacist(user, createCounselingDto.getId(),  createCounselingDto.getStartOfAppointment(), createCounselingDto.getEndOfAppointment(), createCounselingDto.getPrice());
+
+        BooleanDto booleanDto = new BooleanDto(counseling);
+
+        return new ResponseEntity<>(booleanDto, HttpStatus.OK);
+    }
 
 }
