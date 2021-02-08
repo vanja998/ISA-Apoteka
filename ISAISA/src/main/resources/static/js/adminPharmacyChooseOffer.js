@@ -18,7 +18,15 @@ $(document).ready(function () {
         success: function (data) {
             console.log("SUCCESS", data);
 
-            var orderrs = [];
+            for (i = 0; i < data.length; i++) {
+                var row = "<tr>";
+                row += "<td>" + data[i]['id'] + "</td>";
+                row += "<td>" + data[i]['dateDeadline'] + "</td>";
+                var btnOffers = "<button class='btnOffers' id = " + data[i]['id'] + ">Pogledaj ponude</button>";
+                row += "<td>" + btnOffers + "</td>";
+                $('#tableOrdersShow').append(row);
+            }
+            /*var orderrs = [];
             var counts = new Array();
 
             for (i = 0; i < data.length; i++) {
@@ -55,38 +63,112 @@ $(document).ready(function () {
                 row += "<td>" + btnOffers + "</td>";
 
                 count++;
+            }*/
+
+
+
+        },
+        error: function (jqXHR) {
+            if(jqXHR.status === 403) {
+                window.location.href="error.html";
             }
-
-
-
-},
-error: function (jqXHR) {
-if(jqXHR.status === 403)
-{
-window.location.href="error.html";
-}
-if(jqXHR.status === 401)
-{
-window.location.href="error.html";
-}
-}
+            if(jqXHR.status === 401) {
+                window.location.href="error.html";
+            }
+        }
+    });
 });
-});
-
-function onlyUnique(a) {
-    return [...new Set(a)];
-}
 
 $(document).on('click', '.btnOffers', function () {
-var ordersShow = $(".ordersShow");
-var offersShow = $(".offersShow");
+    var ordersShow = $(".ordersShow");
+    var offersShow = $(".offersShow");
 
-ordersShow.hide();
-offersShow.show();
+    ordersShow.hide();
+    offersShow.show();
 
-var id = this.id;
+    var id = this.id;
 
-console.log(id);
+    console.log(id);
 
+    id = JSON.stringify({"id" : id})
 
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/offers/offersByOrder",
+        dataType: "json",
+        contentType: "application/json",
+        data: id,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log("SUCCESS", data);
+
+            for (i = 0; i < data.length; i++) {
+                var row = "<tr>";
+                row += "<td>" + data[i]['supplier']['id'] + "</td>";
+                row += "<td>" + data[i]['supplier']['email'] + "</td>";
+                row += "<td>" + data[i]['offerPrice'] + "</td>";
+                row += "<td>" + data[i]['deliveryDate'] + "</td>";
+                var btnCreateOffer = "<button class='btnCreateOffer' id = " + data[i]['id'] + ">Prihvati ponudu</button>";
+                row += "<td>" + btnCreateOffer + "</td>";
+
+                $('#tableOffersShow').append(row);
+            }
+        },
+        error: function (jqXHR) {
+            if(jqXHR.status === 403) {
+                window.location.href="error.html";
+            }
+            if(jqXHR.status === 401) {
+                window.location.href="error.html";
+            }
+        }
+    });
 });
+
+$(document).on('click', '.btnCreateOffer', function () {
+    var id = this.id;
+
+    console.log(id);
+
+    id = JSON.stringify({"id" : id})
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/offers/acceptOffer",
+        dataType: "json",
+        contentType: "application/json",
+        data: id,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log("SUCCESS", data);
+
+            for (i = 0; i < data.length; i++) {
+                var row = "<tr>";
+                row += "<td>" + data[i]['supplier']['id'] + "</td>";
+                row += "<td>" + data[i]['supplier']['email'] + "</td>";
+                row += "<td>" + data[i]['offerPrice'] + "</td>";
+                row += "<td>" + data[i]['deliveryDate'] + "</td>";
+                var btnCreateOffer = "<button class='btnCreateOffer' id = " + data[i]['id'] + ">Prihvati ponudu</button>";
+                row += "<td>" + btnCreateOffer + "</td>";
+                $('#tableOffersShow').append(row);
+            }
+        },
+        error: function (jqXHR) {
+            if(jqXHR.status === 403) {
+                window.location.href="error.html";
+            }
+            if(jqXHR.status === 401) {
+                window.location.href="error.html";
+            }
+        }
+    });
+});
+

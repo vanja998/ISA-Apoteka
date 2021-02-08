@@ -144,7 +144,7 @@ $(document).on('click', '#btnSortbyaddressPharmacy', function () {    // Čeka s
 
 //********************************************************************
 //Deo za profil apoteke
-
+var id
 $(document).on('click', '.btnPharmacy', function () {
     var allPharmacies = $(".allPharmacies");
     var onePharmacy = $(".onePharmacy");
@@ -152,7 +152,7 @@ $(document).on('click', '.btnPharmacy', function () {
     allPharmacies.hide();
     onePharmacy.show();
 
-    var id = this.id;
+    id = this.id;
     console.log(id);
     id = JSON.stringify({"id" : id});
 

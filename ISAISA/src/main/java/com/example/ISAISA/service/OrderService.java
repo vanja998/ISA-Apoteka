@@ -72,4 +72,7 @@ public class OrderService {
         //return  orderRepository.findByAdminPharmacyAndOrderr_medications(adminPharmacy, orderr_medication);
     }
 
+    public Orderr findById(Integer id) {
+        return this.orderRepository.findOneById(id);
+    }
 }

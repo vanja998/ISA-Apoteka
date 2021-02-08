@@ -11,8 +11,7 @@ import java.util.Set;
 
 public interface OrderRepository extends JpaRepository<Orderr, Integer>{
 
-
-
     Set<Orderr> findByAdminPharmacy(AdminPharmacy adminPharmacy);
 
+    Orderr findOneById(Integer id);
 }

@@ -5,7 +5,7 @@ insert into pharmacy(id, name, address, description) values (nextval('seq_pharma
 --ovo je lozinka 123
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, penalty) values ('patient', nextval('seq_user'), 'dvornicdejan08@gmail.com', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Pera', 'Peric', 'Dunavska', '060111111', 'Novi Sad', 'Srbija', true, 0);
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, penalty) values ('patient', nextval('seq_user'), 'jokjok', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Dejan', 'Deki', 'Dunavska', '060111111', 'Novi Sad', 'Srbija', true, 0);
-insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, flag) values ('supplier', nextval('seq_user'), 'bab', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Mika', 'Mikic', 'Dunavska', '060111112', 'Novi Sad', 'Srbija', true,0);
+insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, flag) values ('supplier', nextval('seq_user'), 'daki.lalic@gmail.com', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Mika', 'Mikic', 'Dunavska', '060111112', 'Novi Sad', 'Srbija', true,0);
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, pharmacy_id) values ('adminpharmacy', nextval('seq_user'), 'cac', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Jovan', 'Jovanovic', 'Dunavska', '060111113', 'Novi Sad', 'Srbija', true, 1);
 
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, pharmacy_id, rating,beginofwork,endofwork) values ('pharmacist', nextval('seq_user'), 'mac', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Jovan', 'Jovanovic', 'Dunavska', '060111113', 'Novi Sad', 'Srbija', true, 1, 3.5,'00:00:00','23:59:00');
@@ -33,11 +33,18 @@ insert into "allergy_patient" (patient_id,medication_id) values (1,1);
 insert into "complaint"(id,question,answered,patient_id,user_id,ishospital) values(nextval('seq_complaint'),'Zasto dermatolog stalno kasni??',false,1,6,false);
 insert into "complaint"(id,question,answered,patient_id,pharmacy_id,ishospital) values(nextval('seq_complaint'),'Zasto dermatolog stalno kasni??',false,1,1,true);
 
-insert into "orderr"(id,dateDeadline,statusAdmin,admin_id) values(nextval('seq_orderr'),'2021-12-31','ceka_na_ponude',4);
+insert into "orderr"(id,dateDeadline,statusAdmin,admin_id) values(nextval('seq_orderr'),'2020-12-31','ceka_na_ponude',4);
+insert into "orderr"(id,dateDeadline,statusAdmin,admin_id) values(nextval('seq_orderr'),'2021-05-31','ceka_na_ponude',4);
+insert into "orderr"(id,dateDeadline,statusAdmin,admin_id) values(nextval('seq_orderr'),'2021-07-31','ceka_na_ponude',4);
 
 insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,1,1);
 insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,2,1);
 insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,3,1);
+
+insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 5, '2022-02-01', 'ceka_na_odgovor', 1, 3);
+insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 6, '2022-02-01', 'ceka_na_odgovor', 1, 3);
+insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 5, '2022-02-01', 'ceka_na_odgovor', 1, 3);
+
 
 insert into "supplier_medication"(supplier_id,medication_id) values(3,1);
 insert into "supplier_medication"(supplier_id,medication_id) values(3,2);

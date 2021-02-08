@@ -55,11 +55,8 @@ public class OrderController {
         Set<OrderMedicationDTO> orderMedicationDTOS = new HashSet<>();
 
         for (Orderr orderr : orderrs) {
-            for (Orderr_Medication orderr_medication : orderr.getOrderr_medications()) {
-                OrderMedicationDTO om = new OrderMedicationDTO(orderr_medication.getId(), orderr.getDateDeadline(), orderr_medication.getAmount(),
-                        orderr_medication.getOrderr(), orderr_medication.getMedication());
-                orderMedicationDTOS.add(om);
-            }
+            OrderMedicationDTO om = new OrderMedicationDTO(orderr.getId(), orderr.getDateDeadline());
+            orderMedicationDTOS.add(om);
         }
 
         return new ResponseEntity<>(orderMedicationDTOS, HttpStatus.OK);
