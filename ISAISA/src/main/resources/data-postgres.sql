@@ -35,7 +35,7 @@ insert into "complaint"(id,question,answered,patient_id,pharmacy_id,ishospital) 
 
 insert into "orderr"(id,dateDeadline,statusAdmin,admin_id) values(nextval('seq_orderr'),'2020-12-31','ceka_na_ponude',4);
 insert into "orderr"(id,dateDeadline,statusAdmin,admin_id) values(nextval('seq_orderr'),'2021-05-31','ceka_na_ponude',4);
-insert into "orderr"(id,dateDeadline,statusAdmin,admin_id) values(nextval('seq_orderr'),'2021-07-31','ceka_na_ponude',4);
+insert into "orderr"(id,dateDeadline,statusAdmin,admin_id) values(nextval('seq_orderr'),'2021-07-31','ceka_na_ponude',7);
 
 insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,1,1);
 insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,2,1);
@@ -93,9 +93,7 @@ INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (3, 6);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (6, 3);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (4, 4);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (5, 5);
+INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (7, 4);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (8, 1);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (9, 2);
 INSERT INTO USER_AUTHORITY (user_id, authority_id) VALUES (10, 5);
-
-
-

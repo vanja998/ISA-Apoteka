@@ -48,7 +48,7 @@ public class OfferController {
 
     @PostMapping(value="/acceptOffer", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
-    public ResponseEntity<Offer> acceptOffer(@RequestBody IdDto idDto){
+    public ResponseEntity<Offer> acceptOffer(@RequestBody IdDto idDto) throws Exception {
 
         Offer offer = offerService.findById(idDto.getId());
 

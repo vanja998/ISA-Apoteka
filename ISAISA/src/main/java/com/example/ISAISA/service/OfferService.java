@@ -64,39 +64,44 @@ public class OfferService {
         return this.offerRepository.findByOrderr(orderr);
    }
 
-   public Offer acceptOffer(Offer offer) {
-       Date now = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
+   public Offer acceptOffer(Offer offer) throws Exception {
+        AdminPharmacy adminPharmacy = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (offer.getOrderr().getAdminPharmacy().getId() == adminPharmacy.getId()) {
+            Date now = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-       Set<Offer> offers = offerRepository.findAll();
+            Set<Offer> offers = offerRepository.findAll();
 
-       for (Offer o : offers) {
-           if(o.getId().equals(offer.getId())) {
-               if (now.after(offer.getOrderr().getDateDeadline())) {
-                   offer.setStatusSupplier("prihvacena");
-               }
-           } else {
-               o.setStatusSupplier("odbijena");
-               this.offerRepository.save(o);
-               SimpleMailMessage mailMessage = new SimpleMailMessage();
-               mailMessage.setTo(o.getSupplier().getEmail());
-               mailMessage.setSubject("Ponuda za narudzbenicu " + o.getId());
-               mailMessage.setFrom("isaverifikacija@gmail.com");
-               mailMessage.setText("Vasa ponuda za narudzbenicu " + o.getId() + "je odbijena.");
-           }
-       }
+            for (Offer o : offers) {
+                if (o.getId().equals(offer.getId())) {
+                    if (now.after(offer.getOrderr().getDateDeadline())) {
+                        offer.setStatusSupplier("prihvacena");
+                    }
+                } else {
+                    o.setStatusSupplier("odbijena");
+                    this.offerRepository.save(o);
+                    SimpleMailMessage mailMessage = new SimpleMailMessage();
+                    mailMessage.setTo(o.getSupplier().getEmail());
+                    mailMessage.setSubject("Ponuda za narudzbenicu " + o.getId());
+                    mailMessage.setFrom("isaverifikacija@gmail.com");
+                    mailMessage.setText("Vasa ponuda za narudzbenicu " + o.getId() + "je odbijena.");
+                }
+            }
 
-       offer = offerRepository.save(offer);
+            offer = offerRepository.save(offer);
 
-       SimpleMailMessage mailMessage = new SimpleMailMessage();
-       mailMessage.setTo(offer.getSupplier().getEmail());
-       mailMessage.setSubject("Ponuda za narudzbenicu " + offer.getOrderr().getId());
-       mailMessage.setFrom("isaverifikacija@gmail.com");
-       mailMessage.setText("Vasa ponuda za narudzbenicu " + offer.getOrderr().getId() + " je prihvacena."
-                            + "\nNaznacen rok isporuke je: " + offer.getDeliveryDate() + ", a cena je: " + offer.getOfferPrice());
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setTo(offer.getSupplier().getEmail());
+            mailMessage.setSubject("Ponuda za narudzbenicu " + offer.getOrderr().getId());
+            mailMessage.setFrom("isaverifikacija@gmail.com");
+            mailMessage.setText("Vasa ponuda za narudzbenicu " + offer.getOrderr().getId() + " je prihvacena."
+                    + "\nNaznacen rok isporuke je: " + offer.getDeliveryDate() + ", a cena je: " + offer.getOfferPrice());
 
-       emailSenderService.sendEmail(mailMessage);
+            emailSenderService.sendEmail(mailMessage);
 
-       return offer;
+            return offer;
+        } else {
+            throw new Exception("Niste tvorac ove narudzbenice, pa ne mozete odabrati ponudu za nju!");
+        }
    }
 
    public Offer findById(Integer id) { return this.offerRepository.findOneById(id); }

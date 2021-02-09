@@ -80,6 +80,23 @@ public class DermatologistController {
         return new ResponseEntity<>(dermatologistDTOS, HttpStatus.OK);
     }
 
+    @PostMapping(value="/adminDermatologistsSearch", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Set<DermatologistDTO>> getDermatologistByAdminPharmacyAndFirstNameAndLastName(@RequestBody DermatologistDTO dermatologistDTO) {
+
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Set<Dermatologist> dermatologists = dermatologistService.getDermatologistsByPharmacyAndFirstNameAndLastName(user.getPharmacy(), dermatologistDTO.getFirstName(), dermatologistDTO.getLastName());
+        Set<DermatologistDTO> dermatologistDTOS = new HashSet<>();
+
+        for (Dermatologist dermatologist : dermatologists) {
+            DermatologistDTO dermatologistDTO1 = new DermatologistDTO(dermatologist.getFirstName(), dermatologist.getLastName(), user.getPharmacy());
+            dermatologistDTOS.add(dermatologistDTO1);
+        }
+
+        return new ResponseEntity<>(dermatologistDTOS, HttpStatus.OK);
+    }
+
 
 
 }

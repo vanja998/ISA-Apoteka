@@ -31,7 +31,7 @@ public class Orderr {
     @OneToMany(mappedBy = "orderr", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Offer> offers = new HashSet<Offer>();
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "admin_id", referencedColumnName = "id", nullable = false)
     private AdminPharmacy adminPharmacy;
 
@@ -39,7 +39,6 @@ public class Orderr {
         this.id = id;
         this.dateDeadline = dateDeadline;
         this.statusAdmin = statusAdmin;
-
     }
 
     public Orderr(Date dateDeadline, Set<Orderr_Medication> orderr_medications, AdminPharmacy adminPharmacy, String statusAdmin) {

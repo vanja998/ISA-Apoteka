@@ -1,9 +1,6 @@
 package com.example.ISAISA.controller;
 
-import com.example.ISAISA.DTO.OrderDTO;
-import com.example.ISAISA.DTO.OrderMedicationDTO;
-import com.example.ISAISA.DTO.OrderrDTO;
-import com.example.ISAISA.DTO.UserChangeDTO;
+import com.example.ISAISA.DTO.*;
 import com.example.ISAISA.model.AdminPharmacy;
 import com.example.ISAISA.model.Orderr;
 import com.example.ISAISA.model.Orderr_Medication;
@@ -19,6 +16,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Id;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -55,11 +53,20 @@ public class OrderController {
         Set<OrderMedicationDTO> orderMedicationDTOS = new HashSet<>();
 
         for (Orderr orderr : orderrs) {
-            OrderMedicationDTO om = new OrderMedicationDTO(orderr.getId(), orderr.getDateDeadline());
+            OrderMedicationDTO om = new OrderMedicationDTO(orderr.getId(), orderr.getDateDeadline(), orderr.getAdminPharmacy());
             orderMedicationDTOS.add(om);
         }
 
         return new ResponseEntity<>(orderMedicationDTOS, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/deleteOrder", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public void deleteOrder(@RequestBody IdDto idDto) throws Exception {
+
+        Orderr orderr = orderService.findById(idDto.getId());
+
+        orderService.deleteOrder(orderr);
     }
 
 }

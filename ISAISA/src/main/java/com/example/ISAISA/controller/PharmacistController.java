@@ -70,7 +70,7 @@ public class PharmacistController {
         return ResponseEntity.accepted().body(result);
     }
 
-    @GetMapping(value="/adminPharmacists", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/adminPharmacists", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByAdminPharmacy() {
 
@@ -80,7 +80,7 @@ public class PharmacistController {
         return new ResponseEntity<>(pharmacists, HttpStatus.OK);
     }
 
-    @PostMapping(value="/adminPharmacistsSearch", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/adminPharmacistsSearch", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByAdminPharmacyAndFirstNameAndLastName(@RequestBody PharmacistDTO pharmacistDTO) {
 
@@ -91,7 +91,7 @@ public class PharmacistController {
         return new ResponseEntity<>(pharmacists, HttpStatus.OK);
     }
 
-    @PostMapping(value="/adminPharmacistsAdd", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/adminPharmacistsAdd", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public ResponseEntity<Pharmacist> savePharmacist(@RequestBody PharmacistDTO pharmacistDTO) {
 
@@ -102,19 +102,7 @@ public class PharmacistController {
         return new ResponseEntity<>(pharmacist, HttpStatus.OK);
     }
 
-   /* @PostMapping(value="/adminPharmacistsFilter", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMINPHARMACY')")
-    public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByRatingBetween(@RequestBody FilterEmployeesDTO pharmacistDTO) {
-
-        Float ratingUnder = (float) pharmacistDTO.getRatingUnder();
-        Float ratingOver = (float) pharmacistDTO.getRatingOver();
-
-        Set<PharmacistDTO> pharmacists = pharmacistService.getPharmacistsByRatingBetween(ratingOver, ratingUnder);
-
-        return new ResponseEntity<>(pharmacists, HttpStatus.OK);
-    }
-*/
-    @GetMapping(value="/allPharmacists", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/allPharmacists", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public ResponseEntity<Set<PharmacistDTO>> getAllPharmacists() {
 
@@ -134,7 +122,7 @@ public class PharmacistController {
         return new ResponseEntity<>(pharmacists, HttpStatus.OK);
     }
 
-    @PostMapping(value="/pharmacistsFilter", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/pharmacistsFilter", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public ResponseEntity<Set<PharmacistDTO>> filterPharmacists(@RequestBody FilterEmployeesDTO pharmacistDTO) {
 
@@ -148,7 +136,7 @@ public class PharmacistController {
         return new ResponseEntity<>(pharmacists, HttpStatus.OK);
     }
 
-    @PostMapping(value="/pharmacistDelete", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/pharmacistDelete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public void deletePharmacist(@RequestBody IdDto idDto) throws Exception {
         pharmacistService.deletePharmacist(idDto.getId());

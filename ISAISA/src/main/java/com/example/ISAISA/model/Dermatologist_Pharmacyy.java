@@ -24,6 +24,13 @@ public class Dermatologist_Pharmacyy {
     @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     private Dermatologist dermatologist;
 
+    public Dermatologist_Pharmacyy(LocalTime beginofwork, LocalTime endofwork, Pharmacy pharmacy, Dermatologist dermatologist) {
+        this.beginofwork = beginofwork;
+        this.endofwork = endofwork;
+        this.pharmacy = pharmacy;
+        this.dermatologist = dermatologist;
+    }
+
     public Dermatologist_Pharmacyy() {
     }
 
