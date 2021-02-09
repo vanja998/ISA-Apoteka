@@ -1,5 +1,6 @@
 package com.example.ISAISA.service;
 
+import com.example.ISAISA.DTO.CalendarDTO;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.AppointmentRepository;
 import com.example.ISAISA.repository.CounselingRepository;
@@ -22,6 +23,13 @@ public class CounselingService {
     private CounselingRepository counselingRepository;
     private PatientRepository patientRepository;
     private ExaminationRepository examinationRepository;
+    private AppointmentRepository appointmentRepository;
+
+
+    @Autowired
+    public void setAppointmentRepository(AppointmentRepository appointmentRepository) {
+        this.appointmentRepository = appointmentRepository;
+    }
 
     @Autowired
     public void setExaminationRepository(ExaminationRepository examinationRepository) {
@@ -110,9 +118,16 @@ public class CounselingService {
 
     }
 
+    public Patient findPatient(Integer examinationId){
+        Examination examination = examinationRepository.findOneById(examinationId);
+        Patient patient = examination.getExaminationCounseling().getPatient();
+        return patient;
+    }
+
     public Boolean checkIfCounselingIsAvailable(Pharmacist pharmacist, Patient patient, LocalDateTime startOfCounseling, LocalDateTime endOfCounseling){
 
         List<Counseling> patientCounseling = counselingRepository.findAllByPatient(patient);
+        Set<Appointment> patientAppointments = appointmentRepository.findAllByPatient(patient);
         Boolean patientFree = true;
 
         for (Counseling i : patientCounseling) {
@@ -120,6 +135,17 @@ public class CounselingService {
                 if ((startOfCounseling.isAfter(i.getBeginofappointment()) && startOfCounseling.isBefore(i.getEndofappointment())) || (endOfCounseling.isAfter(i.getBeginofappointment()) && endOfCounseling.isBefore(i.getEndofappointment()))) {
                     patientFree = false;
                     break;
+                }
+            }
+        }
+
+        if(patientFree){
+            for (Appointment i : patientAppointments) {
+                if(i.getBeginofappointment().toLocalDate().isEqual(startOfCounseling.toLocalDate())) {
+                    if ((startOfCounseling.isAfter(i.getBeginofappointment()) && startOfCounseling.isBefore(i.getEndofappointment())) || (endOfCounseling.isAfter(i.getBeginofappointment()) && endOfCounseling.isBefore(i.getEndofappointment()))) {
+                        patientFree = false;
+                        break;
+                    }
                 }
             }
         }
@@ -156,4 +182,83 @@ public class CounselingService {
         }
     }
 
+    public List<CalendarDTO> getCounselingsWeek(Pharmacist user){
+        List<Counseling> counselings = counselingRepository.findAllByPharmacist(user);
+
+        LocalDate today = LocalDate.now();
+        LocalDate nextWeek = today.plusDays(7);
+        //.plusDays(7);
+
+        List<Counseling> weekCounseling = new ArrayList<>();
+        for(Counseling i: counselings){
+            if(i.getBeginofappointment().toLocalDate().isAfter(today) && i.getBeginofappointment().toLocalDate().isBefore(nextWeek)){
+                weekCounseling.add(i);
+            }
+        }
+
+
+        List<CalendarDTO> calendarDTOS = new ArrayList<>();
+
+        for(Counseling i:weekCounseling){
+            CalendarDTO calendarDTO = new CalendarDTO(i.getPatient().getFirstName(), i.getPatient().getLastName(), i.getBeginofappointment().toLocalDate(), i.getBeginofappointment().toLocalTime(), i.getEndofappointment().toLocalTime());
+            calendarDTOS.add(calendarDTO);
+        }
+
+        return calendarDTOS;
+
+
+    }
+
+    public List<CalendarDTO> getCounselingsMonth(Pharmacist user){
+        List<Counseling> counselings = counselingRepository.findAllByPharmacist(user);
+
+        LocalDate today = LocalDate.now();
+        LocalDate nextWeek = today.plusDays(30);
+        //.plusDays(7);
+
+        List<Counseling> weekCounseling = new ArrayList<>();
+        for(Counseling i: counselings){
+            if(i.getBeginofappointment().toLocalDate().isAfter(today) && i.getBeginofappointment().toLocalDate().isBefore(nextWeek)){
+                weekCounseling.add(i);
+            }
+        }
+
+
+        List<CalendarDTO> calendarDTOS = new ArrayList<>();
+
+        for(Counseling i:weekCounseling){
+            CalendarDTO calendarDTO = new CalendarDTO(i.getPatient().getFirstName(), i.getPatient().getLastName(), i.getBeginofappointment().toLocalDate(), i.getBeginofappointment().toLocalTime(), i.getEndofappointment().toLocalTime());
+            calendarDTOS.add(calendarDTO);
+        }
+
+        return calendarDTOS;
+
+
+    }
+    public List<CalendarDTO> getCounselingsYear(Pharmacist user){
+        List<Counseling> counselings = counselingRepository.findAllByPharmacist(user);
+
+        LocalDate today = LocalDate.now();
+        LocalDate nextWeek = today.plusDays(365);
+        //.plusDays(7);
+
+        List<Counseling> weekCounseling = new ArrayList<>();
+        for(Counseling i: counselings){
+            if(i.getBeginofappointment().toLocalDate().isAfter(today) && i.getBeginofappointment().toLocalDate().isBefore(nextWeek)){
+                weekCounseling.add(i);
+            }
+        }
+
+
+        List<CalendarDTO> calendarDTOS = new ArrayList<>();
+
+        for(Counseling i:weekCounseling){
+            CalendarDTO calendarDTO = new CalendarDTO(i.getPatient().getFirstName(), i.getPatient().getLastName(), i.getBeginofappointment().toLocalDate(), i.getBeginofappointment().toLocalTime(), i.getEndofappointment().toLocalTime());
+            calendarDTOS.add(calendarDTO);
+        }
+
+        return calendarDTOS;
+
+
+    }
 }

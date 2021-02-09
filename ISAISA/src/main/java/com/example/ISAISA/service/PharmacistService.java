@@ -119,7 +119,7 @@ public class PharmacistService {
         user.setCity(userDTO.getCity());
         user.setCountry(userDTO.getCountry());
 
-        pharmacistRepository.save(user);
+        user = this.pharmacistRepository.save(user);
 
         return user;
     }

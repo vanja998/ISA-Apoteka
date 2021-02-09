@@ -49,7 +49,7 @@ public class PharmacistController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PostMapping(value="/pharmacistChange", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/changePharmacistInfo", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<Pharmacist> changePharmacistInfo(@RequestBody UserChangeDTO userDTO) {
 
@@ -58,7 +58,7 @@ public class PharmacistController {
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PostMapping(value = "/changepass", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/changePass", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<?> changePassword(@RequestBody AuthenticationController.PasswordChanger passwordChanger) {
 

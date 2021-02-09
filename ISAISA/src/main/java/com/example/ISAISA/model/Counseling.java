@@ -18,7 +18,7 @@ public class Counseling {
     @ManyToOne(fetch = FetchType.EAGER)
     private Patient patient;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Pharmacist pharmacist;
 
     @Column

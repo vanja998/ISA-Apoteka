@@ -3,10 +3,7 @@ package com.example.ISAISA.service;
 import com.example.ISAISA.DTO.BooleanDto;
 import com.example.ISAISA.DTO.CalendarDTO;
 import com.example.ISAISA.model.*;
-import com.example.ISAISA.repository.AppointmentRepository;
-import com.example.ISAISA.repository.Dermatologist_PharmacyyRepository;
-import com.example.ISAISA.repository.ExaminationRepository;
-import com.example.ISAISA.repository.PatientRepository;
+import com.example.ISAISA.repository.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +24,9 @@ public class AppointmentService {
     private Dermatologist_PharmacyyRepository dermafarmaRepository;
     private PatientRepository patientRepository;
     private ExaminationRepository examinationRepository;
+    private CounselingRepository counselingRepository;
+
+
 
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
@@ -38,6 +38,11 @@ public class AppointmentService {
 
     public Appointment save(Appointment appointment) {
         return appointmentRepository.save(appointment);
+    }
+
+    @Autowired
+    public void setCounselingRepository(CounselingRepository counselingRepository) {
+        this.counselingRepository = counselingRepository;
     }
 
     @Autowired
@@ -272,9 +277,17 @@ public class AppointmentService {
 
     }
 
+    public Patient findPatient(Integer examinationId){
+        Examination examination = examinationRepository.findOneById(examinationId);
+        Patient patient = examination.getExaminationAppointment().getPatient();
+        return patient;
+    }
+
     public Boolean checkIfAppointmentIsAvailable(Pharmacy pharmacy, Dermatologist dermatologist, Patient patient, LocalDateTime startOfAppointment, LocalDateTime endOfAppointment){
 
         List<Appointment> patientAppointments = appointmentRepository.findByPatient(patient);
+        List<Counseling> patientCounselings = counselingRepository.findAllByPatient(patient);
+
         Boolean patientFree = true;
 
         for (Appointment i : patientAppointments) {
@@ -283,6 +296,18 @@ public class AppointmentService {
                     patientFree = false;
                     //return false;
                     break;
+                }
+            }
+        }
+
+        if(patientFree){
+            for (Counseling i : patientCounselings) {
+                if(i.getBeginofappointment().toLocalDate().isEqual(startOfAppointment.toLocalDate())) {
+                    if ((startOfAppointment.isAfter(i.getBeginofappointment()) && startOfAppointment.isBefore(i.getEndofappointment())) || (endOfAppointment.isAfter(i.getBeginofappointment()) && endOfAppointment.isBefore(i.getEndofappointment()))) {
+                        patientFree = false;
+                        //return false;
+                        break;
+                    }
                 }
             }
         }
