@@ -50,7 +50,7 @@ public class Pharmacy {
     private Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<Dermatologist_Pharmacyy> dermatologist_pharmacies = new HashSet<Dermatologist_Pharmacyy>();
 
     @JsonIgnore

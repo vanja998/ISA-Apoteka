@@ -14,6 +14,8 @@ public interface DermatologistRepository extends JpaRepository<Dermatologist, In
 
     Dermatologist findOneById(Integer id);
 
+    Dermatologist findOneByEmail(String email);
+
     //Set<Dermatologist> findAllByDermatologist_pharmacies (Dermatologist_Pharmacyy dermatologist_pharmacyy);
 
     @Query("select dermatologist from Dermatologist dermatologist where dermatologist.dermatologist_pharmacies = ?1 and dermatologist.firstName = ?2 and dermatologist.lastName = ?3")

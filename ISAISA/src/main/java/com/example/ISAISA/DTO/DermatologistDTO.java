@@ -12,6 +12,8 @@ public class DermatologistDTO {
 
     private String lastName;
 
+    private String email;
+
     private Float rating;
 
     private Pharmacy pharmacy;
@@ -56,6 +58,10 @@ public class DermatologistDTO {
     public String getLastName() { return lastName; }
 
     public void setLastName(String lastName) { this.lastName = lastName; }
+
+    public String getEmail() { return email; }
+
+    public void setEmail(String email) { this.email = email; }
 
     public Float getRating() { return rating; }
 

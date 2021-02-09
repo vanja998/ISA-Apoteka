@@ -190,10 +190,7 @@ $(document).on('click', '#btnAddSavePharmacistAdminPharmacy', function () {
             $("#country").val("");
             $("#workingHoursFrom").val("");
             $("#workingHoursUntil").val("");
-            var addNewPharmacistAdminPharmacy = $(".addNewPharmacistAdminPharmacy")
-            addNewPharmacistAdminPharmacy.hide();
-            var successAddPharmacist = $(".successAddPharmacist");
-            successAddPharmacist.show();
+            window.location.href="adminPharmacyPharmacists.html";
         },
         error: function (jqXHR) {
             if(jqXHR.status === 403)
@@ -415,6 +412,7 @@ $(document).on('click', '.btnRemove', function (){
                     window.location.href = "error.html";
                 }
                 if (jqXHR.status === 500) {
+
                     var modal = document.getElementById("modalDelete");
                     modal.style.display = "none";
 
@@ -427,7 +425,7 @@ $(document).on('click', '.btnRemove', function (){
                     errorDeletePharmacist.show();
 
                     var response = JSON.parse(jqXHR.responseText);
-                    $('#errorDeletePharmacist').append(response['message']);
+                    document.getElementById('errorDeletePharmacist').innerHTML = response['message'];
                 }
             }
 

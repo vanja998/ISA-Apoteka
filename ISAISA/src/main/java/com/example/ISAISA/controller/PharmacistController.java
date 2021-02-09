@@ -70,7 +70,7 @@ public class PharmacistController {
         return ResponseEntity.accepted().body(result);
     }
 
-    @GetMapping(value="/adminPharmacists", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value="/adminPharmacists")
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByAdminPharmacy() {
 

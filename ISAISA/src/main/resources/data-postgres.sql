@@ -14,6 +14,7 @@ insert into "users" (rolee, id, email, password, firstName, lastName, address, p
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, penalty) values ('patient', nextval('seq_user'), 'malisignali', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Nata', 'Bekv', 'Mileticeva', '060122211', 'Novi Sad', 'Srbija', true, 0);
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled,flag) values ('adminsystem', nextval('seq_user'), 'va', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'tika', 'spic', 'blabla', '062111113', 'Pecenjevce', 'Srbija', true,0);
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, pharmacy_id, rating) values ('pharmacist', nextval('seq_user'), 'dara', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Dara', 'Granic', 'Dunavska', '060111113', 'Novi Sad', 'Srbija', true, 1, 5.0);
+insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled) values ('dermatologist', nextval('seq_user'), 'brr', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Luka', 'Colak', 'Dunavska', '060111113', 'Zrenjanin', 'Srbija', true);
 
 insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes) values( nextval('seq_medication'),'as1234','paracetamol','tableta','okrugla','otrovcina','hemofarm',true,'javi se lekaru u slucaju nuspojava');
 insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes) values( nextval('seq_medication'),'bb12','brufen','tableta','okrugla','otrov','hemofarm',true,'javi se lekaru u slucaju nuspojava');
@@ -58,6 +59,8 @@ insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_i
 insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),1, 6,1,'2021-12-03 10:15:30','2021-12-03 10:16:30',5000);
 insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),2, 6,1,'2021-02-08 10:15:30','2021-02-08 12:16:30',5000);
 insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),1, 6,1,'2021-02-07 10:15:30','2021-02-07 11:16:30',5000);
+insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),null, 11,1,'2021-02-07 10:15:30','2021-02-07 11:16:30',5000);
+insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),1, 11,1,'2021-01-07 10:15:30','2021-01-07 11:16:30',5000);
 
 insert into "counseling"(id,patient_id,pharmacist_id, beginofappointment, endofappointment, price) values (nextval('seq_counseling'), 1,5, '2021-07-02 00:00:00','2021-07-02 23:59:00', 3000);
 insert into "counseling"(id,patient_id,pharmacist_id, beginofappointment, endofappointment, price) values (nextval('seq_counseling'), 1,5, '2021-02-07 00:00:00','2021-07-07 23:59:00', 3000);
@@ -68,8 +71,8 @@ insert into "counseling" (id,patient_id,pharmacist_id,beginofappointment,endofap
 insert into "counseling" (id,patient_id,pharmacist_id,beginofappointment,endofappointment,price) values (nextval('seq_counseling'), null, 10, '2021-02-05 00:00:00','2021-02-05 23:59:00', 20);
 insert into "counseling" (id,patient_id,pharmacist_id) values (nextval('seq_counseling'),2,10);
 
-insert into "dermatologist_pharmacyy" (id,beginofwork,endofwork,dermatologist_id,pharmacy_id) values (nextval('seq_dermatologist_pharmacy'),'00:00:00','23:59:00',6,1);
---insert into "dermatologist_pharmacyy" (id,beginofwork,endofwork,dermatologist_id,pharmacy_id) values (nextval('seq_dermatologist_pharmacy'),'16:00:00','17:00:00',6,1);
+insert into "dermatologist_pharmacyy" (id,beginofwork,endofwork,dermatologist_id,pharmacy_id) values (nextval('seq_dermatologist_pharmacy'),'12:00:00','14:00:00',6,1);
+insert into "dermatologist_pharmacyy" (id,beginofwork,endofwork,dermatologist_id,pharmacy_id) values (nextval('seq_dermatologist_pharmacy'),'16:00:00','17:00:00',11,1);
 
 insert into "examination"(id,report,therapyduration, examinationAppointment_id, prescriptedmedication_id,newappointment_id) values (nextval('seq_examination'), 'Pacijenta boli glava', 4, 5,2, null);
 insert into "examination"(id,report,therapyduration, examinationAppointment_id, prescriptedmedication_id,newappointment_id) values (nextval('seq_examination'), 'Pacijenta boli glava', 2, 2,2, null);

@@ -3,12 +3,15 @@ package com.example.ISAISA.service;
 import com.example.ISAISA.DTO.PharmacistDTO;
 import com.example.ISAISA.DTO.UserChangeDTO;
 import com.example.ISAISA.model.*;
+import com.example.ISAISA.repository.AppointmentRepository;
 import com.example.ISAISA.repository.DermatologistRepository;
 import com.example.ISAISA.repository.Dermatologist_PharmacyyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.List;
@@ -19,6 +22,8 @@ public class DermatologistService {
 
     private DermatologistRepository dermatologistRepository;
     private Dermatologist_PharmacyyRepository dermatologist_pharmacyRepository;
+    private AppointmentRepository appointmentRepository;
+
     @Autowired
     public void setDermatologistRepository(DermatologistRepository dermatologistRepository) {
         this.dermatologistRepository = dermatologistRepository;
@@ -27,6 +32,11 @@ public class DermatologistService {
     @Autowired
     public void setDermatologist_pharmacyRepository(Dermatologist_PharmacyyRepository dermatologist_pharmacyRepository) {
         this.dermatologist_pharmacyRepository = dermatologist_pharmacyRepository;
+    }
+
+    @Autowired
+    public void setAppointmentRepository(AppointmentRepository appointmentRepository) {
+        this.appointmentRepository = appointmentRepository;
     }
 
     public Dermatologist changeDermatologistInfo(UserChangeDTO userDTO) {
@@ -74,7 +84,19 @@ public class DermatologistService {
         return dermatologists;
     }
 
-    public Dermatologist_Pharmacyy addToPharmacy(Dermatologist dermatologist, LocalTime beginOfWork, LocalTime endOfWork, Pharmacy pharmacy) {
+    public Dermatologist findByEmail(String email) { return this.dermatologistRepository.findOneByEmail(email); }
+
+    public Dermatologist_Pharmacyy addToPharmacy(Dermatologist dermatologist, LocalTime beginOfWork, LocalTime endOfWork, Pharmacy pharmacy) throws Exception {
+
+        Set<Dermatologist_Pharmacyy> dermatologist_pharmacyys = dermatologist_pharmacyRepository.findAllByDermatologist(dermatologist);
+
+        for (Dermatologist_Pharmacyy dp : dermatologist_pharmacyys) {
+            if ((beginOfWork.isAfter(dp.getBeginofwork()) && beginOfWork.isBefore(dp.getEndofwork()))
+                    || (endOfWork.isBefore(dp.getEndofwork()) && endOfWork.isAfter(dp.getBeginofwork()))
+                    || (beginOfWork.isBefore(dp.getBeginofwork()) && endOfWork.isAfter(dp.getEndofwork()))) {
+                throw new Exception("Dermatologu se poklapa radno vreme sa apotekom: " + dp.getPharmacy().getName());
+            }
+        }
 
         Dermatologist_Pharmacyy dermatologist_pharmacyy = new Dermatologist_Pharmacyy(beginOfWork, endOfWork, pharmacy, dermatologist);
 
@@ -83,4 +105,26 @@ public class DermatologistService {
         return dermatologist_pharmacyy;
     }
 
+    public void removeDermatologistFromPharmacy(Integer id, Pharmacy pharmacy) throws Exception {
+
+        Dermatologist dermatologist = dermatologistRepository.findOneById(id);
+
+        Dermatologist_Pharmacyy dermatologist_pharmacyy = dermatologist_pharmacyRepository.findByDermatologistAndPharmacy(dermatologist, pharmacy);
+
+        Set<Appointment> appointments = appointmentRepository.findAllByDermatologist(dermatologist);
+        Set<Appointment> reservedAppointments = new HashSet<>();
+
+        for (Appointment appointment : appointments) {
+            if (appointment.getPatient() != null && appointment.getBeginofappointment().isAfter(LocalDateTime.now())) {
+                reservedAppointments.add(appointment);
+            }
+        }
+
+        if (reservedAppointments.isEmpty()) {
+            this.dermatologist_pharmacyRepository.delete(dermatologist_pharmacyy);
+        } else {
+            throw new Exception("Dermatolog ima zakazane termine, nije moguce ukloniti ga iz apoteke!");
+        }
+
+    }
 }

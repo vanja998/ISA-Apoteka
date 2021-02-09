@@ -134,44 +134,39 @@ function formToJSON(firstName, lastName) {
     );
 }
 
-/*
-//Registracija farmaceuta
-$(document).on('click', '.btnAddPharmacistAdminPharmacy', function () {
 
-    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy")
-    pharmacistsShowAdminPharmacy.hide();
+//Registracija dermatologa
+$(document).on('click', '.btnAddDermatologistsAdminPharmacy', function () {
 
-    var pharmacistsSearchAdminPharmacy = $(".pharmacistsSearchAdminPharmacy")
-    pharmacistsSearchAdminPharmacy.hide();
+    var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy")
+    dermatologistsShowAdminPharmacy.hide();
 
-    var addNewPharmacistAdminPharmacy = $(".addNewPharmacistAdminPharmacy")
-    addNewPharmacistAdminPharmacy.show();
+    var dermatologistsSearchAdminPharmacy = $(".dermatologistsSearchAdminPharmacy")
+    dermatologistsSearchAdminPharmacy.hide();
 
-    var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
-    pharmacistsFilterAdminPharmacy.hide();
+    var addNewDermatologistAdminPharmacy = $(".addNewDermatologistAdminPharmacy")
+    addNewDermatologistAdminPharmacy.show();
 
-    var errorDeletePharmacist = $(".errorDeletePharmacist");
-    errorDeletePharmacist.hide();
+    var dermatologistsFilterAdminPharmacy = $(".dermatologistsFilterAdminPharmacy");
+    dermatologistsFilterAdminPharmacy.hide();
+
+    var errorDeleteDermatologist = $(".errorDeleteDermatologist");
+    errorDeleteDermatologist.hide();
 
 });
 
-$(document).on('click', '#btnAddSavePharmacistAdminPharmacy', function () {
+$(document).on('click', '#btnAddSaveDermatologistAdminPharmacy', function () {
 
-    var firstName = $("#firstName").val();
-    var lastName = $("#lastName").val();
+
     var email = $("#email").val();
-    var address = $("#address").val();
-    var phone = $("#phone").val();
-    var city = $("#city").val();
-    var country = $("#country").val();
     var workingHoursFrom = $("#workingHoursFrom").val();
     var workingHoursUntil = $("#workingHoursUntil").val();
 
-    var myJSON = formToJSON1(firstName, lastName, email, address, phone, city, country, workingHoursFrom, workingHoursUntil);
+    var myJSON = formToJSON1(email, workingHoursFrom, workingHoursUntil);
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/pharmacists/adminPharmacistsAdd",
+        url: "http://localhost:8081/dermatologists/adminDermatologistsAdd",
         dataType: "json",
         contentType: "application/json",
         data: myJSON,
@@ -182,19 +177,13 @@ $(document).on('click', '#btnAddSavePharmacistAdminPharmacy', function () {
         },
         success: function (data) {
             console.log("SUCCESS: ", data);
-            $("#firstName").val("");
-            $("#lastName").val("");
             $("#email").val("");
-            $("#address").val("");
-            $("#phone").val("");
-            $("#city").val("");
-            $("#country").val("");
             $("#workingHoursFrom").val("");
             $("#workingHoursUntil").val("");
-            var addNewPharmacistAdminPharmacy = $(".addNewPharmacistAdminPharmacy")
-            addNewPharmacistAdminPharmacy.hide();
-            var successAddPharmacist = $(".successAddPharmacist");
-            successAddPharmacist.show();
+            var addNewDermatologistAdminPharmacy = $(".addNewDermatologistAdminPharmacy")
+            addNewDermatologistAdminPharmacy.hide();
+            var successAddDermatologist = $(".successAddDermatologist");
+            successAddDermatologist.show();
         },
         error: function (jqXHR) {
             if(jqXHR.status === 403)
@@ -207,58 +196,53 @@ $(document).on('click', '#btnAddSavePharmacistAdminPharmacy', function () {
             }
             if(jqXHR.status === 500)
             {
-                var addNewPharmacistAdminPharmacy = $(".addNewPharmacistAdminPharmacy")
-                addNewPharmacistAdminPharmacy.hide();
-                var errorAddPharmacist = $(".errorAddPharmacist");
-                errorAddPharmacist.show();
+                var response = JSON.parse(jqXHR.responseText);
+                document.getElementById('errorAddDerm').innerHTML = response['message'];
+                var addNewDermatologistAdminPharmacy = $(".addNewDermatologistAdminPharmacy")
+                addNewDermatologistAdminPharmacy.hide();
+                var errorAddDermatologist = $(".errorAddDermatologist");
+                errorAddDermatologist.show();
             }
         }
     });
 
 });
 
-function formToJSON1(firstName, lastName, email, address, phone, city, country, workingHoursFrom, workingHoursUntil) {
+function formToJSON1(email, workingHoursFrom, workingHoursUntil) {
     return JSON.stringify(
         {
-            "firstName" : firstName,
-            "lastName" : lastName,
             "email" : email,
-            "password" : "default",
-            "address" : address,
-            "phone" : phone,
-            "city" : city,
-            "country" : country,
-            "beginofwork" : workingHoursFrom,
-            "endofwork" : workingHoursUntil
+            "beginOfWork" : workingHoursFrom,
+            "endOfWork" : workingHoursUntil
         }
     );
 }
 
-$(document).on('click', '#returnToPharmacists', function () {
+$(document).on('click', '#returnToDermatologists', function () {
 
-    var successAddPharmacist = $(".successAddPharmacist");
-    successAddPharmacist.hide();
+    var successAddDermatologist = $(".successAddDermatologist");
+    successAddDermatologist.hide();
 
-    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy")
-    pharmacistsShowAdminPharmacy.show();
+    var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy")
+    dermatologistsShowAdminPharmacy.show();
 
-    var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
-    pharmacistsFilterAdminPharmacy.hide();
+    var dermatologistsFilterAdminPharmacy = $(".dermatologistsFilterAdminPharmacy");
+    dermatologistsFilterAdminPharmacy.hide();
 });
 
-$(document).on('click', '#returnToPharmacistsError', function () {
+$(document).on('click', '#errorAddDermatologists', function () {
 
-    var errorAddPharmacist = $(".errorAddPharmacist");
-    errorAddPharmacist.show();
+    var errorAddDermatologist = $(".errorAddDermatologist");
+    errorAddDermatologist.hide();
 
-    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy")
-    pharmacistsShowAdminPharmacy.show();
+    var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy")
+    dermatologistsShowAdminPharmacy.show();
 
-    var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
-    pharmacistsFilterAdminPharmacy.hide();
+    var dermatologistsFilterAdminPharmacy = $(".dermatologistsFilterAdminPharmacy");
+    dermatologistsFilterAdminPharmacy.hide();
 });
 
-
+/*
 //Filtriranje farmaceuta
 $(document).on('click', '.btnFilterPharmacistAdminPharmacy', function () {
 
@@ -368,23 +352,23 @@ $(document).on('click', '#btnCancelFilterPharmacists', function () {
     var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
     pharmacistsFilterAdminPharmacy.hide();
 });
-
-//Brisanje farmaceuta
+*/
+//Brisanje dermatologa
 $(document).on('click', '.btnRemove', function (){
     var modal = document.getElementById("modalDelete");
     modal.style.display = "block";
 
-    var pharmacistsAdminPharmacy = $(".pharmacistsAdminPharmacy");
-    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy");
-    var pharmacistsSearchAdminPharmacy = $(".pharmacistsSearchAdminPharmacy");
-    var addNewPharmacistAdminPharmacy= $(".addNewPharmacistAdminPharmacy");
-    var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
+    var dermatologistsAdminPharmacy = $(".dermatologistsAdminPharmacy");
+    var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy");
+    var dermatologistsSearchAdminPharmacy = $(".dermatologistsSearchAdminPharmacy");
+    var addNewDermatologistAdminPharmacy= $(".addNewDermatologistAdminPharmacy");
+    var dermatologistsFilterAdminPharmacy = $(".dermatologistsFilterAdminPharmacy");
 
-    pharmacistsAdminPharmacy.hide();
-    pharmacistsShowAdminPharmacy.hide();
-    pharmacistsSearchAdminPharmacy.hide();
-    addNewPharmacistAdminPharmacy.hide();
-    pharmacistsFilterAdminPharmacy.hide();
+    dermatologistsAdminPharmacy.hide();
+    dermatologistsShowAdminPharmacy.hide();
+    dermatologistsSearchAdminPharmacy.hide();
+    addNewDermatologistAdminPharmacy.hide();
+    dermatologistsFilterAdminPharmacy.hide();
 
     var id = this.id;
     var myJSON = JSON.stringify({"id" : id});
@@ -395,7 +379,7 @@ $(document).on('click', '.btnRemove', function (){
 
         $.ajax({
             type: "POST",
-            url: "http://localhost:8081/pharmacists/pharmacistDelete",
+            url: "http://localhost:8081/dermatologists/dermatologistDelete",
             contentType: "application/json",
             data: myJSON,
             beforeSend: function (xhr) {
@@ -406,7 +390,7 @@ $(document).on('click', '.btnRemove', function (){
             success: function (data) {
                 console.log("SUCCESS", data);
 
-                window.location.href="adminPharmacyPharmacists.html";
+                window.location.href="adminPharmacyDermatologists.html";
             },
             error: function (jqXHR) {
                 if (jqXHR.status === 403) {
@@ -416,19 +400,20 @@ $(document).on('click', '.btnRemove', function (){
                     window.location.href = "error.html";
                 }
                 if (jqXHR.status === 500) {
+
                     var modal = document.getElementById("modalDelete");
                     modal.style.display = "none";
 
-                    var pharmacistsAdminPharmacy = $(".pharmacistsAdminPharmacy");
-                    pharmacistsAdminPharmacy.hide();
-                    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy");
-                    pharmacistsShowAdminPharmacy.hide();
+                    var dermatologistsAdminPharmacy = $(".dermatologistsAdminPharmacy");
+                    dermatologistsAdminPharmacy.hide();
+                    var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy");
+                    dermatologistsShowAdminPharmacy.hide();
 
-                    var errorDeletePharmacist = $(".errorDeletePharmacist");
-                    errorDeletePharmacist.show();
+                    var errorDeleteDermatologist = $(".errorDeleteDermatologist");
+                    errorDeleteDermatologist.show();
 
                     var response = JSON.parse(jqXHR.responseText);
-                    $('#errorDeletePharmacist').append(response['message']);
+                    document.getElementById('errorDeleteDermatologist').innerHTML = response['message'];
                 }
             }
 
@@ -440,20 +425,20 @@ $(document).on('click', '.btnRemove', function (){
         var modal = document.getElementById("modalDelete");
         modal.style.display = "none";
 
-        var pharmacistsAdminPharmacy = $(".pharmacistsAdminPharmacy");
-        pharmacistsAdminPharmacy.show();
-        var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy");
-        pharmacistsShowAdminPharmacy.show();
+        var dermatologistsAdminPharmacy = $(".dermatologistsAdminPharmacy");
+        dermatologistsAdminPharmacy.show();
+        var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy");
+        dermatologistsShowAdminPharmacy.show();
 
     });
 });
 
-$(document).on('click', '#btnErrorDeletePharmacist', function () {
-    var pharmacistsAdminPharmacy = $(".pharmacistsAdminPharmacy");
-    pharmacistsAdminPharmacy.show();
-    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy");
-    pharmacistsShowAdminPharmacy.show();
+$(document).on('click', '#btnErrorDeleteDermatologist', function () {
+    var dermatologistsAdminPharmacy = $(".dermatologistsAdminPharmacy");
+    dermatologistsAdminPharmacy.show();
+    var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy");
+    dermatologistsShowAdminPharmacy.show();
 
-    var errorDeletePharmacist = $(".errorDeletePharmacist");
-    errorDeletePharmacist.hide();
-});*/
+    var errorDeleteDermatologist = $(".errorDeleteDermatologist");
+    errorDeleteDermatologist.hide();
+});

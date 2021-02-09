@@ -16,7 +16,7 @@ public class Dermatologist extends User {
     private Set<Appointment> appointments = new HashSet<Appointment>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "dermatologist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "dermatologist", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private Set<Dermatologist_Pharmacyy> dermatologist_pharmacies = new HashSet<Dermatologist_Pharmacyy>();
 
     @Column
