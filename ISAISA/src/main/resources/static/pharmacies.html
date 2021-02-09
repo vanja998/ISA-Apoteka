@@ -5,6 +5,7 @@
     <title>Apoteke</title>
     <script src="js/jquery.min.js"></script>
     <script src="js/pharmacies.js"></script>
+    <script src="js/pharmacyProfile.js"></script>
 </head>
 <body>
     <div class="allPharmacies">
@@ -55,24 +56,85 @@
         </div>
     </div>
 
+    <!-- Ovde pocinje -->
     <div class="onePharmacy">
-        <div class="card">
-            <div class="bio">
-                <h2 id="pharmacyName"></h2>
-                <h3 id="address1"></h3>
-                <h3 id="description1"></h3>
-                <h3>Ocena</h3><h3 id="rating1"></h3>
+        <div class="pharmacists">
+            <div class="pharmacistsAdminPharmacy">
+                <input type="search" class="searchPharmacistsAdminPharmacy" name="q" placeholder="Unesite ime i prezime farmaceuta"/>
+                <input type="submit" class="btnSearchPharmacistsAdminPharmacy"/>
+                <button class="btnFilterPharmacistAdminPharmacy">Filter</button>
             </div>
-            <div class="buttons">
-                <ul style="list-style-type:none">
-                    <li><button id="patientAllAvailableAppointments">Termini kod dermatologa</button></li>
-                    <li><button id="patientAllPharmacists">Farmaceuti</button></li>
-                    <li><button id="patientAllDermatologists">Dermatolozi</button></li>
-                    <li><button id="patientAllMedicine">Lekovi</button></li>
-                    <li><button id="patientAllPromotions">Pretplati se na akcije</button></li>
-                </ul>
+            <div class="card">
+                <div class="bio">
+                    <h2 id="pharmacyName"></h2>
+                    <h3 id="address1"></h3>
+                    <h3 id="description1"></h3>
+                    <h3>Ocena</h3><h3 id="rating1"></h3>
+                </div>
+                <div class="buttons">
+                    <ul style="list-style-type:none">
+                        <li><button id="patientAllAvailableAppointments">Termini kod dermatologa</button></li>
+                        <li><button id="patientAllPharmacists">Farmaceuti</button></li>
+                        <li><button id="patientAllDermatologists">Dermatolozi</button></li>
+                        <li><button id="patientAllMedicine">Lekovi</button></li>
+                        <li><button id="patientAllPromotions">Pretplati se na akcije</button></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pharmacistsShowAdminPharmacy">
+                <table id="tablePharmacistsAdminPharmacy">
+                    <h1>Farmaceuti</h1>
+                    <tr>
+                        <th>Ime</th>
+                        <th>Prezime</th>
+                        <th>Ocena</th>
+                        <th>Apoteka</th>
+                        <th>Adresa apoteke</th>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="pharmacistsSearchAdminPharmacy">
+
+                <table id="tablePharmacistsSearchAdminPharmacy">
+                    <h1>Rezulati za: </h1><h1 id="searchPharmacists"></h1>
+                    <thead>
+                    <tr>
+                        <th>Ime</th>
+                        <th>Prezime</th>
+                        <th>Ocena</th>
+                        <th>Apoteka</th>
+                        <th>Adresa apoteke</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pharmacistsFilterAdminPharmacy">
+                <label for="ratingOver">Ocena iznad:</label>
+                <input id="ratingOver"  min="1" max="5" type="number" value="1" step="0.01"/>
+                <label for="ratingUnder">Ocena ispod:</label>
+                <input id="ratingUnder" type="number" min="1" max="5" value="5" step="0.01"/>
+                <button id="btnSubmitFilterPharmacists">Ok</button>
+                <button id="btnCancelFilterPharmacists">Ponisti</button>
             </div>
         </div>
+
+        <div class="dermatologists">
+
+        </div>
+
+        <div class="availableAppointments">
+
+        </div>
+
+        <div class="medicine">
+
+        </div>
+
     </div>
 
 </body>

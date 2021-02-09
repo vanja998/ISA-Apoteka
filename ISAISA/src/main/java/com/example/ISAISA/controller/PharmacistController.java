@@ -70,6 +70,7 @@ public class PharmacistController {
         return ResponseEntity.accepted().body(result);
     }
 
+    //**********************************Funkcionalnosti za admina apoteke
     @GetMapping(value="/adminPharmacists")
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByAdminPharmacy() {
@@ -102,31 +103,16 @@ public class PharmacistController {
         return new ResponseEntity<>(pharmacist, HttpStatus.OK);
     }
 
-    @GetMapping(value="/allPharmacists", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMINPHARMACY')")
-    public ResponseEntity<Set<PharmacistDTO>> getAllPharmacists() {
 
-        Set<PharmacistDTO> pharmacists = pharmacistService.getAll();
 
-        return new ResponseEntity<>(pharmacists, HttpStatus.OK);
-    }
-
-    @PostMapping(value="/allPharmacistsSearch", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMINPHARMACY')")
-    public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByFirstNameAndLastName(@RequestBody PharmacistDTO pharmacistDTO) {
-
-        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Set<PharmacistDTO> pharmacists = pharmacistService.getPharmacistsByFirstNameAndLastName(
-                pharmacistDTO.getFirstName(), pharmacistDTO.getLastName());
-
-        return new ResponseEntity<>(pharmacists, HttpStatus.OK);
-    }
-
-    @PostMapping(value="/pharmacistsFilter", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/adminPharmacistsFilter", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public ResponseEntity<Set<PharmacistDTO>> filterPharmacists(@RequestBody FilterEmployeesDTO pharmacistDTO) {
 
-        Pharmacy pharmacy = pharmacyService.findByName(pharmacistDTO.getPharmacyName());
+        //Pharmacy pharmacy = pharmacyService.findByName(pharmacistDTO.getPharmacyName());
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Pharmacy pharmacy = user.getPharmacy();
+
         Float ratingUnder = (float) pharmacistDTO.getRatingUnder();
         Float ratingOver = (float) pharmacistDTO.getRatingOver();
 
@@ -140,6 +126,29 @@ public class PharmacistController {
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public void deletePharmacist(@RequestBody IdDto idDto) throws Exception {
         pharmacistService.deletePharmacist(idDto.getId());
+    }
+
+    //**********************************Funckionalnosti za pacijenta
+
+    @PostMapping(value="/allPharmacists", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Set<PharmacistDTO>> getAllPharmacistsByPharmacy(@RequestBody IdDto idDto) {
+
+        Pharmacy pharmacy = pharmacyService.findById(idDto.getId());
+        Set<PharmacistDTO> pharmacists = pharmacistService.getPharmacistsByPharmacy(pharmacy);
+
+        return new ResponseEntity<>(pharmacists, HttpStatus.OK);
+    }
+    @PostMapping(value="/allPharmacistsSearch", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByFirstNameAndLastName(@RequestBody PharmacistDTO pharmacistDTO) {
+
+        Pharmacy pharmacy = pharmacyService.findById(pharmacistDTO.getId());
+
+        Set<PharmacistDTO> pharmacists = pharmacistService.getPharmacistsByPharmacyAndFirstNameAndLastName(pharmacy,
+                pharmacistDTO.getFirstName(), pharmacistDTO.getLastName());
+
+        return new ResponseEntity<>(pharmacists, HttpStatus.OK);
     }
 
 }

@@ -22,6 +22,10 @@ public class Dermatologist extends User {
     @Column
     private Float rating;
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "dermatologist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Vacation> vacations = new HashSet<Vacation>();
+
     public Set<Appointment> getAppointments() {
         return appointments;
     }
@@ -53,4 +57,9 @@ public class Dermatologist extends User {
         this.dermatologist_pharmacies = dermatologist_pharmacies;
         this.rating = rating;
     }
+
+    public Set<Vacation> getVacations() { return vacations; }
+
+    public void setVacations(Set<Vacation> vacations) { this.vacations = vacations; }
+
 }

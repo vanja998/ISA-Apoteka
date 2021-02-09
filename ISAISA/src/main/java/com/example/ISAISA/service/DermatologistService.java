@@ -70,6 +70,7 @@ public class DermatologistService {
 
     public Dermatologist findById(Integer id) { return dermatologistRepository.findOneById(id); }
 
+    //Pretraga
     public Set<Dermatologist> getDermatologistsByPharmacyAndFirstNameAndLastName(Pharmacy pharmacy, String firstName, String lastName) {
 
         Set<Dermatologist_Pharmacyy> dermatologist_pharmacyys = dermatologist_pharmacyRepository.findAllByPharmacy(pharmacy);
@@ -84,6 +85,7 @@ public class DermatologistService {
         return dermatologists;
     }
 
+    //Dodavanje
     public Dermatologist findByEmail(String email) { return this.dermatologistRepository.findOneByEmail(email); }
 
     public Dermatologist_Pharmacyy addToPharmacy(Dermatologist dermatologist, LocalTime beginOfWork, LocalTime endOfWork, Pharmacy pharmacy) throws Exception {
@@ -105,6 +107,39 @@ public class DermatologistService {
         return dermatologist_pharmacyy;
     }
 
+    //Filtriranje
+    public Set<Dermatologist> filterDermatologists(Float ratingOver, Float ratingUnder, Pharmacy pharmacy) {
+        if (pharmacy == null) {
+            return getDermatologistsByRatingBetween(ratingOver, ratingUnder);
+        } else {
+            return getDermatologistsByRatingBetweenAndPharmacyName(ratingOver, ratingUnder, pharmacy);
+        }
+    }
+
+    public Set<Dermatologist> getDermatologistsByRatingBetweenAndPharmacyName(Float ratingOver, Float ratingUnder, Pharmacy pharmacy) {
+        Set<Dermatologist> dermatologists = dermatologistRepository.findAllByRatingBetween(ratingOver, ratingUnder);
+
+        Set<Dermatologist> chosenDermatologists = new HashSet<>();
+
+        for (Dermatologist dermatologist : dermatologists) {
+            Set<Dermatologist_Pharmacyy> dermatologist_pharmacyys = dermatologist_pharmacyRepository.findAllByDermatologist(dermatologist);
+            for (Dermatologist_Pharmacyy dp : dermatologist_pharmacyys) {
+                if (dp.getPharmacy().getId().equals(pharmacy.getId())) {
+                    chosenDermatologists.add(dp.getDermatologist());
+                }
+            }
+        }
+        return chosenDermatologists;
+    }
+
+    public Set<Dermatologist> getDermatologistsByRatingBetween(Float ratingOver, Float ratingUnder) {
+
+        Set<Dermatologist> dermatologists = dermatologistRepository.findAllByRatingBetween(ratingOver, ratingUnder);
+
+        return dermatologists;
+    }
+
+    //Brisanje
     public void removeDermatologistFromPharmacy(Integer id, Pharmacy pharmacy) throws Exception {
 
         Dermatologist dermatologist = dermatologistRepository.findOneById(id);
@@ -125,6 +160,5 @@ public class DermatologistService {
         } else {
             throw new Exception("Dermatolog ima zakazane termine, nije moguce ukloniti ga iz apoteke!");
         }
-
     }
 }

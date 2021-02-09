@@ -242,65 +242,65 @@ $(document).on('click', '#errorAddDermatologists', function () {
     dermatologistsFilterAdminPharmacy.hide();
 });
 
-/*
-//Filtriranje farmaceuta
-$(document).on('click', '.btnFilterPharmacistAdminPharmacy', function () {
+
+//Filtriranje dermatologa
+$(document).on('click', '.btnFilterDermatologistsAdminPharmacy', function () {
 
     var employeesAdminPharmacy = $(".employeesAdminPharmacy")
     employeesAdminPharmacy.hide();
 
-    var pharmacistsAdminPharmacy = $(".pharmacistsAdminPharmacy")
-    pharmacistsAdminPharmacy.show();
+    var dermatologistsAdminPharmacy = $(".dermatologistsAdminPharmacy")
+    dermatologistsAdminPharmacy.show();
 
-    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy")
-    pharmacistsShowAdminPharmacy.show();
+    var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy")
+    dermatologistsShowAdminPharmacy.show();
 
-    var pharmacistsSearchAdminPharmacy = $(".pharmacistsSearchAdminPharmacy")
-    pharmacistsSearchAdminPharmacy.hide();
+    var dermatologistsSearchAdminPharmacy = $(".dermatologistsSearchAdminPharmacy")
+    dermatologistsSearchAdminPharmacy.hide();
 
-    var addNewPharmacistAdminPharmacy= $(".addNewPharmacistAdminPharmacy")
-    addNewPharmacistAdminPharmacy.hide();
+    var addNewDermatologistAdminPharmacy= $(".addNewDermatologistAdminPharmacy")
+    addNewDermatologistAdminPharmacy.hide();
 
-    var successAddPharmacist = $(".successAddPharmacist");
-    successAddPharmacist.hide();
+    var successAddDermatologist = $(".successAddDermatologist");
+    successAddDermatologist.hide();
 
-    var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
-    pharmacistsFilterAdminPharmacy.show();
+    var dermatologistsFilterAdminPharmacy = $(".dermatologistsFilterAdminPharmacy");
+    dermatologistsFilterAdminPharmacy.show();
 });
 
-$(document).on('click', '#btnSubmitFilterPharmacists', function () {
+$(document).on('click', '#btnSubmitFilterDermatologists', function () {
 
     var employeesAdminPharmacy = $(".employeesAdminPharmacy")
     employeesAdminPharmacy.hide();
 
-    var pharmacistsAdminPharmacy = $(".pharmacistsAdminPharmacy")
-    pharmacistsAdminPharmacy.show();
+    var dermatologistsAdminPharmacy = $(".dermatologistsAdminPharmacy")
+    dermatologistsAdminPharmacy.show();
 
-    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy")
-    pharmacistsShowAdminPharmacy.show();
+    var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy")
+    dermatologistsShowAdminPharmacy.show();
 
-    var pharmacistsSearchAdminPharmacy = $(".pharmacistsSearchAdminPharmacy")
-    pharmacistsSearchAdminPharmacy.hide();
+    var dermatologistsSearchAdminPharmacy = $(".dermatologistsSearchAdminPharmacy")
+    dermatologistsSearchAdminPharmacy.hide();
 
-    var addNewPharmacistAdminPharmacy= $(".addNewPharmacistAdminPharmacy")
-    addNewPharmacistAdminPharmacy.hide();
+    var addNewDermatologistAdminPharmacy= $(".addNewDermatologistAdminPharmacy")
+    addNewDermatologistAdminPharmacy.hide();
 
-    var successAddPharmacist = $(".successAddPharmacist");
-    successAddPharmacist.hide();
+    var successAddDermatologist = $(".successAddDermatologist");
+    successAddDermatologist.hide();
 
-    var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
-    pharmacistsFilterAdminPharmacy.hide();
+    var dermatologistsFilterAdminPharmacy = $(".dermatologistsFilterAdminPharmacy");
+    dermatologistsFilterAdminPharmacy.hide();
 
     var ratingOver = $("#ratingOver").val();
     var ratingUnder = $("#ratingUnder").val();
 
     var myJSON = formToJSON2(ratingOver, ratingUnder);
 
-    $('#tablePharmacistsAdminPharmacy tbody').empty();
+    $('#tableDermatologistsAdminPharmacy tbody').empty();
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/pharmacists/pharmacistsFilter",
+        url: "http://localhost:8081/dermatologists/adminDermatologistsFilter",
         dataType: "json",
         contentType: "application/json",
         data: myJSON,
@@ -316,13 +316,13 @@ $(document).on('click', '#btnSubmitFilterPharmacists', function () {
                 row += "<td>" + data[i]['firstName'] + "</td>";
                 row += "<td>" + data[i]['lastName'] + "</td>";
                 row += "<td>" + data[i]['rating'] + "</td>";
-                row += "<td>" + data[i]['pharmacy']['name'] + "</td>";
-                row += "<td>" + data[i]['pharmacy']['address'] + "</td>";
+                //row += "<td>" + data[i]['pharmacy']['name'] + "</td>";
+                //row += "<td>" + data[i]['pharmacy']['address'] + "</td>";
 
-                var btnRemove = "<button class='btnRemove' id = " + data[i]['id'] + "> Ukloni farmaceuta </button>";
+                var btnRemove = "<button class='btnRemove' id = " + data[i]['id'] + "> Ukloni dermatologa </button>";
                 row += "<td>" + btnRemove + "</td>";
 
-                $('#tablePharmacistsAdminPharmacy').append(row);
+                $('#tableDermatologistsAdminPharmacy tbody').append(row);
             }
 
         },
@@ -348,11 +348,11 @@ function formToJSON2(ratingOver, ratingUnder) {
     );
 }
 
-$(document).on('click', '#btnCancelFilterPharmacists', function () {
-    var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
-    pharmacistsFilterAdminPharmacy.hide();
+$(document).on('click', '#btnCancelFilterDermatologists', function () {
+    var dermatologistsFilterAdminPharmacy = $(".dermatologistsFilterAdminPharmacy");
+    dermatologistsFilterAdminPharmacy.hide();
 });
-*/
+
 //Brisanje dermatologa
 $(document).on('click', '.btnRemove', function (){
     var modal = document.getElementById("modalDelete");

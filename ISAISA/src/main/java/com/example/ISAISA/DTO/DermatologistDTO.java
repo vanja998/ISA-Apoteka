@@ -28,6 +28,13 @@ public class DermatologistDTO {
         this.lastName = lastName;
     }
 
+    public DermatologistDTO(Integer id, String firstName, String lastName, Float rating) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.rating = rating;
+    }
+
     public DermatologistDTO(Integer id, String firstName, String lastName, Float rating, Pharmacy pharmacy, LocalTime beginOfWork, LocalTime endOfWork) {
         this.id = id;
         this.firstName = firstName;
@@ -38,9 +45,10 @@ public class DermatologistDTO {
         this.endOfWork = endOfWork;
     }
 
-    public DermatologistDTO(String firstName, String lastName, Pharmacy pharmacy) {
+    public DermatologistDTO(String firstName, String lastName, Float rating, Pharmacy pharmacy) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.rating = rating;
         this.pharmacy = pharmacy;
     }
 

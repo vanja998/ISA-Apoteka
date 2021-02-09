@@ -70,7 +70,6 @@ $(document).on('click', '.btnSearchPharmacistsAdminPharmacy', function () {
     addNewPharmacistAdminPharmacy.hide();
     pharmacistsFilterAdminPharmacy.hide();
     errorDeletePharmacist.hide();
-
     pharmacistsSearchAdminPharmacy.show();
 
     var searchParam = $(".searchPharmacistsAdminPharmacy").val();
@@ -312,7 +311,7 @@ $(document).on('click', '#btnSubmitFilterPharmacists', function () {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/pharmacists/pharmacistsFilter",
+        url: "http://localhost:8081/pharmacists/adminPharmacistsFilter",
         dataType: "json",
         contentType: "application/json",
         data: myJSON,

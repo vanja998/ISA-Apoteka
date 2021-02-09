@@ -1,9 +1,6 @@
 package com.example.ISAISA.controller;
 
-import com.example.ISAISA.DTO.DermatologistDTO;
-import com.example.ISAISA.DTO.IdDto;
-import com.example.ISAISA.DTO.PharmacistDTO;
-import com.example.ISAISA.DTO.UserChangeDTO;
+import com.example.ISAISA.DTO.*;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.service.DermatologistService;
 import com.example.ISAISA.service.UserServiceDetails;
@@ -89,7 +86,7 @@ public class DermatologistController {
         Set<DermatologistDTO> dermatologistDTOS = new HashSet<>();
 
         for (Dermatologist dermatologist : dermatologists) {
-            DermatologistDTO dermatologistDTO1 = new DermatologistDTO(dermatologist.getFirstName(), dermatologist.getLastName(), user.getPharmacy());
+            DermatologistDTO dermatologistDTO1 = new DermatologistDTO(dermatologist.getFirstName(), dermatologist.getLastName(), dermatologist.getRating(), user.getPharmacy());
             dermatologistDTOS.add(dermatologistDTO1);
         }
 
@@ -106,6 +103,29 @@ public class DermatologistController {
         Dermatologist_Pharmacyy dermatologist_pharmacyy = dermatologistService.addToPharmacy(dermatologist, dermatologistDTO.getBeginOfWork(), dermatologistDTO.getEndOfWork(), pharmacy);
 
         return new ResponseEntity<>(dermatologist_pharmacyy, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/adminDermatologistsFilter", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Set<DermatologistDTO>> filterDermatologists(@RequestBody FilterEmployeesDTO pharmacistDTO) {
+
+        //Pharmacy pharmacy = pharmacyService.findByName(pharmacistDTO.getPharmacyName());
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Pharmacy pharmacy = user.getPharmacy();
+
+        Float ratingUnder = (float) pharmacistDTO.getRatingUnder();
+        Float ratingOver = (float) pharmacistDTO.getRatingOver();
+
+        Set<Dermatologist> dermatologists = dermatologistService.getDermatologistsByRatingBetweenAndPharmacyName(ratingOver, ratingUnder, pharmacy);
+        Set<DermatologistDTO> dermatologistDTOS = new HashSet<>();
+
+        for (Dermatologist dermatologist : dermatologists) {
+            DermatologistDTO dermatologistDTO = new DermatologistDTO(dermatologist.getFirstName(), dermatologist.getLastName(),
+                    dermatologist.getRating(), pharmacy);
+            dermatologistDTOS.add(dermatologistDTO);
+        }
+
+        return new ResponseEntity<>(dermatologistDTOS, HttpStatus.OK);
     }
 
     @PostMapping(value="/dermatologistDelete", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
