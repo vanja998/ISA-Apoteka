@@ -45,6 +45,13 @@ public class PatientService {
         return user;
     }
 
+    public Patient addPromotion(Patient patient,Pharmacy pharmacy){
+        Set<Pharmacy> pharmacies=patient.getPharmacies_promotions();
+        pharmacies.add(pharmacy);
+        patient.setPharmacies_promotions(pharmacies);
+        patient=patientRepository.save(patient);
+        return  patient;
+    }
 
     public List<PatientSearchDto> getAllSearchPatients() {
 

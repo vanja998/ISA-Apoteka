@@ -35,7 +35,7 @@ public class Patient extends User{
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "promotion_patients", joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
-    private Set<Promotion> pharmacies_promotions = new HashSet<Promotion>();
+    private Set<Pharmacy> pharmacies_promotions = new HashSet<Pharmacy>();
 
     public Patient() {
     }
@@ -72,11 +72,11 @@ public class Patient extends User{
         this.appointments = appointments;
     }
 
-    public Set<Promotion> getPharmacies_promotions() {
+    public Set<Pharmacy> getPharmacies_promotions() {
         return pharmacies_promotions;
     }
 
-    public void setPharmacies_promotions(Set<Promotion> pharmacies_promotions) {
+    public void setPharmacies_promotions(Set<Pharmacy> pharmacies_promotions) {
         this.pharmacies_promotions = pharmacies_promotions;
     }
 
