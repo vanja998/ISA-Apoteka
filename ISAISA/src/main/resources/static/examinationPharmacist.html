@@ -69,5 +69,40 @@
         </table>
     </div>
 
+    <div class="alternativeMedication" >
+        <h2>Izaberite alternativu</h2>
+        <h4>Nakon sto odaberete lek iz liste on ce automatski biti prepisan. Prvo popunite polje trajanje terapije</h4>
+        <h3>Trajanje terapije u danima: </h3><input id="chTherapyDurationAlternative" type="text"/>
+        <br>
+        <label>Izaberite lek:</label>
+        <select name="alternativeDropDown" id="idAlternativeDropDown"></select>
+        <tr><button id='btnCancleAlternative'>Odustani od preporucivanja leka</button></tr>
+    </div>
+
+    <div class="ScheduleCounseling">
+        <button id='btnCreateCounseling'>Izaberi datum i vreme novog termina</button>
+        <button id='btnCancleScheduling'>Odustani od zakazivanja</button>
+    </div>
+
+    <div class="createCounseling">
+        <h4>Izvrsice se provera da li su farmaceut i pacijent u ovom periodu slobodni.</h4>
+
+
+        <h2>Pocetak savetovanja: </h2>
+        <input type="datetime-local" id="chStartOfCounseling">
+        <br>
+        <h2>Kraj savetovanja: </h2>
+        <input type="datetime-local" id="chEndOfCounseling">
+
+        <br>
+        <h2>Cena: </h2><input id="chPrice" type="text"/>
+
+        <button id="btnCreateCounselingNow">Zakazi</button>
+        <button id='btnCancleCreatingCounseling'>Odustani od zakazivanja</button>
+
+    </div>
+
+
+
 </body>
 </html>

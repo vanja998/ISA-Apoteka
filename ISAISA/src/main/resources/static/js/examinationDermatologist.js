@@ -668,7 +668,7 @@ $(document).on('click', '#btnCreateAppointmentNow', function () {
             }
             else {
                 console.log('Success:', data);
-                alert("Termin nije zakazan");
+                alert("Termin nije zakazan, zauzet je.");
             }
         },
         error: function (error) {

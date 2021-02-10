@@ -46,7 +46,13 @@ public class PharmacyService {
         return pharmacyRepository.findAll();
     }
 
-    public List<Pharmacy> findallByMedication(Medication medication) { return pharmacyRepository.findAllByMedication(medication);}
+    public List<Pharmacy> findallByMedication(Medication medication) {
+        List<Pharmacy> pharmacies = new ArrayList<>();
+        for(PharmacyMedication pm : medication.getPharmacy_medications()) {
+            pharmacies.add(pm.getPharmacy());
+        }
+        return pharmacies;
+    }
 
     public Pharmacy findByName(String name) { return pharmacyRepository.findByName(name); }
 

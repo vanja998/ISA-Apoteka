@@ -33,7 +33,7 @@ public class Pharmacy {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER)
     private Set<Reservation> reservations = new HashSet<Reservation>();
 
 
@@ -41,16 +41,20 @@ public class Pharmacy {
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<AdminPharmacy> adminPharmacySet = new HashSet<AdminPharmacy>();
 
-    @JsonIgnore
+    /*@JsonIgnore
     @ManyToMany(mappedBy = "pharmacies", fetch = FetchType.EAGER)
-    private Set<Medication> medication = new HashSet<Medication>();
+    private Set<Medication> medication = new HashSet<Medication>();*/
+    @JsonIgnore
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<PharmacyMedication> pharmacy_medications = new HashSet<PharmacyMedication>();
+
 
     @JsonIgnore
     @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     private Set<Dermatologist_Pharmacyy> dermatologist_pharmacies = new HashSet<Dermatologist_Pharmacyy>();
 
     @JsonIgnore
@@ -114,12 +118,20 @@ public class Pharmacy {
 
     public void setRating(Float rating) { this.rating = rating; }
 
-    public Set<Medication> getMedication() {
+    /*public Set<Medication> getMedication() {
         return medication;
     }
 
     public void setMedication(Set<Medication> medication) {
         this.medication = medication;
+    }*/
+
+    public Set<PharmacyMedication> getPharmacy_medications() {
+        return pharmacy_medications;
+    }
+
+    public void setPharmacy_medications(Set<PharmacyMedication> pharmacy_medications) {
+        this.pharmacy_medications = pharmacy_medications;
     }
 
     public Set<Pharmacist> getPharmacists() {

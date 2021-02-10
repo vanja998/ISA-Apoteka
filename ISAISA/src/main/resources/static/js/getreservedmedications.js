@@ -36,3 +36,26 @@ $(document).ready(function () {
         }
     });
 });
+$(document).on('click', '.btnCancelReservation', function(){
+    var id=this.id;
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/reservations/cancelreservation",
+        //dataType: "json",
+        contentType: "application/json",
+        data:id,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function () {
+            alert("success");
+
+        },
+        error: function (error) {
+            alert(error);
+        }
+    });
+
+});

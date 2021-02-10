@@ -119,7 +119,7 @@ public class PharmacistService {
         user.setCity(userDTO.getCity());
         user.setCountry(userDTO.getCountry());
 
-        pharmacistRepository.save(user);
+        user = this.pharmacistRepository.save(user);
 
         return user;
     }
@@ -137,7 +137,7 @@ public class PharmacistService {
         return pharmacistDTOS;
     }
 
-    public Set<PharmacistDTO> filterPharmacists(Float ratingUnder, Float ratingOver, Pharmacy pharmacy) {
+    public Set<PharmacistDTO> filterPharmacists(Float ratingOver, Float ratingUnder, Pharmacy pharmacy) {
         if (pharmacy == null) {
             return getPharmacistsByRatingBetween(ratingOver, ratingUnder);
         } else {

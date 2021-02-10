@@ -1,28 +1,33 @@
 package com.example.ISAISA.controller;
 
+import com.example.ISAISA.DTO.BooleanDto;
+import com.example.ISAISA.DTO.CalendarDTO;
+import com.example.ISAISA.DTO.CreateAppointmentDto;
 import com.example.ISAISA.DTO.IdDto;
-import com.example.ISAISA.model.Appointment;
-import com.example.ISAISA.model.Counseling;
-import com.example.ISAISA.model.Dermatologist;
-import com.example.ISAISA.model.Pharmacist;
+import com.example.ISAISA.model.*;
 import com.example.ISAISA.service.AppointmentService;
 import com.example.ISAISA.service.CounselingService;
+import com.example.ISAISA.service.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping(value="/counselings")
 public class CounselingController {
 
     private CounselingService counselingService;
+
+    @Autowired
+    private EmailSenderService emailSenderService;
+
 
     @Autowired
     public void setCounselingService(CounselingService counselingService) {
@@ -66,6 +71,48 @@ public class CounselingController {
         return new ResponseEntity<>(id, HttpStatus.OK);
     }
 
+    @PostMapping(value="/createCounselingPharmacist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<BooleanDto> createCounselingPharmacist(@RequestBody CreateAppointmentDto createCounselingDto) throws Exception {
 
+        Pharmacist user = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Boolean counseling = counselingService.createCounselingPharmacist(user, createCounselingDto.getId(),  createCounselingDto.getStartOfAppointment(), createCounselingDto.getEndOfAppointment(), createCounselingDto.getPrice());
+
+        BooleanDto booleanDto = new BooleanDto(counseling);
+
+
+        return new ResponseEntity<>(booleanDto, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value="/getCounselingsWeek",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<CalendarDTO>> getCounselingsWeek() {
+
+        Pharmacist user = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<CalendarDTO> calendarDTOS = counselingService.getCounselingsWeek(user);
+
+        return new ResponseEntity<>(calendarDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/getCounselingsMonth",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<CalendarDTO>> getCounselingsMonth() {
+
+        Pharmacist user = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<CalendarDTO> calendarDTOS = counselingService.getCounselingsMonth(user);
+
+        return new ResponseEntity<>(calendarDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/getCounselingsYear",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<CalendarDTO>> getCounselingsYear() {
+
+        Pharmacist user = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        List<CalendarDTO> calendarDTOS = counselingService.getCounselingsYear(user);
+
+        return new ResponseEntity<>(calendarDTOS, HttpStatus.OK);
+    }
 
 }

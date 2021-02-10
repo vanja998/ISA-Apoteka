@@ -87,7 +87,7 @@ $(document).on('click', '#btnSaveProfilePharmacist', function () {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/pharmacists/pharmacistChange",
+        url: "http://localhost:8081/pharmacists/changePharmacistInfo",
         dataType: "json",
         contentType: "application/json",
         data: myJSON,
@@ -103,6 +103,7 @@ $(document).on('click', '#btnSaveProfilePharmacist', function () {
             window.location.href="pharmacistProfile.html";
         },
         error: function (data) {
+            console.log("error: ", data);
             window.location.href="error.html";
         }
     });
@@ -189,7 +190,7 @@ $(document).on('click', '#btnSavePasswordPharmacist', function () {
 
         $.ajax({
             type: "POST",
-            url: "http://localhost:8081/pharmacists/changepass",
+            url: "http://localhost:8081/pharmacists/changePass",
             dataType: "json",
             contentType: "application/json",
             data: myJSON,

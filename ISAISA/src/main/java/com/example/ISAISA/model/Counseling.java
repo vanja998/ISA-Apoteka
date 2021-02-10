@@ -15,10 +15,10 @@ public class Counseling {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_counseling")
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Patient patient;
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Pharmacist pharmacist;
 
     @Column
