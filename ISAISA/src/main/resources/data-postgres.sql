@@ -43,8 +43,8 @@ insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextv
 insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,3,2);
 
 insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 5, '2022-02-01', 'ceka_na_odgovor', 1, 3);
-insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 6, '2022-02-01', 'ceka_na_odgovor', 1, 3);
-insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 5, '2022-02-01', 'ceka_na_odgovor', 1, 3);
+--insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 6, '2022-02-01', 'ceka_na_odgovor', 1, 3);
+--insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 5, '2022-02-01', 'ceka_na_odgovor', 1, 3);
 
 insert into "supplier_medication"(supplier_id,medication_id) values(3,1);
 insert into "supplier_medication"(supplier_id,medication_id) values(3,2);
@@ -53,7 +53,7 @@ insert into "supplier_medication"(supplier_id,medication_id) values(3,3);
 insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),null, 6 ,1,'2007-12-03 10:15:30','2007-12-03 10:16:30',5000);
 insert into "appointment"(id,patient_id,dermatologist_id,pharmacy_appointment_id, beginofappointment, endofappointment, price) values (nextval('seq_appointment'), 2,6,1,'2021-02-10 00:00:00','2021-02-10 23:00:00', 300);
 insert into "appointment" (id, patient_id, dermatologist_id, pharmacy_appointment_id, beginofappointment, endofappointment, price) values (nextval('seq_appointment'), null, 6, 1, '2021-02-20 16:20', '2021-02-20 16:40', 20);
-insert into "appointment"(id,patient_id,dermatologist_id,pharmacy_appointment_id, beginofappointment, endofappointment, price) values (nextval('seq_appointment'), 1,6,1,'2021-10-02 00:00:00','2021-10-02 23:59:00', 300);
+insert into "appointment"(id,patient_id,dermatologist_id,pharmacy_appointment_id, beginofappointment, endofappointment, price) values (nextval('seq_appointment'), 1,6,1,'2021-02-10 00:00:00','2021-02-10 23:59:00', 300);
 insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),1, 6,1,'2021-06-02 10:15:30','2021-06-02 10:16:30',5000);
 insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),1, 6,1,'2021-12-03 10:15:30','2021-12-03 10:16:30',5000);
 insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),2, 6,1,'2021-02-08 10:15:30','2021-02-08 12:16:30',5000);
@@ -75,7 +75,7 @@ insert into "counseling" (id,patient_id,pharmacist_id,beginofappointment,endofap
 insert into "counseling" (id,patient_id,pharmacist_id,beginofappointment,endofappointment,price) values (nextval('seq_counseling'), 1, 10, '2021-02-05 00:00:00','2021-02-05 23:59:00', 20);
 --insert into "counseling" (id,patient_id,pharmacist_id) values (nextval('seq_counseling'),2,10);
 
-insert into "dermatologist_pharmacyy" (id,beginofwork,endofwork,dermatologist_id,pharmacy_id) values (nextval('seq_dermatologist_pharmacy'),'12:00:00','14:00:00',6,1);
+insert into "dermatologist_pharmacyy" (id,beginofwork,endofwork,dermatologist_id,pharmacy_id) values (nextval('seq_dermatologist_pharmacy'),'00:00:00','23:59:00',6,1);
 insert into "dermatologist_pharmacyy" (id,beginofwork,endofwork,dermatologist_id,pharmacy_id) values (nextval('seq_dermatologist_pharmacy'),'16:00:00','17:00:00',11,2);
 
 
@@ -89,7 +89,7 @@ insert into "promotion" (id, description, validFrom, validUntil, pharmacy_id) va
 
 insert into "promotion_patients" (patient_id, pharmacy_id) values (1, 1);
 
-insert into "reservation"(id,patient_id,pharmacy_id,medication_id,dateofreservation,medicationtaken) values (nextval('seq_reservation'),2,1,1,'2021-12-03',false);
+insert into "reservation"(id,patient_id,pharmacy_id,medication_id,dateofreservation,medicationtaken) values (nextval('seq_reservation'),2,1,1,'2021-02-05 00:00:00',false);
 
 insert into "vacation"(id, dateBeginVacation, dateEndVacation, approved, pharmacist_id, dermatologist_id) values (nextval('seq_vacation'), '2021-08-10', '2021-08-20', null, 5, null);
 insert into "vacation"(id, dateBeginVacation, dateEndVacation, approved, pharmacist_id, dermatologist_id) values (nextval('seq_vacation'), '2021-10-10', '2021-10-20', true, 10, null);

@@ -33,7 +33,7 @@ public class Pharmacy {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER)
     private Set<Reservation> reservations = new HashSet<Reservation>();
 
 

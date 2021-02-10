@@ -1,6 +1,7 @@
 package com.example.ISAISA.controller;
 
 import com.example.ISAISA.DTO.AppointmentDTO;
+import com.example.ISAISA.DTO.IdDto;
 import com.example.ISAISA.DTO.ReservationDto;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.service.EmailSenderService;
@@ -17,6 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -52,7 +54,7 @@ public class ReservationController {
         Patient user = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Medication medication =medicationService.findByName(reservationdto.getName());
         Pharmacy pharmacy = pharmacyService.findById(reservationdto.getId());
-        Date dateofreservation=reservationdto.getDateofreservation();
+        LocalDateTime dateofreservation=reservationdto.getDateofreservation();
 
         Reservation reservation1 = new Reservation();
         reservation1.setPatient(user);
@@ -94,6 +96,25 @@ public class ReservationController {
 
         }
         return new ResponseEntity<>(reservationDtos, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/cancelreservation", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public void CancelReservation(@RequestBody IdDto idDto) throws Exception {
+        Reservation reservation=reservationService.findById(idDto.getId());
+        LocalDateTime trenutno_vreme= LocalDateTime.now();
+        LocalDateTime date1=reservation.getDateofreservation();
+        LocalDateTime date2=date1.plusDays(1);
+        if(trenutno_vreme.isAfter(date2)){
+
+            throw new Exception("Nije moguce otkazivanje proslo je 24h");
+        }
+
+        else {
+            reservationService.delete(reservation);
+
+        }
+
     }
 
 }
