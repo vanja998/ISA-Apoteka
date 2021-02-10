@@ -19,4 +19,6 @@ public interface DermatologistRepository extends JpaRepository<Dermatologist, In
     Set<Dermatologist> findAllByFirstNameIgnoreCaseAndLastNameIgnoreCase (String firstName, String lastName);
 
     Set<Dermatologist> findAllByRatingBetween(Float ratingOver, Float ratingUnder);
+
+    Set<Dermatologist> findAllBy();
 }

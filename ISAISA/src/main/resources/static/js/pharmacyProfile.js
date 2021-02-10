@@ -47,7 +47,8 @@ $(document).on('click', '.btnPharmacy', function () {
 
 });
 
-//Prikaz svih farmaceuta
+//*************************Farmaceuti
+//Prikaz farmaceuta
 $(document).on('click', '#patientAllPharmacists', function () {
     var card = $(".card");
     var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy");
@@ -65,7 +66,7 @@ $(document).on('click', '#patientAllPharmacists', function () {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/pharmacists/allPharmacists",
+        url: "http://localhost:8081/pharmacists/allPharmacistsFromPharmacy",
         dataType: "json",
         contentType: "application/json",
         data: id1,
@@ -104,78 +105,11 @@ $(document).on('click', '#patientAllPharmacists', function () {
 
 });
 
-//Pretraga
-$(document).on('click', '.btnSearchPharmacistsAdminPharmacy', function () {
+//Zakazivanje
+$(document).on('click', '.btnMakeAppointment', function (){
 
-    var card = $(".card")
-    var pharmacistsSearchAdminPharmacy = $(".pharmacistsSearchAdminPharmacy")
-    var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
-    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy");
 
-    card.hide();
-    pharmacistsFilterAdminPharmacy.hide();
-    pharmacistsSearchAdminPharmacy.show();
-    pharmacistsShowAdminPharmacy.hide();
-
-    var searchParam = $(".searchPharmacistsAdminPharmacy").val();
-    searchParam = searchParam.split(" ");
-
-    var myJSON = formToJSON(searchParam[0], searchParam[1])
-
-    console.log(myJSON);
-
-    $('.searchPharmacistsAdminPharmacy').val("");
-    $('#tablePharmacistsSearchAdminPharmacy tbody').empty();
-
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8081/pharmacists/allPharmacistsSearch",
-        dataType: "json",
-        contentType: "application/json",
-        data: myJSON,
-        beforeSend: function (xhr) {
-            if (localStorage.token) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
-            }
-        },
-        success: function (data) {
-            console.log("SUCCESS: ", data);
-            $('#searchPharmacists').append(searchParam[0], " ", searchParam[1]);
-            for (i = 0; i < data.length; i++) {
-                var row = "<tr>";
-                row += "<td>" + data[i]['firstName'] + "</td>";
-                row += "<td>" + data[i]['lastName'] + "</td>";
-                row += "<td>" + data[i]['rating'] + "</td>";
-                row += "<td>" + data[i]['pharmacy']['name'] + "</td>";
-                row += "<td>" + data[i]['pharmacy']['address'] + "</td>";
-
-                var btnMakeAppointment = "<button class='btnMakeAppointment' id = " + data[i]['id'] + "> Zakazi savetovanje </button>";
-                row += "<td>" + btnMakeAppointment + "</td>";
-
-                $('#tablePharmacistsSearchAdminPharmacy').append(row);
-            }
-        },
-        error: function (jqXHR) {
-            if(jqXHR.status === 403)
-            {
-                window.location.href="error.html";
-            }
-            if(jqXHR.status === 401)
-            {
-                window.location.href="error.html";
-            }
-        }
-    });
 });
 
-function formToJSON(firstName, lastName) {
-    return JSON.stringify(
-        {
-            "firstName": firstName,
-            "lastName": lastName,
-            "id" : id
-        }
-    );
-}
-
+//************************Dermatolozi
 

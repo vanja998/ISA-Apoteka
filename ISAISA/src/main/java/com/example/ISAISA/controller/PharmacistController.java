@@ -130,7 +130,7 @@ public class PharmacistController {
 
     //**********************************Funckionalnosti za pacijenta
 
-    @PostMapping(value="/allPharmacists", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/allPharmacistsFromPharmacy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<Set<PharmacistDTO>> getAllPharmacistsByPharmacy(@RequestBody IdDto idDto) {
 
@@ -139,16 +139,36 @@ public class PharmacistController {
 
         return new ResponseEntity<>(pharmacists, HttpStatus.OK);
     }
-    @PostMapping(value="/allPharmacistsSearch", produces = MediaType.APPLICATION_JSON_VALUE)
+
+    @GetMapping(value="/allPharmacists", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PATIENT')")
-    public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByFirstNameAndLastName(@RequestBody PharmacistDTO pharmacistDTO) {
+    public ResponseEntity<Set<PharmacistDTO>> getAll() {
 
-        Pharmacy pharmacy = pharmacyService.findById(pharmacistDTO.getId());
-
-        Set<PharmacistDTO> pharmacists = pharmacistService.getPharmacistsByPharmacyAndFirstNameAndLastName(pharmacy,
-                pharmacistDTO.getFirstName(), pharmacistDTO.getLastName());
+        Set<PharmacistDTO> pharmacists = pharmacistService.getAll();
 
         return new ResponseEntity<>(pharmacists, HttpStatus.OK);
     }
 
+    @PostMapping(value="/allPharmacistsSearch", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Set<PharmacistDTO>> getPharmacistsByFirstNameAndLastName(@RequestBody PharmacistDTO pharmacistDTO) {
+
+        Set<PharmacistDTO> pharmacists = pharmacistService.getPharmacistsByFirstNameAndLastName(pharmacistDTO.getFirstName(), pharmacistDTO.getLastName());
+
+        return new ResponseEntity<>(pharmacists, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/allPharmacistsFilter", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Set<PharmacistDTO>> filterAllPharmacists(@RequestBody FilterEmployeesDTO pharmacistDTO) {
+
+        Pharmacy pharmacy = pharmacyService.findByName(pharmacistDTO.getPharmacyName());
+        Float ratingUnder = (float) pharmacistDTO.getRatingUnder();
+        Float ratingOver = (float) pharmacistDTO.getRatingOver();
+
+        Set<PharmacistDTO> pharmacists = pharmacistService.filterPharmacists(
+                ratingOver, ratingUnder, pharmacy);
+
+        return new ResponseEntity<>(pharmacists, HttpStatus.OK);
+    }
 }

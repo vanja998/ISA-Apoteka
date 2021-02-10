@@ -55,6 +55,7 @@ public class DermatologistService {
         return user;
     }
 
+    //Prikaz po apoteci
     public Set<Dermatologist> getByPharmacy(Pharmacy pharmacy) {
 
         Set<Dermatologist_Pharmacyy> dermatologist_pharmacies = dermatologist_pharmacyRepository.findAllByPharmacy(pharmacy);
@@ -160,5 +161,11 @@ public class DermatologistService {
         } else {
             throw new Exception("Dermatolog ima zakazane termine, nije moguce ukloniti ga iz apoteke!");
         }
+    }
+
+    public Set<Dermatologist> getAll() { return this.dermatologistRepository.findAllBy(); }
+
+    public Set<Dermatologist> getDermatologistsByFirstNameAndLastName(String firstName, String lastName) {
+        return this.dermatologistRepository.findAllByFirstNameIgnoreCaseAndLastNameIgnoreCase(firstName, lastName);
     }
 }

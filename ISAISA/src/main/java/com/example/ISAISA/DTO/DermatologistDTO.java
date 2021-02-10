@@ -3,6 +3,7 @@ package com.example.ISAISA.DTO;
 import com.example.ISAISA.model.Pharmacy;
 
 import java.time.LocalTime;
+import java.util.Set;
 
 public class DermatologistDTO {
 
@@ -16,7 +17,7 @@ public class DermatologistDTO {
 
     private Float rating;
 
-    private Pharmacy pharmacy;
+    private Set<Pharmacy> pharmacies;
 
     private LocalTime beginOfWork;
 
@@ -35,21 +36,28 @@ public class DermatologistDTO {
         this.rating = rating;
     }
 
-    public DermatologistDTO(Integer id, String firstName, String lastName, Float rating, Pharmacy pharmacy, LocalTime beginOfWork, LocalTime endOfWork) {
+    public DermatologistDTO(Integer id, String firstName, String lastName, Float rating, Set<Pharmacy> pharmacies) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.rating = rating;
-        this.pharmacy = pharmacy;
-        this.beginOfWork = beginOfWork;
-        this.endOfWork = endOfWork;
+        this.pharmacies = pharmacies;
     }
 
-    public DermatologistDTO(String firstName, String lastName, Float rating, Pharmacy pharmacy) {
+    public DermatologistDTO(Integer id, String firstName, String lastName, Float rating, Set<Pharmacy> pharmacies, LocalTime beginOfWork, LocalTime endOfWork) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.rating = rating;
-        this.pharmacy = pharmacy;
+        this.pharmacies = pharmacies;
+        this.beginOfWork = beginOfWork;
+        this.endOfWork = endOfWork;
+    }
+    public DermatologistDTO(String firstName, String lastName, Float rating, Set<Pharmacy> pharmacies) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.rating = rating;
+        this.pharmacies = pharmacies;
     }
 
     public DermatologistDTO() {
@@ -75,9 +83,9 @@ public class DermatologistDTO {
 
     public void setRating(Float rating) { this.rating = rating; }
 
-    public Pharmacy getPharmacy() { return pharmacy; }
+    public Set<Pharmacy> getPharmacies() { return pharmacies; }
 
-    public void setPharmacy(Pharmacy pharmacy) { this.pharmacy = pharmacy; }
+    public void setPharmacies(Set<Pharmacy> pharmacies) { this.pharmacies = pharmacies; }
 
     public LocalTime getBeginOfWork() { return beginOfWork; }
 
