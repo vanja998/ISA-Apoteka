@@ -15,21 +15,20 @@ public class OrderMedicationDTO {
     //@JsonFormat(pattern="yyyy-MM-dd")
     private Date dateDeadline;
 
-    private Integer amount;
-
-    private Orderr orderr;
-
-    private Medication medication;
+    private AdminPharmacy adminPharmacy;
 
     public OrderMedicationDTO() {
     }
 
-    public OrderMedicationDTO(Integer id, Date dateDeadline, Integer amount, Orderr orderr, Medication medication) {
+    public OrderMedicationDTO(Integer id, Date dateDeadline) {
         this.id = id;
         this.dateDeadline = dateDeadline;
-        this.amount = amount;
-        this.orderr = orderr;
-        this.medication = medication;
+    }
+
+    public OrderMedicationDTO(Integer id, Date dateDeadline, AdminPharmacy adminPharmacy) {
+        this.id = id;
+        this.dateDeadline = dateDeadline;
+        this.adminPharmacy = adminPharmacy;
     }
 
     public Integer getId() { return id; }
@@ -40,15 +39,8 @@ public class OrderMedicationDTO {
 
     public void setDateDeadline(Date dateDeadline) { this.dateDeadline = dateDeadline; }
 
-    public Integer getAmount() { return amount; }
+    public AdminPharmacy getAdminPharmacy() { return adminPharmacy; }
 
-    public void setAmount(Integer amount) { this.amount = amount; }
+    public void setAdminPharmacy(AdminPharmacy adminPharmacy) { this.adminPharmacy = adminPharmacy; }
 
-    public Orderr getOrderr() { return orderr; }
-
-    public void setOrderr(Orderr orderr) { this.orderr = orderr; }
-
-    public Medication getMedication() { return medication; }
-
-    public void setMedication(Medication medication) { this.medication = medication; }
 }

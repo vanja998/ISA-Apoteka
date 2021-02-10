@@ -28,6 +28,9 @@ public class Pharmacist extends User {
     @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Counseling> counselings = new HashSet<Counseling>();
 
+    @JsonIgnore
+    @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private Set<Vacation> vacations = new HashSet<Vacation>();
 
     public Pharmacist(String email, String password, String firstName, String lastName, String address, String phone, String city, String country, Pharmacy pharmacy, Float rating, LocalTime beginofwork, LocalTime endofwork) {
         super(email, password, firstName, lastName, address, phone, city, country);
@@ -66,13 +69,17 @@ public class Pharmacist extends User {
 
     public void setRating(Float rating) { this.rating = rating; }
 
-    public Pharmacy getPharmacy() {
-        return pharmacy;
-    }
+    public Pharmacy getPharmacy() { return pharmacy; }
 
     public void setPharmacy(Pharmacy pharmacy) {
         this.pharmacy = pharmacy;
     }
 
+    public Set<Counseling> getCounselings() { return counselings; }
 
+    public void setCounselings(Set<Counseling> counselings) { this.counselings = counselings; }
+
+    public Set<Vacation> getVacations() { return vacations; }
+
+    public void setVacations(Set<Vacation> vacations) { this.vacations = vacations; }
 }

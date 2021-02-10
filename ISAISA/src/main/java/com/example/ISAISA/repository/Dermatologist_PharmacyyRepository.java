@@ -14,4 +14,6 @@ public interface Dermatologist_PharmacyyRepository extends JpaRepository<Dermato
     Set<Dermatologist_Pharmacyy> findAllByPharmacy(Pharmacy pharmacy);
 
     Dermatologist_Pharmacyy findByDermatologistAndPharmacy(Dermatologist dermatologist, Pharmacy pharmacy);
+
+    Set<Dermatologist_Pharmacyy> findAllByDermatologist(Dermatologist dermatologist);
 }

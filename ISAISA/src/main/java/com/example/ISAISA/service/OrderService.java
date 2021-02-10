@@ -4,9 +4,7 @@ package com.example.ISAISA.service;
 import com.example.ISAISA.DTO.OrderDTO;
 import com.example.ISAISA.DTO.OrderrDTO;
 import com.example.ISAISA.model.*;
-import com.example.ISAISA.repository.MedicationRepository;
-import com.example.ISAISA.repository.OrderMedicationRepository;
-import com.example.ISAISA.repository.OrderRepository;
+import com.example.ISAISA.repository.*;
 import org.hibernate.criterion.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +19,8 @@ public class OrderService {
     private OrderRepository orderRepository;
     private MedicationRepository medicationRepository;
     private OrderMedicationRepository orderMedicationRepository;
+    private AuthorityService authService;
+    private AdminPharmacyRepository adminPharmacyRepository;
 
     @Autowired
     public void setOrderRepository(OrderRepository orderRepository) {
@@ -32,6 +32,12 @@ public class OrderService {
 
     @Autowired
     public void setOrderMedicationRepository(OrderMedicationRepository orderMedicationRepository) { this.orderMedicationRepository = orderMedicationRepository; }
+
+    @Autowired
+    public void setAuthService(AuthorityService authService) {this.authService = authService;}
+
+    @Autowired
+    public void setAdminPharmacyRepository(AdminPharmacyRepository adminPharmacyRepository) { this.adminPharmacyRepository = adminPharmacyRepository; }
 
     public List<Orderr> findAll(){
         return orderRepository.findAll();
@@ -68,8 +74,49 @@ public class OrderService {
     }
 
     public Set<Orderr> getOrdersByPharmacy(AdminPharmacy adminPharmacy) {
-        return orderRepository.findByAdminPharmacy(adminPharmacy);
-        //return  orderRepository.findByAdminPharmacyAndOrderr_medications(adminPharmacy, orderr_medication);
+        Pharmacy pharmacy = adminPharmacy.getPharmacy();
+        Set<AdminPharmacy> adminPharmacies = adminPharmacyRepository.findAllByPharmacy(pharmacy);
+
+        Set<Orderr> orderrs = new HashSet<>();
+
+        for (AdminPharmacy ap : adminPharmacies) {
+            orderrs.addAll(orderRepository.findByAdminPharmacy(ap));
+        }
+
+        return orderrs;
     }
 
+    public Orderr findById(Integer id) {
+        return this.orderRepository.findOneById(id);
+    }
+
+    public void deleteOrder(Orderr orderr) throws Exception {
+        if (orderr.getOffers().isEmpty()) {
+            for (Orderr_Medication om : orderr.getOrderr_medications()) {
+                this.orderMedicationRepository.delete(om);
+            }
+            this.orderRepository.delete(orderr);
+        }
+        else
+            throw new Exception("Nije moguce obrisati narudzbenicu nakon sto je primljena ponuda!");
+    }
+
+    public Orderr changeOrder(Orderr orderr, Set<Orderr_Medication> orderr_medications) throws Exception {
+        if (orderr.getOffers().isEmpty()) {
+            Orderr orderr1 = orderRepository.findOneById(orderr.getId());
+            orderr1.setDateDeadline(orderr.getDateDeadline());
+
+            orderr1 = orderRepository.save(orderr1);
+
+            for(Orderr_Medication om : orderr_medications) {
+                om = orderMedicationRepository.save(om);
+            }
+
+            return orderr1;
+        }
+        else
+            throw new Exception("Nije moguce izmeniti narudzbenicu nakon sto je primljena ponuda!");
+
+
+    }
 }
