@@ -38,6 +38,12 @@ public class Medication {
     @Column(nullable = false)
     private String notes;
 
+    @Column
+    private String contraindication;
+
+    @Column
+    private Integer recommended_daily_intake;
+
     @JsonIgnore
     @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Orderr_Medication> orderr_medications = new HashSet<Orderr_Medication>();
@@ -96,6 +102,19 @@ public class Medication {
         this.producer = producer;
         this.prescription = prescription;
         this.notes = notes;
+    }
+
+    public Medication( String code, String name, String type_med, String shape_med, String ingredients, String producer, String contraindication, Integer recommended_daily_intake) {
+
+        this.code = code;
+        this.name = name;
+        this.type_med = type_med;
+        this.shape_med = shape_med;
+        this.ingredients = ingredients;
+        this.producer = producer;
+        this.contraindication = contraindication;
+        this.recommended_daily_intake = recommended_daily_intake;
+
     }
 
     public Integer getId() {
@@ -192,5 +211,21 @@ public class Medication {
 
     public void setPharmacies(Set<Pharmacy> pharmacies) {
         this.pharmacies = pharmacies;
+    }
+
+    public String getContraindication() {
+        return contraindication;
+    }
+
+    public void setContraindication(String contraindication) {
+        this.contraindication = contraindication;
+    }
+
+    public Integer getRecommended_daily_intake() {
+        return recommended_daily_intake;
+    }
+
+    public void setRecommended_daily_intake(Integer recommended_daily_intake) {
+        this.recommended_daily_intake = recommended_daily_intake;
     }
 }
