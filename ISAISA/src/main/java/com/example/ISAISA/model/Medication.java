@@ -51,7 +51,7 @@ public class Medication {
     private Set<Supplier> suppliers = new HashSet<Supplier>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER)
     private Set<Reservation> reservations = new HashSet<Reservation>();
 
     @JsonIgnore

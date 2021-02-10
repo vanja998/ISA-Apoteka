@@ -24,7 +24,7 @@ public class Patient extends User{
     private Set<Appointment> appointments = new HashSet<Appointment>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "patient", fetch = FetchType.EAGER)
     private Set<Reservation> reservations = new HashSet<Reservation>();
 
     @JsonIgnore
