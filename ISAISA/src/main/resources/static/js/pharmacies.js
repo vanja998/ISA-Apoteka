@@ -141,6 +141,7 @@ $(document).on('click', '#btnSortbyaddressPharmacy', function () {    // Čeka s
             console.log("ERROR : ", data);
         }
     });
+
 });
 
 //********************************************************************
@@ -209,7 +210,3 @@ $(document).on('click', '.patientAllPromotions', function () {
     });
 
 });
-
-
-
-

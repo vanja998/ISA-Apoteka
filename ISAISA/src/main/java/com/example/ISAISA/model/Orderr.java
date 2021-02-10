@@ -23,9 +23,7 @@ public class Orderr {
     @Column
     private String statusAdmin;
 
-
-
-    @JsonIgnore
+    //@JsonIgnore
     @OneToMany(mappedBy = "orderr", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Orderr_Medication> orderr_medications = new HashSet<Orderr_Medication>();
 
@@ -33,15 +31,14 @@ public class Orderr {
     @OneToMany(mappedBy = "orderr", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Offer> offers = new HashSet<Offer>();
 
-    @OneToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "admin_id", referencedColumnName = "id")
+    @OneToOne
+    @JoinColumn(name = "admin_id", referencedColumnName = "id", nullable = false)
     private AdminPharmacy adminPharmacy;
 
     public Orderr(Integer id, Date dateDeadline, String statusAdmin) {
         this.id = id;
         this.dateDeadline = dateDeadline;
         this.statusAdmin = statusAdmin;
-
     }
 
     public Orderr(Date dateDeadline, Set<Orderr_Medication> orderr_medications, AdminPharmacy adminPharmacy, String statusAdmin) {

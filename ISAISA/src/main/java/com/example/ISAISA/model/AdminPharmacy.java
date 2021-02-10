@@ -12,7 +12,8 @@ public class AdminPharmacy extends User {
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Pharmacy pharmacy;
 
-    @OneToOne(mappedBy = "adminPharmacy")
+    @Transient
+    @OneToOne(mappedBy = "adminPharmacy", cascade = CascadeType.ALL)
     private Orderr orderr;
 
     public AdminPharmacy() {

@@ -188,7 +188,7 @@ $(document).on('click', '#btnSubmitFilterPharmacists', function () {
 
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/pharmacists/adminPharmacistsFilter",
+        url: "http://localhost:8081/pharmacists/allPharmacistsFilter",
         dataType: "json",
         contentType: "application/json",
         data: myJSON,

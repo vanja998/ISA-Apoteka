@@ -63,7 +63,6 @@ $(document).on('click', '.selectMedicineForOrder', function () {
 
 });
 
-
 $(document).on('click', '.checkboxSelect', function () {
     $('table [type="checkbox"]').each(function (id, chk) {
         if (chk.checked) {
