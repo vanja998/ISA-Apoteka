@@ -39,6 +39,7 @@ $(document).ready(function () {    // Čeka se trenutak kada je DOM(Document Obj
         }
     });
 });
+var idApoteke;
 
 $(document).on('click', '#btnSearchMedication', function () {
 
@@ -151,7 +152,7 @@ $(document).on('click', '.btnPharmacy', function () {
 
     allPharmacies.hide();
     onePharmacy.show();
-
+    idApoteke=this.id;
     var id = this.id;
     console.log(id);
     id = JSON.stringify({"id" : id});
@@ -181,6 +182,33 @@ $(document).on('click', '.btnPharmacy', function () {
 
 });
 
+$(document).on('click', '.patientAllPromotions', function () {
+
+    var id=idApoteke;
+    id= JSON.stringify({"id" : id});
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/patients/promotion",
+        dataType: "json",
+        contentType: "application/json",
+        data: id,
+        beforeSend: function(xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log("SUCCESS: ", data);
+            alert("Uspesna pretplata na akciju");
+            window.location.href = "pharmacies.html";
+        },
+        error: function (data) {
+            window.location.href = "error.html";
+        }
+    });
+
+});
 
 
 

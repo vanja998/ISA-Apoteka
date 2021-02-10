@@ -5,6 +5,7 @@ import com.example.ISAISA.model.*;
 
 import com.example.ISAISA.repository.AppointmentRepository;
 import com.example.ISAISA.repository.CounselingRepository;
+import com.example.ISAISA.repository.PharmacyRepository;
 import com.example.ISAISA.service.ComplaintService;
 
 import com.example.ISAISA.service.MedicationService;
@@ -34,6 +35,9 @@ public class PatientController {
 
     @Autowired
     private UserServiceDetails userDetailsService;
+
+    @Autowired
+    private PharmacyRepository pharmacyRepository;
 
     @Autowired
     private ComplaintService complaintService;
@@ -71,6 +75,19 @@ public class PatientController {
     public ResponseEntity<Patient> changeAdminInfo(@RequestBody UserChangeDTO userDTO) {
 
         Patient user = patientService.changePatientInfo(userDTO);
+
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/promotion",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Patient> subscribePromotion(@RequestBody IdDto idDto) {
+
+        Patient user = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Pharmacy pharmacy= pharmacyRepository.getOne(idDto.getId());
+
+        user= patientService.addPromotion(user,pharmacy);
 
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

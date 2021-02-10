@@ -28,7 +28,7 @@ public class AdminPharmacyService {
         user.setCity(userDTO.getCity());
         user.setCountry(userDTO.getCountry());
 
-        adminPharmacyRepository.save(user);
+        user=adminPharmacyRepository.save(user);
 
         return user;
     }
