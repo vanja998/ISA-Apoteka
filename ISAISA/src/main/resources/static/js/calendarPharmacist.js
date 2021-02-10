@@ -112,3 +112,8 @@ $(document).on('click', '#btnCalendarYear', function () {
     });
 
 });
+
+$(document).on('click', '#btnBack', function () {
+    window.location.href="welcomePharmacist.html";
+
+});

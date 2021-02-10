@@ -320,11 +320,6 @@ $(document).on('click', '#btnAlternative', function () {
             $("#idAlternativeDropDown").append("<option> </option>");
             console.log('Success', data);
             for (i = 0; i < data.length; i++) {
-                /*var row = "<tr>";
-                row += "<td>" + data[i]['name'] + "</td>";
-                var btn = "<button class='btnButton' id = " + data[i]['name'] + ">Proveri</button>";
-                row += "<td>" + btn + "</td>";
-                $('#tableMeds').append(row);*/
                 var name = data[i]['name'];
                 $("#idAlternativeDropDown").append("<option value='"+name+"'>"+name+"</option>");
             }
