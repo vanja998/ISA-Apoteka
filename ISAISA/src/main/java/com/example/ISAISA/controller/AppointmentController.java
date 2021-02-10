@@ -138,16 +138,18 @@ public class AppointmentController {
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<Appointment> Reserveappointment(@RequestBody IdDto idDto) {
         Patient user = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         Appointment appointment=appointmentService.findById(idDto.getId());
         appointment.setPatient(user);
         appointmentService.save(appointment);
+
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(user.getEmail());
         mailMessage.setSubject("Rezervacija termina");
         mailMessage.setFrom("isaverifikacija@gmail.com");
         mailMessage.setText("uspesno ste zakazali pregled");
-
         emailSenderService.sendEmail(mailMessage);
+
         return new ResponseEntity(appointment, HttpStatus.OK);
     }
 

@@ -3,10 +3,7 @@ package com.example.ISAISA.service;
 import com.example.ISAISA.DTO.BooleanDto;
 import com.example.ISAISA.DTO.ExaminPatientDto;
 import com.example.ISAISA.model.*;
-import com.example.ISAISA.repository.AppointmentRepository;
-import com.example.ISAISA.repository.CounselingRepository;
-import com.example.ISAISA.repository.ExaminationRepository;
-import com.example.ISAISA.repository.MedicationRepository;
+import com.example.ISAISA.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +18,12 @@ public class ExaminationService {
     private AppointmentRepository appointmentRepository;
     private MedicationRepository medicationRepository;
     private CounselingRepository counselingRepository;
+    private AdminPharmacyRepository adminPharmacyRepository;
+
+    @Autowired
+    public void setAdminPharmacyRepository(AdminPharmacyRepository adminPharmacyRepository) {
+        this.adminPharmacyRepository = adminPharmacyRepository;
+    }
 
     @Autowired
     public void setExaminationRepository(ExaminationRepository examinationRepository) {
@@ -519,6 +522,17 @@ public class ExaminationService {
         Set<AdminPharmacy> adminPharmacies = pharmacy.getAdminPharmacySet();
         AdminPharmacy admin = adminPharmacies.iterator().next();
         return admin;
+
+    }
+
+    public Set<AdminPharmacy> findAdminPharmacyPharmacist(Integer examinationId, Pharmacist user){
+        Examination examination = examinationRepository.findOneById(examinationId);
+        Pharmacy pharmacy = user.getPharmacy();
+        Set<AdminPharmacy> adminPharmacies = adminPharmacyRepository.findAllByPharmacy(pharmacy);
+
+        //AdminPharmacy admin = adminPharmacies.iterator().next();
+
+        return adminPharmacies;
 
     }
 

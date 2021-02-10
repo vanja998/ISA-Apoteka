@@ -220,7 +220,24 @@ public class ExaminationController {
     @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<BooleanDto> checkIfMedicationIsAvailablePharma(@RequestBody MedicationExaminationDto medicationExaminationDto) {
 
+        Pharmacist user = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
         Boolean isMedicationAvailable = examinationService.isMedicationAvailable(medicationExaminationDto.getName(), medicationExaminationDto.getId());
+
+        if(!isMedicationAvailable){
+            Set<AdminPharmacy> adminPharmacy = examinationService.findAdminPharmacyPharmacist(medicationExaminationDto.getId(), user);
+            for(AdminPharmacy i: adminPharmacy) {
+                SimpleMailMessage mailMessage = new SimpleMailMessage();
+                mailMessage.setTo(i.getEmail());
+                mailMessage.setSubject("Lek nedostupan");
+                mailMessage.setFrom("isaverifikacija@gmail.com");
+                mailMessage.setText("Nedostupan lek u apoteci " + medicationExaminationDto.getName());
+
+                emailSenderService.sendEmail(mailMessage);
+            }
+
+        }
+
 
         BooleanDto booleanDto = new BooleanDto(isMedicationAvailable);
         return new ResponseEntity<>(booleanDto, HttpStatus.OK);

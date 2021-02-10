@@ -38,7 +38,7 @@ public class Pharmacy {
 
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY)
     private Set<AdminPharmacy> adminPharmacySet = new HashSet<AdminPharmacy>();
 
     @JsonIgnore
@@ -46,7 +46,7 @@ public class Pharmacy {
     private Set<Medication> medication = new HashSet<Medication>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.LAZY)
     private Set<Pharmacist> pharmacists = new HashSet<Pharmacist>();
 
     @JsonIgnore
