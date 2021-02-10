@@ -427,8 +427,6 @@ $(document).on('click', '.btnRemove', function (){
                     document.getElementById('errorDeletePharmacist').innerHTML = response['message'];
                 }
             }
-
-
         });
     });
 

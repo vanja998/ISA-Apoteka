@@ -63,10 +63,14 @@ public class Medication {
     @ManyToMany(mappedBy = "medication", fetch = FetchType.EAGER)
     private Set<Medication> alternate_medication = new HashSet<Medication>();
 
-    @JsonIgnore
+    /*@JsonIgnore
     @ManyToMany(fetch=FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "med_pharmacies", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
-    private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();
+    private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();*/
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private Set<PharmacyMedication> pharmacy_medications = new HashSet<PharmacyMedication>();
 
     @JsonIgnore
     @OneToMany(mappedBy = "prescriptedMedication", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
@@ -186,11 +190,27 @@ public class Medication {
         this.medication = medication;
     }
 
-    public Set<Pharmacy> getPharmacies() {
+    /*public Set<Pharmacy> getPharmacies() {
         return pharmacies;
     }
 
     public void setPharmacies(Set<Pharmacy> pharmacies) {
         this.pharmacies = pharmacies;
+    }*/
+
+    public Set<Orderr_Medication> getOrderr_medications() {
+        return orderr_medications;
+    }
+
+    public void setOrderr_medications(Set<Orderr_Medication> orderr_medications) {
+        this.orderr_medications = orderr_medications;
+    }
+
+    public Set<PharmacyMedication> getPharmacy_medications() {
+        return pharmacy_medications;
+    }
+
+    public void setPharmacy_medications(Set<PharmacyMedication> pharmacy_medications) {
+        this.pharmacy_medications = pharmacy_medications;
     }
 }
