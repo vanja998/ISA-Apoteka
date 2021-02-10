@@ -148,11 +148,18 @@ public class ExaminationService {
         //Set<Medication> medications = pharmacy.getMedication();
         //Set<Pharmacy> pharmaciesSet = medication.getPharmacies();
         Set<Medication> medications = new HashSet<>();
+        Pharmacy pharmacy;
         if(examination.getExaminationAppointment() != null) {
-             medications = examination.getExaminationAppointment().getPharmacy_appointment().getMedication();
+             pharmacy = examination.getExaminationAppointment().getPharmacy_appointment();
+             for (PharmacyMedication pm : pharmacy.getPharmacy_medications()) {
+                 medications.add(pm.getMedication());
+             }
         }
         else {
-             medications = examination.getExaminationCounseling().getPharmacist().getPharmacy().getMedication();
+             pharmacy = examination.getExaminationCounseling().getPharmacist().getPharmacy();
+             for (PharmacyMedication pm : pharmacy.getPharmacy_medications()) {
+                 medications.add(pm.getMedication());
+             }
         }
         List<Integer> lekoviId = new ArrayList<>();
         for(Medication j : medications){

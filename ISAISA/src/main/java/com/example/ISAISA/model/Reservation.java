@@ -1,6 +1,8 @@
 package com.example.ISAISA.model;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Date;
 
 @Entity
@@ -25,7 +27,7 @@ public class Reservation {
     private Medication medication;
 
     @Column
-    private Date dateofreservation;
+    private LocalDateTime dateofreservation;
 
     @Column
     private Boolean medicationtaken;
@@ -38,7 +40,7 @@ public class Reservation {
         this.medication = medication;
     }
 
-    public Reservation(Integer id, Patient patient, Pharmacy pharmacy, Date dateofreservation, Boolean medicationtaken) {
+    public Reservation(Integer id, Patient patient, Pharmacy pharmacy, LocalDateTime dateofreservation, Boolean medicationtaken) {
         this.id = id;
         this.patient = patient;
         this.pharmacy = pharmacy;
@@ -46,7 +48,7 @@ public class Reservation {
         this.medicationtaken = medicationtaken;
     }
 
-    public Reservation(Integer id, Patient patient, Pharmacy pharmacy, Medication medication, Date dateofreservation, Boolean medicationtaken) {
+    public Reservation(Integer id, Patient patient, Pharmacy pharmacy, Medication medication, LocalDateTime dateofreservation, Boolean medicationtaken) {
         this.id = id;
         this.patient = patient;
         this.pharmacy = pharmacy;
@@ -91,15 +93,15 @@ public class Reservation {
         this.pharmacy = pharmacy;
     }
 
-    public Date getDateofreservation() {
+    public LocalDateTime getDateofreservation() {
         return dateofreservation;
     }
 
-    public void setDateofreservation(Date dateofreservation) {
+    public void setDateofreservation(LocalDateTime dateofreservation) {
         this.dateofreservation = dateofreservation;
     }
 
-    public Reservation(Integer id, Patient patient, Pharmacy pharmacy, Date dateofreservation) {
+    public Reservation(Integer id, Patient patient, Pharmacy pharmacy, LocalDateTime dateofreservation) {
         this.id = id;
         this.patient = patient;
         this.pharmacy = pharmacy;

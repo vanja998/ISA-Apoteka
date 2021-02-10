@@ -26,8 +26,10 @@ insert into "medication_altmedication"(medication_id,altmedication_id) values(1,
 insert into "medication_altmedication"(medication_id,altmedication_id) values(2,3);
 insert into "medication_altmedication"(medication_id,altmedication_id) values(3,4);
 
-insert into "med_pharmacies" (pharmacy_id,medication_id) values (1,1);
-insert into "med_pharmacies" (pharmacy_id,medication_id) values (1,2);
+--insert into "med_pharmacies" (pharmacy_id,medication_id) values (1,1);
+--insert into "med_pharmacies" (pharmacy_id,medication_id) values (1,2);
+insert into "pharmacymedication" (id, pharmacy_id, medication_id, quantity, price, beginPriceValidity, endPriceValidity) values (nextval('seq_pharmacy_medication'), 1, 1, 10, 10, '2021-01-01', '2021-03-01');
+insert into "pharmacymedication" (id, pharmacy_id, medication_id, quantity, price, beginPriceValidity, endPriceValidity) values (nextval('seq_pharmacy_medication'), 1, 2, 5, 10, '2021-01-01', '2021-02-01');
 
 insert into "allergy_patient" (patient_id,medication_id) values (1,1);
 
@@ -43,8 +45,8 @@ insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextv
 insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,3,2);
 
 insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 5, '2022-02-01', 'ceka_na_odgovor', 1, 3);
-insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 6, '2022-02-01', 'ceka_na_odgovor', 1, 3);
-insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 5, '2022-02-01', 'ceka_na_odgovor', 1, 3);
+--insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 6, '2022-02-01', 'ceka_na_odgovor', 1, 3);
+--insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 5, '2022-02-01', 'ceka_na_odgovor', 1, 3);
 
 insert into "supplier_medication"(supplier_id,medication_id) values(3,1);
 insert into "supplier_medication"(supplier_id,medication_id) values(3,2);
@@ -89,7 +91,7 @@ insert into "promotion" (id, description, validFrom, validUntil, pharmacy_id) va
 
 insert into "promotion_patients" (patient_id, pharmacy_id) values (1, 1);
 
-insert into "reservation"(id,patient_id,pharmacy_id,medication_id,dateofreservation,medicationtaken) values (nextval('seq_reservation'),2,1,1,'2021-12-03',false);
+insert into "reservation"(id,patient_id,pharmacy_id,medication_id,dateofreservation,medicationtaken) values (nextval('seq_reservation'),2,1,1,'2021-02-05 00:00:00',false);
 
 insert into "vacation"(id, dateBeginVacation, dateEndVacation, approved, pharmacist_id, dermatologist_id) values (nextval('seq_vacation'), '2021-08-10', '2021-08-20', null, 5, null);
 insert into "vacation"(id, dateBeginVacation, dateEndVacation, approved, pharmacist_id, dermatologist_id) values (nextval('seq_vacation'), '2021-10-10', '2021-10-20', true, 10, null);
