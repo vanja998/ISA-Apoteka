@@ -62,18 +62,30 @@
 
     <div class="changeOrder">
 
-        <div class="showChange">
+        <div class="ordersShow1">
+            <h1>Lekovi</h1>
+            <table id="tableOrderMedicineShow">
+                <thead>
+                <tr>
+                    <th>Naziv leka</th>
+                    <th>Sifra leka</th>
+                    <th>Proizvodjac</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
 
+        <div class="submitChangeOrder">
+            <label for="dateDeadline">Rok isporuke</label>
+            <input type="date" id="dateDeadline"/>
+            <button id="btnSubmitOrder">Izmeni</button>
+            <button class="btnReturnOder">Ponisti</button>
         </div>
 
         <div class="errorChangeOrder">
             <h1 id="errorChangeOrder"></h1>
-            <button class="btnReturnOrder">Ok</button>
-        </div>
-
-        <div class="successChangeOrder">
-            <h1>Uspesno prihvacena ponuda!</h1>
-            <button class="btnReturnOrder">Ok</button>
+            <button class="btnReturnOder">Ok</button>
         </div>
     </div>
 

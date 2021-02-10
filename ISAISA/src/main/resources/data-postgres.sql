@@ -39,7 +39,7 @@ insert into "orderr"(id,dateDeadline,statusAdmin,admin_id) values(nextval('seq_o
 
 insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,1,1);
 insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,2,1);
-insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,3,1);
+insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,3,2);
 
 insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 5, '2022-02-01', 'ceka_na_odgovor', 1, 3);
 insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 6, '2022-02-01', 'ceka_na_odgovor', 1, 3);

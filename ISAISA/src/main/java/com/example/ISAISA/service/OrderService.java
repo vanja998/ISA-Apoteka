@@ -91,16 +91,26 @@ public class OrderService {
     }
 
     public void deleteOrder(Orderr orderr) throws Exception {
-        if (orderr.getOffers().isEmpty())
+        if (orderr.getOffers().isEmpty()) {
+            for (Orderr_Medication om : orderr.getOrderr_medications()) {
+                this.orderMedicationRepository.delete(om);
+            }
             this.orderRepository.delete(orderr);
+        }
         else
             throw new Exception("Nije moguce obrisati narudzbenicu nakon sto je primljena ponuda!");
     }
 
-    public Orderr changeOrder(Orderr orderr) throws Exception {
+    public Orderr changeOrder(Orderr orderr, Set<Orderr_Medication> orderr_medications) throws Exception {
         if (orderr.getOffers().isEmpty()) {
             Orderr orderr1 = orderRepository.findOneById(orderr.getId());
             orderr1.setDateDeadline(orderr.getDateDeadline());
+
+            orderr1 = orderRepository.save(orderr1);
+
+            for(Orderr_Medication om : orderr_medications) {
+                om = orderMedicationRepository.save(om);
+            }
 
             return orderr1;
         }

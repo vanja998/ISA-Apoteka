@@ -23,7 +23,7 @@ public class Orderr {
     @Column
     private String statusAdmin;
 
-    @JsonIgnore
+    //@JsonIgnore
     @OneToMany(mappedBy = "orderr", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Orderr_Medication> orderr_medications = new HashSet<Orderr_Medication>();
 

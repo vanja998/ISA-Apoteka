@@ -28,7 +28,7 @@ public class MedicationService {
     }
     public Set<Medication> findAllByName(String name){return medicationRepository.findAllByName(name);}
     public Medication findByName(String name){return medicationRepository.findByName(name);}
-
+    public Medication findById(Integer id) {return medicationRepository.findOneById(id);}
 
     public Set<Medication> getMedicationsbyName(String name){
         Set<Medication> medications=medicationRepository.findAllByName(name);
