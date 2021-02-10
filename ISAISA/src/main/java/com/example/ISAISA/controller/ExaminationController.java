@@ -2,24 +2,30 @@ package com.example.ISAISA.controller;
 
 import com.example.ISAISA.DTO.*;
 import com.example.ISAISA.model.*;
+import com.example.ISAISA.service.EmailSenderService;
 import com.example.ISAISA.service.ExaminationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/examinations")
 public class ExaminationController {
 
     private ExaminationService examinationService;
+
+    @Autowired
+    private EmailSenderService emailSenderService;
 
     @Autowired
     public void setExaminationService(ExaminationService examinationService) {
@@ -74,6 +80,17 @@ public class ExaminationController {
     public ResponseEntity<BooleanDto> checkIfMedicationIsAvailable(@RequestBody MedicationExaminationDto medicationExaminationDto) {
 
         Boolean isMedicationAvailable = examinationService.isMedicationAvailable(medicationExaminationDto.getName(), medicationExaminationDto.getId());
+
+        if(!isMedicationAvailable){
+            AdminPharmacy adminPharmacy = examinationService.findAdminPharmacy(medicationExaminationDto.getId());
+                SimpleMailMessage mailMessage = new SimpleMailMessage();
+                mailMessage.setTo(adminPharmacy.getEmail());
+                mailMessage.setSubject("Lek nedostupan");
+                mailMessage.setFrom("isaverifikacija@gmail.com");
+                mailMessage.setText("Nedostupan lek u apoteci " + medicationExaminationDto.getName());
+
+                emailSenderService.sendEmail(mailMessage);
+        }
 
         BooleanDto booleanDto = new BooleanDto(isMedicationAvailable);
         return new ResponseEntity<>(booleanDto, HttpStatus.OK);
@@ -149,7 +166,7 @@ public class ExaminationController {
     public ResponseEntity<List<ExaminPatientDto>> getExaminatedPatientsDermatologistSortDate() {
         Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        List<ExaminPatientDto> examinPatientDtos = examinationService.getExaminatedPatientsSortLastName(user);
+        List<ExaminPatientDto> examinPatientDtos = examinationService.getExaminatedPatientsSortDate(user);
 
         return new ResponseEntity<>(examinPatientDtos, HttpStatus.OK);
     }
@@ -208,6 +225,80 @@ public class ExaminationController {
         BooleanDto booleanDto = new BooleanDto(isMedicationAvailable);
         return new ResponseEntity<>(booleanDto, HttpStatus.OK);
 
+    }
+
+    @PostMapping(value="/savePrescriptionPharmacist", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<BooleanDto> savePrescriptionPharmacist(@RequestBody SavePrescriptionDto savePrescriptionDto) throws Exception {
+
+        Boolean isDone = examinationService.savePrescription(savePrescriptionDto.getId(), savePrescriptionDto.getName(), savePrescriptionDto.getDuration());
+
+        BooleanDto booleanDto = new BooleanDto(isDone);
+        return new ResponseEntity<>(booleanDto, HttpStatus.OK);
+    }
+
+
+    @PostMapping(value="/getAlternativeMedicationsPharmacist",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<MedicationsForPrescriptionDto>> getAlternativeMedicationsPharmacist(@RequestBody MedicationExaminationDto medicationExaminationDto) {
+
+        List<String> alternativeMedications = examinationService.getAlternativeMedications(medicationExaminationDto.getId(), medicationExaminationDto.getName());
+
+        List<MedicationsForPrescriptionDto> listMedications = new ArrayList<>();
+
+        for(String i : alternativeMedications){
+            MedicationsForPrescriptionDto medicationsForPrescriptionDto = new MedicationsForPrescriptionDto(i);
+            listMedications.add(medicationsForPrescriptionDto);
+        }
+
+        return new ResponseEntity<>(listMedications, HttpStatus.OK);
+    }
+
+
+    @GetMapping(value="/getExaminatedPatientsPharmacist",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<ExaminPatientDto>> getExaminatedPatientsPharmacist() {
+        Pharmacist user = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<Counseling> counselings = examinationService.getExaminatedPatientsPharmacist(user);
+
+        List<ExaminPatientDto> examinPatientDtos = new ArrayList<>();
+        for(Counseling i: counselings){
+            ExaminPatientDto examinPatientDto = new ExaminPatientDto(i.getPatient().getFirstName(), i.getPatient().getLastName(), i.getBeginofappointment().toLocalDate());
+            examinPatientDtos.add(examinPatientDto);
+        }
+
+        return new ResponseEntity<>(examinPatientDtos, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/getExaminatedPatientsPharmacistSortName",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<ExaminPatientDto>> getExaminatedPatientsPharmacistSortName() {
+        Pharmacist user = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<ExaminPatientDto> examinPatientDtos = examinationService.examinatedPatientsPharmacistSortName(user);
+
+        return new ResponseEntity<>(examinPatientDtos, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/getExaminatedPatientsPharmacistSortLastName",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<ExaminPatientDto>> getExaminatedPatientsPharmacistSortLastName() {
+        Pharmacist user = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<ExaminPatientDto> examinPatientDtos = examinationService.getExaminatedPatientsPharmacistSortLastName(user);
+
+        return new ResponseEntity<>(examinPatientDtos, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/getExaminatedPatientsPharmacistSortDate",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<List<ExaminPatientDto>> getExaminatedPatientsPharmacistSortDate() {
+        Pharmacist user = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        List<ExaminPatientDto> examinPatientDtos = examinationService.getExaminatedPatientsPharmacistSortDate(user);
+
+        return new ResponseEntity<>(examinPatientDtos, HttpStatus.OK);
     }
 
 }

@@ -212,6 +212,15 @@ public class AppointmentController {
         Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Appointment appointment = appointmentService.saveAppointmentDermatologist(saveAppointment.getId(), saveAppointment.getAppointmentId());
 
+        Patient patient = appointmentService.findPatient(saveAppointment.getId());
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(patient.getEmail());
+        mailMessage.setSubject("Zakazivanje termina");
+        mailMessage.setFrom("isaverifikacija@gmail.com");
+        mailMessage.setText("Pregled Vam je zakazan.");
+        emailSenderService.sendEmail(mailMessage);
+
         return new ResponseEntity<>(appointment, HttpStatus.OK);
     }
 
@@ -223,6 +232,17 @@ public class AppointmentController {
         Boolean appointment = appointmentService.createAppointmentDermatologist(user, createAppointmentDto.getId(),  createAppointmentDto.getStartOfAppointment(), createAppointmentDto.getEndOfAppointment(), createAppointmentDto.getPrice());
 
         BooleanDto booleanDto = new BooleanDto(appointment);
+
+        if(appointment) {
+            Patient patient = appointmentService.findPatient(createAppointmentDto.getId());
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setTo(patient.getEmail());
+            mailMessage.setSubject("Zakazivanje termina");
+            mailMessage.setFrom("isaverifikacija@gmail.com");
+            mailMessage.setText("Pregled Vam je zakazan.");
+
+            emailSenderService.sendEmail(mailMessage);
+        }
 
         return new ResponseEntity<>(booleanDto, HttpStatus.OK);
     }

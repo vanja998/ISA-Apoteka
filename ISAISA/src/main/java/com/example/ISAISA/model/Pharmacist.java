@@ -12,7 +12,7 @@ import java.util.Set;
 @DiscriminatorValue("pharmacist")
 public class Pharmacist extends User {
 
-    @ManyToOne(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private Pharmacy pharmacy;
 
     @Column
@@ -25,7 +25,7 @@ public class Pharmacist extends User {
     private LocalTime endofwork;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pharmacist", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pharmacist", fetch = FetchType.EAGER)
     private Set<Counseling> counselings = new HashSet<Counseling>();
 
     @JsonIgnore
