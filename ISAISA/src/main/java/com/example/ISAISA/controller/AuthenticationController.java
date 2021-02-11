@@ -96,9 +96,10 @@ public class AuthenticationController {
         int expiresIn = tokenUtils.getExpiredIn();
 
         String rola= user.getDecriminatorValue();
+        Boolean enabled= user.isEnabled();
 
         // Vrati token kao odgovor na uspesnu autentifikaciju
-        return ResponseEntity.ok(new UserTokenRoleDto(jwt,expiresIn,rola));
+        return ResponseEntity.ok(new UserTokenRoleDto(jwt,expiresIn,rola,enabled));
     }
 
 

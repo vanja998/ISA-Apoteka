@@ -22,6 +22,7 @@ insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,p
 insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes) values( nextval('seq_medication'),'afeeff','andol','tableta','okrugla','otrovcina','hemofarm',true,'javi se lekaru u slucaju nuspojava');
 insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes) values( nextval('seq_medication'),'aefefef','fervex','prasak','zrnast','otrovcina','hemofarm',true,'javi se lekaru u slucaju nuspojava');
 
+
 insert into "medication_altmedication"(medication_id,altmedication_id) values(1,1);
 insert into "medication_altmedication"(medication_id,altmedication_id) values(2,3);
 insert into "medication_altmedication"(medication_id,altmedication_id) values(3,4);

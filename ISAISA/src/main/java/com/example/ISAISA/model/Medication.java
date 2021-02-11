@@ -44,6 +44,9 @@ public class Medication {
     @Column
     private Integer recommended_daily_intake;
 
+    @Column
+    private Float rating;
+
     @JsonIgnore
     @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Orderr_Medication> orderr_medications = new HashSet<Orderr_Medication>();
@@ -119,6 +122,14 @@ public class Medication {
         this.contraindication = contraindication;
         this.recommended_daily_intake = recommended_daily_intake;
 
+    }
+
+    public Float getRating() {
+        return rating;
+    }
+
+    public void setRating(Float rating) {
+        this.rating = rating;
     }
 
     public Integer getId() {
