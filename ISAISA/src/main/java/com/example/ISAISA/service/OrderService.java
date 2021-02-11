@@ -21,6 +21,7 @@ public class OrderService {
     private OrderMedicationRepository orderMedicationRepository;
     private AuthorityService authService;
     private AdminPharmacyRepository adminPharmacyRepository;
+    private PharmacyMedicationRepository pharmacyMedicationRepository;
 
     @Autowired
     public void setOrderRepository(OrderRepository orderRepository) {
@@ -39,6 +40,9 @@ public class OrderService {
     @Autowired
     public void setAdminPharmacyRepository(AdminPharmacyRepository adminPharmacyRepository) { this.adminPharmacyRepository = adminPharmacyRepository; }
 
+    @Autowired
+    public void setPharmacyMedicationRepository(PharmacyMedicationRepository pharmacyMedicationRepository) { this.pharmacyMedicationRepository = pharmacyMedicationRepository; }
+
     public List<Orderr> findAll(){
         return orderRepository.findAll();
     }
@@ -55,6 +59,12 @@ public class OrderService {
         int counter = 0;
         for (Integer i : orderDTO.getMed_ids()) {
             Medication medication = medicationRepository.findOneById(i);
+            PharmacyMedication pharmacyMedication = pharmacyMedicationRepository.findOneByPharmacyAndMedicationAndBeginPriceValidityBeforeAndEndPriceValidityAfter(
+                    orderDTO.getAdminPharmacy().getPharmacy(), medication, LocalDate.now(), LocalDate.now());
+            if(pharmacyMedication == null) {
+                pharmacyMedication = new PharmacyMedication(orderDTO.getAdminPharmacy().getPharmacy(), medication, 0);
+                pharmacyMedicationRepository.save(pharmacyMedication);
+            }
 
             Orderr_Medication om = new Orderr_Medication(amounts.get(counter), medication);
 
@@ -80,7 +90,12 @@ public class OrderService {
         Set<Orderr> orderrs = new HashSet<>();
 
         for (AdminPharmacy ap : adminPharmacies) {
-            orderrs.addAll(orderRepository.findByAdminPharmacy(ap));
+            Set<Orderr> orderrs1 = orderRepository.findByAdminPharmacy(ap);
+            for (Orderr orderr : orderrs1) {
+                if (orderr.getStatusAdmin().equals("ceka_na_ponude")) {
+                    orderrs.add(orderr);
+                }
+            }
         }
 
         return orderrs;

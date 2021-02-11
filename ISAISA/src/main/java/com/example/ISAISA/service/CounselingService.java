@@ -2,17 +2,16 @@ package com.example.ISAISA.service;
 
 import com.example.ISAISA.DTO.CalendarDTO;
 import com.example.ISAISA.model.*;
-import com.example.ISAISA.repository.AppointmentRepository;
-import com.example.ISAISA.repository.CounselingRepository;
-import com.example.ISAISA.repository.ExaminationRepository;
-import com.example.ISAISA.repository.PatientRepository;
+import com.example.ISAISA.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,7 +23,7 @@ public class CounselingService {
     private PatientRepository patientRepository;
     private ExaminationRepository examinationRepository;
     private AppointmentRepository appointmentRepository;
-
+    private PharmacistRepository pharmacistRepository;
 
     @Autowired
     public void setAppointmentRepository(AppointmentRepository appointmentRepository) {
@@ -44,6 +43,11 @@ public class CounselingService {
     @Autowired
     public void setPatientRepository(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
+    }
+
+    @Autowired
+    public void setPharmacistRepository(PharmacistRepository pharmacistRepository) {
+        this.pharmacistRepository = pharmacistRepository;
     }
 
     public Counseling ifPatientHasCounseling(Integer idPatient, Pharmacist pharmacist) {
@@ -260,5 +264,26 @@ public class CounselingService {
         return calendarDTOS;
 
 
+    }
+
+    public Set<Counseling> getCounselingByPharmacyAfterNow(Pharmacy pharmacy) {
+        Set<Counseling> counselings = new HashSet<>();
+        Set<Pharmacist> pharmacists = pharmacistRepository.findAllByPharmacy(pharmacy);
+
+        for(Pharmacist pharmacist : pharmacists) {
+            Set<Counseling> counselings1 = counselingRepository.findAllByPharmacistAndBeginofappointmentAfter(pharmacist, LocalDateTime.now());
+            counselings.addAll(counselings1);
+        }
+
+        return counselings;
+    }
+
+    public Counseling findById(Integer id) {return this.counselingRepository.findOneById(id);}
+
+    public Counseling changeCounselingPrice(Integer price, Integer id) {
+        Counseling counseling = counselingRepository.findOneById(id);
+        counseling.setPrice(price);
+        counseling = counselingRepository.save(counseling);
+        return counseling;
     }
 }

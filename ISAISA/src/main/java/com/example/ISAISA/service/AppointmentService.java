@@ -13,6 +13,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -25,8 +26,7 @@ public class AppointmentService {
     private PatientRepository patientRepository;
     private ExaminationRepository examinationRepository;
     private CounselingRepository counselingRepository;
-
-
+    private VacationRepository vacationRepository;
 
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
@@ -41,29 +41,22 @@ public class AppointmentService {
     }
 
     @Autowired
-    public void setCounselingRepository(CounselingRepository counselingRepository) {
-        this.counselingRepository = counselingRepository;
-    }
+    public void setCounselingRepository(CounselingRepository counselingRepository) { this.counselingRepository = counselingRepository; }
 
     @Autowired
-    public void setExaminationRepository(ExaminationRepository examinationRepository) {
-        this.examinationRepository = examinationRepository;
-    }
+    public void setExaminationRepository(ExaminationRepository examinationRepository) { this.examinationRepository = examinationRepository; }
 
     @Autowired
-    public void setAppointmentRepository(AppointmentRepository appointmentRepository) {
-        this.appointmentRepository = appointmentRepository;
-    }
+    public void setAppointmentRepository(AppointmentRepository appointmentRepository) { this.appointmentRepository = appointmentRepository; }
 
     @Autowired
-    public void setDermafarmaRepository(Dermatologist_PharmacyyRepository dermafarmaRepository) {
-        this.dermafarmaRepository = dermafarmaRepository;
-    }
+    public void setDermafarmaRepository(Dermatologist_PharmacyyRepository dermafarmaRepository) { this.dermafarmaRepository = dermafarmaRepository; }
 
     @Autowired
-    public void setPatientRepository(PatientRepository patientRepository) {
-        this.patientRepository = patientRepository;
-    }
+    public void setPatientRepository(PatientRepository patientRepository) { this.patientRepository = patientRepository; }
+
+    @Autowired
+    public void setVacationRepository(VacationRepository vacationRepository) { this.vacationRepository = vacationRepository; }
 
     public Appointment ifPatientHasAppointment(Integer idPatient, Dermatologist dermatologist) {
 
@@ -130,11 +123,12 @@ public class AppointmentService {
             throw new Exception("Nije moguce zakazati ovaj termin!");
         }
 
-        //Ako dermatolog vec ima zakazan termin tada
+        //Ako dermatolog vec ima zakazan termin tada (unutar intervala ili da ga obuhvata)
         Set<Appointment> existingDermAppointments = appointmentRepository.findAllByDermatologist(appointment.getDermatologist());
         for (Appointment a : existingDermAppointments) {
             if ((appointment.getBeginofappointment().isAfter(a.getBeginofappointment()) && appointment.getBeginofappointment().isBefore(a.getEndofappointment())) ||
-                    (appointment.getEndofappointment().isAfter(a.getBeginofappointment()) && appointment.getEndofappointment().isBefore(a.getEndofappointment()))) {
+                    (appointment.getEndofappointment().isAfter(a.getBeginofappointment()) && appointment.getEndofappointment().isBefore(a.getEndofappointment()))
+                    || (appointment.getBeginofappointment().isBefore(a.getBeginofappointment()) && appointment.getEndofappointment().isAfter(a.getEndofappointment()))) {
                 throw new Exception("Postoji zakazan termin u ovo vreme!");
             }
         }
@@ -143,6 +137,16 @@ public class AppointmentService {
         if (appointment.getBeginofappointment().toLocalTime().isBefore(dermatologistBeginOfWork)
                 || appointment.getEndofappointment().toLocalTime().isAfter(dermatologistEndOfWork)) {
             throw new Exception("Termin nije tokom radnog vremena dermatologa!");
+        }
+
+        //Ako je dermatolog na godisnjem odmoru
+        Set<Vacation> vacations = vacationRepository.findAllByDermatologistAndApprovedTrue(appointment.getDermatologist());
+        for (Vacation vacation : vacations) {
+            if ((appointment.getBeginofappointment().toLocalDate().isAfter(vacation.getDateBeginVacation()) && appointment.getBeginofappointment().toLocalDate().isBefore(vacation.getDateEndVacation()))
+                || (appointment.getEndofappointment().toLocalDate().isAfter(vacation.getDateBeginVacation()) && appointment.getEndofappointment().toLocalDate().isBefore(vacation.getDateEndVacation()))
+                || (appointment.getBeginofappointment().toLocalDate().isBefore(vacation.getDateBeginVacation()) && appointment.getEndofappointment().toLocalDate().isAfter(vacation.getDateEndVacation()))) {
+                throw new Exception("Termin je u toku godisnjeg odmora dermatologa!");
+            }
         }
 
         appointmentRepository.save(appointment);
@@ -249,7 +253,6 @@ public class AppointmentService {
 
     }
 
-
     public Boolean createAppointmentDermatologist(Dermatologist dermatologist, Integer examinationId, LocalDateTime startOfAppointment, LocalDateTime endOfAppointment, Integer price){
 
         Examination examination = examinationRepository.findOneById(examinationId);
@@ -346,7 +349,6 @@ public class AppointmentService {
         }
         return false;
     }
-
 
     public List<CalendarDTO> getAppointmentsWeek(Dermatologist user){
         Set<Appointment> appointments = appointmentRepository.findAllByDermatologist(user);
@@ -445,6 +447,25 @@ public class AppointmentService {
 
         return calendarDTOS;
 
+    }
+
+    public Set<Appointment> getAppointmentByPharmacyAfterNow(Pharmacy pharmacy) {
+        Set<Appointment> appointments = new HashSet<>();
+        Set<Dermatologist> dermatologists = new HashSet<>();
+        Set<Dermatologist_Pharmacyy> dermatologist_pharmacyys = dermafarmaRepository.findAllByPharmacy(pharmacy);
+        for (Dermatologist_Pharmacyy dp : dermatologist_pharmacyys) {
+            Set<Appointment> appointments1 = appointmentRepository.findAllByDermatologistAndBeginofappointmentAfter(dp.getDermatologist(), LocalDateTime.now());
+            appointments.addAll(appointments1);
+        }
+
+        return appointments;
+    }
+
+    public Appointment changeAppointment(Integer price, Integer id) {
+        Appointment appointment = appointmentRepository.findOneById(id);
+        appointment.setPrice(price);
+        appointment = appointmentRepository.save(appointment);
+        return appointment;
     }
 
 }

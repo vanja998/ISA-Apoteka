@@ -1,5 +1,7 @@
 package com.example.ISAISA.service;
 
+import com.example.ISAISA.model.Medication;
+import com.example.ISAISA.model.Pharmacy;
 import com.example.ISAISA.model.Reservation;
 import com.example.ISAISA.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,4 +26,8 @@ public class ReservationService {
     public List<Reservation> findAll() {return reservationRepository.findAll();}
 
     public Reservation findById(Integer id) {return reservationRepository.findOneByid(id);}
+
+    public Reservation findByMedicationAndPhamacy(Medication medication, Pharmacy pharmacy) {
+        return this.reservationRepository.findOneByMedicationAndPharmacy(medication, pharmacy);
+    }
 }

@@ -1,8 +1,6 @@
 package com.example.ISAISA.controller;
 
-import com.example.ISAISA.DTO.MedicationPharmacyDTO;
-import com.example.ISAISA.DTO.PharmacistDTO;
-import com.example.ISAISA.DTO.PharmacyDTO;
+import com.example.ISAISA.DTO.*;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.service.EmployeeService;
 import com.example.ISAISA.service.MedicationService;
@@ -66,7 +64,7 @@ public class MedicationController {
         Set<MedicationPharmacyDTO> medicationPharmacyDTOS = new HashSet<>();
         for(Medication medication : medications) {
             PharmacyMedication pharmacyMedication = pharmacyMedicationService.findByPharmacyAndMedication(user.getPharmacy(), medication);
-            MedicationPharmacyDTO mp = new MedicationPharmacyDTO(medication.getCode(), medication.getName(), medication.getProducer(),
+            MedicationPharmacyDTO mp = new MedicationPharmacyDTO(medication.getId(), medication.getCode(), medication.getName(), medication.getProducer(),
                     pharmacyMedication.getQuantity(), pharmacyMedication.getPrice());
 
             medicationPharmacyDTOS.add(mp);
@@ -85,7 +83,7 @@ public class MedicationController {
         Set<MedicationPharmacyDTO> medicationPharmacyDTOS = new HashSet<>();
         for(Medication medication : medications) {
             PharmacyMedication pharmacyMedication = pharmacyMedicationService.findByPharmacyAndMedication(user.getPharmacy(), medication);
-            MedicationPharmacyDTO mp = new MedicationPharmacyDTO(medication.getCode(), medication.getName(), medication.getProducer(),
+            MedicationPharmacyDTO mp = new MedicationPharmacyDTO(medication.getId(), medication.getCode(), medication.getName(), medication.getProducer(),
                     pharmacyMedication.getQuantity(), pharmacyMedication.getPrice());
 
             medicationPharmacyDTOS.add(mp);
@@ -111,6 +109,27 @@ public class MedicationController {
         PharmacyMedication pharmacyMedication = new PharmacyMedication(user.getPharmacy(), medication1, 0,
                 medicationPharmacyDTO.getPrice(), medicationPharmacyDTO.getBeginPriceValidity(), medicationPharmacyDTO.getEndPriceValidity());
         pharmacyMedication = medicationService.addMedicationToPharmacy(pharmacyMedication);
+
+        return new ResponseEntity<>(pharmacyMedication, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/removeMedicineFromPharmacy")
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public void removeMedicineFromPharmacy(@RequestBody IdDto idDto) throws Exception {
+
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Medication medication = medicationService.findById(idDto.getId());
+
+        this.medicationService.removeMedicationFromPharmacy(medication, user.getPharmacy());
+
+    }
+
+    @PostMapping(value="/changeMedicationPrice", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<PharmacyMedication> changeMedicationPrice(@RequestBody IdPriceDTO idPriceDTO){
+
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        PharmacyMedication pharmacyMedication = medicationService.changeMedication(idPriceDTO.getPrice(), idPriceDTO.getId(), user.getPharmacy(), idPriceDTO.getEnd());
 
         return new ResponseEntity<>(pharmacyMedication, HttpStatus.OK);
     }

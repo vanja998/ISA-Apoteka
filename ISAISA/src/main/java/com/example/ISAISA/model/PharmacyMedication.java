@@ -48,6 +48,12 @@ public class PharmacyMedication {
         this.endPriceValidity = endPriceValidity;
     }
 
+    public PharmacyMedication(Pharmacy pharmacy, Medication medication, Integer quantity) {
+        this.pharmacy = pharmacy;
+        this.medication = medication;
+        this.quantity = quantity;
+    }
+
     public Integer getId() {
         return id;
     }

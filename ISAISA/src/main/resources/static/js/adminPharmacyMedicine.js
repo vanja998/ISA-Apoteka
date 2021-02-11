@@ -249,24 +249,106 @@ function formToJSON1(medicineName, price, beginPriceValidity, endPriceValidity) 
 
 $(document).on('click', '#returnToMedicine', function () {
 
-    var successAddDermatologist = $(".successAddDermatologist");
-    successAddDermatologist.hide();
+    var successAddMedicine = $(".successAddMedicine");
+    successAddMedicine.hide();
 
-    var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy")
-    dermatologistsShowAdminPharmacy.show();
-
-    var dermatologistsFilterAdminPharmacy = $(".dermatologistsFilterAdminPharmacy");
-    dermatologistsFilterAdminPharmacy.hide();
+    var medicineShowAdminPharmacy = $(".medicineShowAdminPharmacy")
+    medicineShowAdminPharmacy.show();
 });
 
 $(document).on('click', '#errorAddMedicine', function () {
 
-    var errorAddDermatologist = $(".errorAddDermatologist");
-    errorAddDermatologist.hide();
+    var errorAddMedicine = $(".errorAddMedicine");
+    errorAddMedicine.hide();
 
-    var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy")
-    dermatologistsShowAdminPharmacy.show();
+    var medicineShowAdminPharmacy = $(".medicineShowAdminPharmacy")
+    medicineShowAdminPharmacy.show();
+});
 
-    var dermatologistsFilterAdminPharmacy = $(".dermatologistsFilterAdminPharmacy");
-    dermatologistsFilterAdminPharmacy.hide();
+
+//Brisanje
+$(document).on('click', '.btnRemove', function (){
+    var modal = document.getElementById("modalDelete");
+    modal.style.display = "block";
+
+    var medicineAdminPharmacy = $(".medicineAdminPharmacy");
+    var medicineShowAdminPharmacy = $(".medicineShowAdminPharmacy");
+    var medicineSearchAdminPharmacy = $(".medicineSearchAdminPharmacy");
+    var addNewMedicineAdminPharmacy= $(".addNewMedicineAdminPharmacy");
+
+    medicineAdminPharmacy.hide();
+    medicineShowAdminPharmacy.hide();
+    medicineSearchAdminPharmacy.hide();
+    addNewMedicineAdminPharmacy.hide();
+
+    var id = this.id;
+    var myJSON = JSON.stringify({"id" : id});
+
+    console.log(myJSON);
+
+    $(document).on('click', '#btnModalYes', function () {
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/medications/removeMedicineFromPharmacy",
+            contentType: "application/json",
+            data: myJSON,
+            beforeSend: function (xhr) {
+                if (localStorage.token) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+                }
+            },
+            success: function (data) {
+                console.log("SUCCESS", data);
+
+                window.location.href="adminPharmacyMedicine.html";
+            },
+            error: function (jqXHR) {
+                if (jqXHR.status === 403) {
+                    window.location.href = "error.html";
+                }
+                if (jqXHR.status === 401) {
+                    window.location.href = "error.html";
+                }
+                if (jqXHR.status === 500) {
+
+                    var modal = document.getElementById("modalDelete");
+                    modal.style.display = "none";
+
+                    var medicineAdminPharmacy = $(".medicineAdminPharmacy");
+                    medicineAdminPharmacy.hide();
+
+                    var medicineShowAdminPharmacy = $(".medicineShowAdminPharmacy");
+                    medicineShowAdminPharmacy.hide();
+
+                    var errorDeleteMedicine = $(".errorDeleteMedicine");
+                    errorDeleteMedicine.show();
+
+                    var response = JSON.parse(jqXHR.responseText);
+                    document.getElementById('errorDeleteMedicine').innerHTML = response['message'];
+                }
+            }
+        });
+    });
+
+    $(document).on('click', '#btnModalNo', function () {
+        var modal = document.getElementById("modalDelete");
+        modal.style.display = "none";
+
+        var medicineAdminPharmacy = $(".medicineAdminPharmacy");
+        medicineAdminPharmacy.show();
+        var medicineShowAdminPharmacy = $(".medicineShowAdminPharmacy");
+        medicineShowAdminPharmacy.show();
+
+    });
+});
+
+$(document).on('click', '#btnErrorDeleteMedicine', function () {
+    var medicineAdminPharmacy = $(".medicineAdminPharmacy");
+    medicineAdminPharmacy.show();
+    var medicineShowAdminPharmacy = $(".medicineShowAdminPharmacy");
+    medicineShowAdminPharmacy.show();
+
+    var errorDeleteMedicine = $(".errorDeleteMedicine");
+    errorDeleteMedicine.hide();
 });

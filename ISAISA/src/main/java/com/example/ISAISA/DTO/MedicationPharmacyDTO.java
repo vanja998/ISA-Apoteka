@@ -6,6 +6,9 @@ import javax.persistence.Column;
 import java.time.LocalDate;
 
 public class MedicationPharmacyDTO {
+
+    private Integer id;
+
     private String code ;
 
     private String name;
@@ -33,7 +36,18 @@ public class MedicationPharmacyDTO {
         this.price = price;
     }
 
+    public MedicationPharmacyDTO(Integer id, String code, String name, String producer, Integer quantity, Integer price) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+        this.producer = producer;
+        this.quantity = quantity;
+        this.price = price;
+    }
 
+    public Integer getId() { return id; }
+
+    public void setId(Integer id) { this.id = id; }
 
     public String getCode() { return code; }
 

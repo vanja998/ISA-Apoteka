@@ -1,16 +1,17 @@
 package com.example.ISAISA.service;
 
 import com.example.ISAISA.DTO.PharmacistDTO;
-import com.example.ISAISA.model.Medication;
-import com.example.ISAISA.model.Pharmacist;
-import com.example.ISAISA.model.Pharmacy;
-import com.example.ISAISA.model.PharmacyMedication;
+import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.EmployeeRepository;
 import com.example.ISAISA.repository.MedicationRepository;
 import com.example.ISAISA.repository.PharmacyMedicationRepository;
+import com.example.ISAISA.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -19,12 +20,17 @@ import java.util.Set;
 public class MedicationService {
     private MedicationRepository medicationRepository;
     private PharmacyMedicationRepository pharmacyMedicationRepository;
+    private ReservationRepository reservationRepository;
 
     @Autowired
     public void setMedicationRepository(MedicationRepository medicationRepository) { this.medicationRepository = medicationRepository; }
 
     @Autowired
     public void setPharmacyMedicationRepository(PharmacyMedicationRepository pharmacyMedicationRepository) { this.pharmacyMedicationRepository = pharmacyMedicationRepository; }
+
+    @Autowired
+    public void setReservationRepository(ReservationRepository reservationRepository) { this.reservationRepository = reservationRepository;
+   }
 
     public List<Medication> findAll(){
         return medicationRepository.findAll();
@@ -45,14 +51,14 @@ public class MedicationService {
     }
 
     //Prikaz
-    public Set<Medication> getMedicationByPharmacy(Pharmacy pharmacy) {
+    /*public Set<Medication> getMedicationByPharmacy(Pharmacy pharmacy) {
         Set<PharmacyMedication> pharmacyMedications = pharmacy.getPharmacy_medications();
         Set<Medication> medications = new HashSet<>();
         for(PharmacyMedication pm : pharmacyMedications) {
             medications.add(pm.getMedication());
         }
         return medications;
-    }
+    }*/
 
     public Set<Medication> getMedicationNotInPharmacy(Pharmacy pharmacy) {
         //Svi lekovi
@@ -104,6 +110,56 @@ public class MedicationService {
         return this.pharmacyMedicationRepository.save(pharmacyMedication);
     }
 
+    //Brisanje
+    public void removeMedicationFromPharmacy(Medication medication, Pharmacy pharmacy) throws Exception {
 
+        Reservation reservation = reservationRepository.findOneByMedicationAndPharmacy(medication, pharmacy);
+        if (reservation != null) {
+            if(!reservation.getMedicationtaken() && reservation.getDateofreservation().isAfter(LocalDateTime.now())) {
+                throw new Exception("Nije moguce obrisati lek jer je rezervisan i nije jos preuzet!");
+            }
+        }
 
+        PharmacyMedication pharmacyMedication= pharmacyMedicationRepository.findOneByPharmacyAndMedicationAndBeginPriceValidityBeforeAndEndPriceValidityAfter(pharmacy, medication, LocalDate.now(), LocalDate.now());
+        pharmacyMedicationRepository.delete(pharmacyMedication);
+    }
+
+    //Prikaz
+    public Set<Medication> getMedicationByPharmacy(Pharmacy pharmacy) {
+        List<Medication> medications = medicationRepository.findAll();
+        Set<PharmacyMedication> pharmacyMedications = new HashSet<>();
+        for (Medication medication : medications) {
+            Set<PharmacyMedication> pharmacyMedications1 = pharmacyMedicationRepository.findByPharmacyAndMedicationOrderByBeginPriceValidityDesc(pharmacy, medication);
+            List<PharmacyMedication> pharmacyMedications2 = new ArrayList<>(pharmacyMedications1);
+            if(!pharmacyMedications2.isEmpty())
+                pharmacyMedications.add(pharmacyMedications2.get(0));
+        }
+
+        Set<Medication> chosenMedication = new HashSet<>();
+
+        for (PharmacyMedication pm : pharmacyMedications) {
+            chosenMedication.add(pm.getMedication());
+        }
+
+        return chosenMedication;
+    }
+
+    public PharmacyMedication changeMedication(Integer price, Integer id, Pharmacy pharmacy, LocalDate end) {
+        Medication medication = medicationRepository.findOneById(id);
+        Set<PharmacyMedication> pharmacyMedications1 = pharmacyMedicationRepository.findByPharmacyAndMedicationOrderByBeginPriceValidityDesc(pharmacy, medication);
+        List<PharmacyMedication> pharmacyMedications2 = new ArrayList<>(pharmacyMedications1);
+
+        PharmacyMedication pharmacyMedicationBefore = pharmacyMedications2.get(0);
+
+        //Postavi kraj perioda vazenja cene poslednjeg pojavljivanja u pharmacyMedication na danas
+        pharmacyMedicationBefore.setEndPriceValidity(LocalDate.now());
+        pharmacyMedicationBefore = pharmacyMedicationRepository.save(pharmacyMedicationBefore);
+
+        //Postavi pocetak perioda vazenja cene novog pojavljivanja u pharmacyMedication na danas
+        PharmacyMedication pharmacyMedicationNow = new PharmacyMedication(pharmacyMedicationBefore.getPharmacy(), pharmacyMedicationBefore.getMedication(),
+                pharmacyMedicationBefore.getQuantity(), price, LocalDate.now().plusDays(1), end);
+        pharmacyMedicationNow = pharmacyMedicationRepository.save(pharmacyMedicationNow);
+
+        return pharmacyMedicationNow;
+    }
 }

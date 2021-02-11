@@ -69,7 +69,7 @@ public class Medication {
     private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();*/
 
     //@JsonIgnore
-    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER)
     private Set<PharmacyMedication> pharmacy_medications = new HashSet<PharmacyMedication>();
 
     @JsonIgnore

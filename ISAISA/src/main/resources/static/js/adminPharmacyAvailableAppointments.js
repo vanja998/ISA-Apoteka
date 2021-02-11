@@ -108,7 +108,7 @@ function formToJSON(dermatologist_id, beginofappointment, duration, price) {
     return JSON.stringify(
         {
             "dermatologist" : dermatologist_id,
-            "beginofappointment" : beginofwork,
+            "beginofappointment" : beginofappointment,
             "duration" : duration,
             "price" : price
         }
@@ -139,7 +139,7 @@ $(document).on('click', '#btnReturnToChoosing1', function () {
 });
 
 $(document).on('click', '#btnReturnToChoosing', function () {
-    var usuccessfulAppointmentCreation = $(".successfulAppointmentCreation");
+    var successfulAppointmentCreation = $(".successfulAppointmentCreation");
     successfulAppointmentCreation.hide();
 
     var availableAppointments = $(".availableAppointments");
