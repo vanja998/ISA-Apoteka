@@ -10,7 +10,7 @@ insert into "users" (rolee, id, email, password, firstName, lastName, address, p
 
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, pharmacy_id, rating,beginofwork,endofwork) values ('pharmacist', nextval('seq_user'), 'daki.lalic@gmail.com', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Jovan', 'Jovanovic', 'Dunavska', '060111113', 'Novi Sad', 'Srbija', true, 1, 3.5,'00:00:00','23:59:00');
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, rating) values ('dermatologist', nextval('seq_user'), 'kuckuc', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Jovan', 'Jovanovic', 'Dunavska', '060111113', 'Novi Sad', 'Srbija', true, 4.5);
-insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, pharmacy_id) values ('adminpharmacy', nextval('seq_user'), 'avav', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Jovan', 'Jovanovic', 'Dunavska', '060111113', 'Novi Sad', 'Srbija', true, 1);
+insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, pharmacy_id) values ('adminpharmacy', nextval('seq_user'), 'babicvanja11@gmail.com', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Jovan', 'Jovanovic', 'Dunavska', '060111113', 'Novi Sad', 'Srbija', true, 1);
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, penalty) values ('patient', nextval('seq_user'), 'malisignali', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Nata', 'Bekv', 'Mileticeva', '060122211', 'Novi Sad', 'Srbija', true, 0);
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled,flag) values ('adminsystem', nextval('seq_user'), 'va', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'tika', 'spic', 'blabla', '062111113', 'Pecenjevce', 'Srbija', true,0);
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, pharmacy_id, rating) values ('pharmacist', nextval('seq_user'), 'dara', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Dara', 'Granic', 'Dunavska', '060111113', 'Novi Sad', 'Srbija', true, 1, 5.0);
@@ -30,6 +30,7 @@ insert into "medication_altmedication"(medication_id,altmedication_id) values(3,
 --insert into "med_pharmacies" (pharmacy_id,medication_id) values (1,2);
 insert into "pharmacymedication" (id, pharmacy_id, medication_id, quantity, price, beginPriceValidity, endPriceValidity) values (nextval('seq_pharmacy_medication'), 1, 1, 10, 10, '2021-01-01', '2021-03-01');
 insert into "pharmacymedication" (id, pharmacy_id, medication_id, quantity, price, beginPriceValidity, endPriceValidity) values (nextval('seq_pharmacy_medication'), 1, 2, 5, 10, '2021-01-01', '2021-02-01');
+insert into "pharmacymedication" (id, pharmacy_id, medication_id, quantity, price, beginPriceValidity, endPriceValidity) values (nextval('seq_pharmacy_medication'), 1, 4, 5, 10, '2021-01-01', '2021-02-01');
 
 insert into "allergy_patient" (patient_id,medication_id) values (1,1);
 

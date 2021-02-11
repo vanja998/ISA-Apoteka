@@ -246,7 +246,9 @@ public class ExaminationService {
 
         List<String> imenaAlternativa = new ArrayList<>();
         for(Medication i : alternative){
-            imenaAlternativa.add(i.getName());
+            if (isMedicationAvailable(i.getName(), examinationId)) {
+                imenaAlternativa.add(i.getName());
+            }
         }
 
         List<String> alternativeNotAlergic = new ArrayList<>();
@@ -555,7 +557,7 @@ public class ExaminationService {
     public AdminPharmacy findAdminPharmacy(Integer examinationId){
         Examination examination = examinationRepository.findOneById(examinationId);
         Pharmacy pharmacy = examination.getExaminationAppointment().getPharmacy_appointment();
-        Set<AdminPharmacy> adminPharmacies = pharmacy.getAdminPharmacySet();
+        Set<AdminPharmacy> adminPharmacies = adminPharmacyRepository.findAllByPharmacy(pharmacy);
         AdminPharmacy admin = adminPharmacies.iterator().next();
         return admin;
 

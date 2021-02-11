@@ -1,6 +1,7 @@
 package com.example.ISAISA.controller;
 
 import com.example.ISAISA.DTO.AppointmentDTO;
+import com.example.ISAISA.DTO.BooleanDto;
 import com.example.ISAISA.DTO.IdDto;
 import com.example.ISAISA.DTO.ReservationDto;
 import com.example.ISAISA.model.*;
@@ -115,6 +116,38 @@ public class ReservationController {
 
         }
 
+    }
+
+
+    @PostMapping(value="/checkIfReservationExists", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<BooleanDto> CheckIfReservationExists(@RequestBody IdDto idDto) throws Exception {
+
+        Pharmacist user = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Reservation reservation = reservationService.findReservation(idDto.getId());
+
+        Boolean exists;
+        if(reservation!=null){
+            Boolean pharmacyCheck = reservationService.checkPharmacy(reservation.getPharmacy(), user.getPharmacy());
+            if(pharmacyCheck) {
+                exists = true;
+            }else {
+                exists = false;
+            }
+        }else {
+            exists = false;
+        }
+
+        BooleanDto booleanDto = new BooleanDto(exists);
+        return new ResponseEntity<>(booleanDto, HttpStatus.OK);
+    }
+
+
+    @PostMapping(value="/giveMedication", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public void giveMedication(@RequestBody IdDto idDto) throws Exception {
+        reservationService.giveMedication(idDto.getId());
     }
 
 }
