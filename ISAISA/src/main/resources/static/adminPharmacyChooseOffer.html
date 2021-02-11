@@ -7,14 +7,15 @@
     <script src="js/adminPharmacyChooseOffer.js"></script>
 </head>
 <body>
-    <!--<div class="filterShow">-->
-        <!--<label for="statusOrder">Filtrirajte po statusu</label>-->
-        <select name="statusOrder" class="statusOrderr">
+    <div class="filterShow">
+        <label for="statusOrder">Filtrirajte po statusu</label>
+        <select name="statusOrder" id="statusOrder">
             <!--<option disabled selected value>-- odaberite status --</option>-->
-            <option value="ceka_na_ponude">Ceka ponude</option>
-            <option value="obradjena">Obradjena</option>
+            <option value="ceka_na_ponude">ceka_na_ponude</option>
+            <option value="obradjena">obradjena</option>
         </select>
-    <!--</div>-->
+        <button id="btnStatusOrder">Filtriraj</button>
+    </div>
     <div class="ordersShow">
         <h1>Narudzbenice</h1>
         <table id="tableOrdersShow">

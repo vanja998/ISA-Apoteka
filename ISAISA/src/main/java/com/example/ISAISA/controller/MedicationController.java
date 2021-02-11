@@ -142,6 +142,16 @@ public class MedicationController {
         return new ResponseEntity<>(pharmacyMedication, HttpStatus.OK);
     }
 
+    @PostMapping(value="/changeMedicationQuantity", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<PharmacyMedication> changeMedicationQuantity(@RequestBody IdPriceDTO idPriceDTO){
+
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        PharmacyMedication pharmacyMedication = medicationService.changeMedicationQuantity(idPriceDTO.getQuantity(), idPriceDTO.getId(), user.getPharmacy());
+
+        return new ResponseEntity<>(pharmacyMedication, HttpStatus.OK);
+    }
+
     @PostMapping(value="/allMedicationsByPharmacy",produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<Set<MedicationPharmacyDTO>> getMedicationsByPharmacy(@RequestBody IdDto idDto) {

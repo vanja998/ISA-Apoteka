@@ -19,6 +19,9 @@ $(document).ready(function () {
     modalDelete.hide();
     errorDeleteMedicine.hide();
 
+    var changeMedicine = $(".changeMedicine");
+    changeMedicine.hide();
+
     $.ajax({
         type: "GET",
         url: "http://localhost:8081/medications/adminmedications",
@@ -81,6 +84,9 @@ $(document).on('click', '.btnSearchMedicineAdminPharmacy', function () {
     errorAddMedicine.hide();
     modalDelete.hide();
     errorDeleteMedicine.hide();
+
+    var changeMedicine = $(".changeMedicine");
+    changeMedicine.hide();
 
     var searchParam = $(".searchMedicineAdminPharmacy").val();
 
@@ -153,6 +159,9 @@ $(document).on('click', '.btnAddMedicineAdminPharmacy', function () {
     errorAddMedicine.hide();
     modalDelete.hide();
     errorDeleteMedicine.hide();
+
+    var changeMedicine = $(".changeMedicine");
+    changeMedicine.hide();
 
     $.ajax({
         type: "GET",
@@ -281,6 +290,9 @@ $(document).on('click', '.btnRemove', function (){
     medicineSearchAdminPharmacy.hide();
     addNewMedicineAdminPharmacy.hide();
 
+    var changeMedicine = $(".changeMedicine");
+    changeMedicine.hide();
+
     var id = this.id;
     var myJSON = JSON.stringify({"id" : id});
 
@@ -351,4 +363,47 @@ $(document).on('click', '#btnErrorDeleteMedicine', function () {
 
     var errorDeleteMedicine = $(".errorDeleteMedicine");
     errorDeleteMedicine.hide();
+});
+
+//Izmena kolicine, cena je odradjena kod cenovnika
+var idChange
+$(document).on('click', '.btnChange', function () {
+    var changeMedicine = $(".changeMedicine");
+    changeMedicine.show();
+
+    idChange = this.id;
+});
+
+$(document).on('click', '#btnChangeMedicine', function () {
+    var quantity = $("#quantityMedicine").val();
+
+    var myJSON = JSON.stringify({"id": idChange, "quantity":quantity});
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/medications/changeMedicationQuantity",
+        dataType: "json",
+        contentType: "application/json",
+        data: myJSON,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log("SUCCESS: ", data);
+            $("#quantityMedicine").val("");
+            window.location.href="adminPharmacyMedicine.html";
+        },
+        error: function (jqXHR) {
+            if(jqXHR.status === 403)
+            {
+                window.location.href="error.html";
+            }
+            if(jqXHR.status === 401)
+            {
+                window.location.href="error.html";
+            }
+        }
+    });
 });

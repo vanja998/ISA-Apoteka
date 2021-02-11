@@ -436,10 +436,10 @@ $(document).on('click', '.btnReturnOrder', function () {
     window.location.href="adminPharmacyChooseOffer.html";
 });
 
-$('.statusOrderr').change(function() {
-    var status = $(this).find("option:selected");
-    status = JSON.stringify({"Status":status});
-
+$(document).on('click', '#btnStatusOrder', function() {
+    var status = document.getElementById("statusOrder").value;
+    status = JSON.stringify({"status":status});
+    $('#tableOrdersShow tbody').empty();
     $.ajax({
         type: "POST",
         url: "http://localhost:8081/orders/orderByStatus",
@@ -458,6 +458,15 @@ $('.statusOrderr').change(function() {
                 var row = "<tr>";
                 row += "<td>" + data[i]['id'] + "</td>";
                 row += "<td>" + data[i]['dateDeadline'] + "</td>";
+
+                var btnOffers = "<button class='btnOffers' id = " + data[i]['id'] + ">Pogledaj ponude</button>";
+                row += "<td>" + btnOffers + "</td>";
+
+                var btnChangeOrder = "<button class='btnChangeOrder' id = " + data[i]['id'] + ">Izmeni narudzbenicu</button>";
+                row += "<td>" + btnChangeOrder + "</td>";
+
+                var btnDeleteOrder = "<button class='btnDeleteOrder' id = " + data[i]['id'] + ">Obrisi narudzbenicu</button>";
+                row += "<td>" + btnDeleteOrder + "</td>";
 
                 $('#tableOrdersShow').append(row);
             }

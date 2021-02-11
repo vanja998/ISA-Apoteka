@@ -10,6 +10,8 @@ public class IdPriceDTO {
 
     private LocalDate end;
 
+    private Integer quantity;
+
     public IdPriceDTO(Integer id, Integer price) {
         this.id = id;
         this.price = price;
@@ -43,4 +45,8 @@ public class IdPriceDTO {
     public LocalDate getEnd() { return end; }
 
     public void setEnd(LocalDate end) { this.end = end; }
+
+    public Integer getQuantity() { return quantity; }
+
+    public void setQuantity(Integer quantity) { this.quantity = quantity; }
 }

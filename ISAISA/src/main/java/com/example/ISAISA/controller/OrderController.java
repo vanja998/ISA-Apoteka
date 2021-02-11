@@ -116,7 +116,7 @@ public class OrderController {
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
 
-    @GetMapping(value="/orderByStatus", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/orderByStatus", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public ResponseEntity<Set<OrderMedicationDTO>> getOrdersByPharmacyAndStatus(@RequestBody StatusDTO statusDTO){
         AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

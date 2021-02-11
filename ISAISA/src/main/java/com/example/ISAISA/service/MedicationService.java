@@ -162,4 +162,18 @@ public class MedicationService {
 
         return pharmacyMedicationNow;
     }
+
+    public PharmacyMedication changeMedicationQuantity(Integer quantity, Integer id, Pharmacy pharmacy) {
+        Medication medication = medicationRepository.findOneById(id);
+        Set<PharmacyMedication> pharmacyMedications1 = pharmacyMedicationRepository.findByPharmacyAndMedicationOrderByBeginPriceValidityDesc(pharmacy, medication);
+        List<PharmacyMedication> pharmacyMedications2 = new ArrayList<>(pharmacyMedications1);
+
+        PharmacyMedication pharmacyMedicationBefore = pharmacyMedications2.get(0);
+
+        pharmacyMedicationBefore.setQuantity(quantity);
+
+        pharmacyMedicationBefore = pharmacyMedicationRepository.save(pharmacyMedicationBefore);
+
+        return pharmacyMedicationBefore;
+    }
 }
