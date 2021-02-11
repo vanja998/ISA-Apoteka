@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.Id;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -47,11 +48,18 @@ public class ReservationService {
 
     public Reservation findReservation(Integer id) {
 
+        LocalDate today = LocalDate.now();
+
         Reservation reservation = reservationRepository.findOneByid(id);
         if(reservation.getMedicationtaken()){
             return null;
         }else {
-            return reservation;
+            if(today.isBefore(reservation.getDateofreservation().toLocalDate()) || today.isEqual(reservation.getDateofreservation().toLocalDate())){
+                return reservation;
+            }
+            else {
+                return null;
+            }
         }
 
     }
