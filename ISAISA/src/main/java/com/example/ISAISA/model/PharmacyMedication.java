@@ -39,6 +39,15 @@ public class PharmacyMedication {
     public PharmacyMedication() {
     }
 
+    public PharmacyMedication(Pharmacy pharmacy, Medication medication, Integer quantity, Integer price, LocalDate beginPriceValidity, LocalDate endPriceValidity) {
+        this.pharmacy = pharmacy;
+        this.medication = medication;
+        this.quantity = quantity;
+        this.price = price;
+        this.beginPriceValidity = beginPriceValidity;
+        this.endPriceValidity = endPriceValidity;
+    }
+
     public Integer getId() {
         return id;
     }

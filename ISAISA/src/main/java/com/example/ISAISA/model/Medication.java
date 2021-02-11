@@ -68,7 +68,7 @@ public class Medication {
     @JoinTable(name = "med_pharmacies", joinColumns = @JoinColumn(name = "medication_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "pharmacy_id", referencedColumnName = "id"))
     private Set<Pharmacy> pharmacies = new HashSet<Pharmacy>();*/
 
-    @JsonIgnore
+    //@JsonIgnore
     @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<PharmacyMedication> pharmacy_medications = new HashSet<PharmacyMedication>();
 

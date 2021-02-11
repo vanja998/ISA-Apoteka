@@ -1,13 +1,14 @@
 package com.example.ISAISA.controller;
 
+import com.example.ISAISA.DTO.MedicationPharmacyDTO;
 import com.example.ISAISA.DTO.PharmacistDTO;
 import com.example.ISAISA.DTO.PharmacyDTO;
-import com.example.ISAISA.model.AdminPharmacy;
-import com.example.ISAISA.model.Medication;
-import com.example.ISAISA.model.Pharmacy;
+import com.example.ISAISA.model.*;
 import com.example.ISAISA.service.EmployeeService;
 import com.example.ISAISA.service.MedicationService;
+import com.example.ISAISA.service.PharmacyMedicationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,19 +16,23 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping(value = "/medications")
 public class MedicationController {
 
     private MedicationService medicationService;
+    private PharmacyMedicationService pharmacyMedicationService;
 
     @Autowired
     public void setMedicationService(MedicationService medicationService) {
         this.medicationService = medicationService;
+    }
+
+    @Autowired
+    public void setPharmacyMedicationService(PharmacyMedicationService pharmacyMedicationService) {
+        this.pharmacyMedicationService = pharmacyMedicationService;
     }
 
     @GetMapping(value="/allmedications",produces = MediaType.APPLICATION_JSON_VALUE)                                           // value nije naveden, jer koristimo bazni url
@@ -52,5 +57,62 @@ public class MedicationController {
         return new ResponseEntity<>(medications, HttpStatus.OK);
     }
 
+    @GetMapping(value="/adminmedications",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Set<MedicationPharmacyDTO>> getMedicationsAdmin() {
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<Medication> medications = this.medicationService.getMedicationByPharmacy(user.getPharmacy());
+
+        Set<MedicationPharmacyDTO> medicationPharmacyDTOS = new HashSet<>();
+        for(Medication medication : medications) {
+            PharmacyMedication pharmacyMedication = pharmacyMedicationService.findByPharmacyAndMedication(user.getPharmacy(), medication);
+            MedicationPharmacyDTO mp = new MedicationPharmacyDTO(medication.getCode(), medication.getName(), medication.getProducer(),
+                    pharmacyMedication.getQuantity(), pharmacyMedication.getPrice());
+
+            medicationPharmacyDTOS.add(mp);
+        }
+
+        return new ResponseEntity<>(medicationPharmacyDTOS, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/adminMedicationSearch", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Set<MedicationPharmacyDTO>> searchMedicationAdmin(@RequestBody MedicationPharmacyDTO medicationPharmacyDTO) {
+
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<Medication> medications = medicationService.getMedicationByNameAndPharmacy(user.getPharmacy(), medicationPharmacyDTO.getName());
+
+        Set<MedicationPharmacyDTO> medicationPharmacyDTOS = new HashSet<>();
+        for(Medication medication : medications) {
+            PharmacyMedication pharmacyMedication = pharmacyMedicationService.findByPharmacyAndMedication(user.getPharmacy(), medication);
+            MedicationPharmacyDTO mp = new MedicationPharmacyDTO(medication.getCode(), medication.getName(), medication.getProducer(),
+                    pharmacyMedication.getQuantity(), pharmacyMedication.getPrice());
+
+            medicationPharmacyDTOS.add(mp);
+        }
+        return new ResponseEntity<>(medicationPharmacyDTOS, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/adminmedicationsNot",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Set<Medication>> getNotMedicationsAdmin() {
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<Medication> medicationsNot = medicationService.getMedicationNotInPharmacy(user.getPharmacy());
+
+        return new ResponseEntity<>(medicationsNot, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/addMedicineToPharmacy", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<PharmacyMedication> addMedicineToPharmacy(@RequestBody MedicationPharmacyDTO medicationPharmacyDTO) {
+
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Medication medication1 = medicationService.findByName(medicationPharmacyDTO.getName());
+        PharmacyMedication pharmacyMedication = new PharmacyMedication(user.getPharmacy(), medication1, 0,
+                medicationPharmacyDTO.getPrice(), medicationPharmacyDTO.getBeginPriceValidity(), medicationPharmacyDTO.getEndPriceValidity());
+        pharmacyMedication = medicationService.addMedicationToPharmacy(pharmacyMedication);
+
+        return new ResponseEntity<>(pharmacyMedication, HttpStatus.OK);
+    }
 
 }
