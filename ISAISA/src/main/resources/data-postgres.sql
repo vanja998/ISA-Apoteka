@@ -55,7 +55,7 @@ insert into "supplier_medication"(supplier_id,medication_id) values(3,3);
 insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),null, 6 ,1,'2007-12-03 10:15:30','2007-12-03 10:16:30',5000);
 --insert into "appointment"(id,patient_id,dermatologist_id,pharmacy_appointment_id, beginofappointment, endofappointment, price) values (nextval('seq_appointment'), 2,6,1,'2021-02-10 00:00:00','2021-02-10 23:00:00', 300);
 insert into "appointment" (id, patient_id, dermatologist_id, pharmacy_appointment_id, beginofappointment, endofappointment, price) values (nextval('seq_appointment'), null, 6, 1, '2021-02-20 16:20', '2021-02-20 16:40', 20);
-insert into "appointment"(id,patient_id,dermatologist_id,pharmacy_appointment_id, beginofappointment, endofappointment, price) values (nextval('seq_appointment'), 1,6,1,'2021-02-10 00:00:00','2021-02-10 23:59:00', 300);
+insert into "appointment"(id,patient_id,dermatologist_id,pharmacy_appointment_id, beginofappointment, endofappointment, price) values (nextval('seq_appointment'), 1,6,1,'2021-02-11 00:00:00','2021-02-11 23:59:00', 300);
 insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),1, 6,1,'2021-06-02 10:15:30','2021-06-02 10:16:30',5000);
 insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),1, 6,1,'2021-12-03 10:15:30','2021-12-03 10:16:30',5000);
 insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),2, 6,1,'2021-02-08 10:15:30','2021-02-08 12:16:30',5000);
@@ -64,7 +64,7 @@ insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_i
 insert into "appointment" (id,patient_id,dermatologist_id,pharmacy_appointment_id,beginofappointment,endofappointment,price) values (nextval('seq_appointment'),1, 11,1,'2021-01-07 10:15:30','2021-01-07 11:16:30',5000);
 
 insert into "counseling"(id,patient_id,pharmacist_id, beginofappointment, endofappointment, price) values (nextval('seq_counseling'), 2,5, '2021-09-02 00:00:00','2021-09-02 23:59:00', 3000);
-insert into "counseling"(id,patient_id,pharmacist_id, beginofappointment, endofappointment, price) values (nextval('seq_counseling'), 1,5, '2021-02-10 00:00:00','2021-02-10 23:59:00', 3000);
+insert into "counseling"(id,patient_id,pharmacist_id, beginofappointment, endofappointment, price) values (nextval('seq_counseling'), 1,5, '2021-02-11 00:00:00','2021-02-11 23:59:00', 3000);
 insert into "counseling"(id,patient_id,pharmacist_id, beginofappointment, endofappointment, price) values (nextval('seq_counseling'), 1,5, '2021-02-13 00:00:00','2021-02-08 23:59:00', 3000);
 insert into "counseling"(id,patient_id,pharmacist_id, beginofappointment, endofappointment, price) values (nextval('seq_counseling'), 1,5, '2021-02-27 00:00:00','2021-02-08 23:59:00', 3000);
 insert into "counseling"(id,patient_id,pharmacist_id, beginofappointment, endofappointment, price) values (nextval('seq_counseling'), 1,5, '2021-11-27 00:00:00','2021-11-27 23:59:00', 3000);
@@ -82,7 +82,7 @@ insert into "dermatologist_pharmacyy" (id,beginofwork,endofwork,dermatologist_id
 
 
 insert into "examination"(id,report,therapyduration, examinationAppointment_id, prescriptedmedication_id,newappointment_id) values (nextval('seq_examination'), 'Pacijenta boli glava', 4, 5,2, null);
-insert into "examination"(id,report,therapyduration, examinationAppointment_id, prescriptedmedication_id,newappointment_id) values (nextval('seq_examination'), 'Pacijenta boli glava', 2, 2,2, null);
+--insert into "examination"(id,report,therapyduration, examinationAppointment_id, prescriptedmedication_id,newappointment_id) values (nextval('seq_examination'), 'Pacijenta boli glava', 2, 2,2, null);
 insert into "examination"(id,report,therapyduration, examinationCounseling_id, prescriptedmedication_id,newcounseling_id) values (nextval('seq_examination'), 'Pacijenta boli glava', 1, 1,3, null);
 insert into "examination"(id,report,therapyduration, examinationCounseling_id, prescriptedmedication_id,newcounseling_id) values (nextval('seq_examination'), 'Pacijenta boli glava', 2, 2,2, null);
 

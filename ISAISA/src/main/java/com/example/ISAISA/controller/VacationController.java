@@ -1,8 +1,6 @@
 package com.example.ISAISA.controller;
 
-import com.example.ISAISA.DTO.DermatologistDTO;
-import com.example.ISAISA.DTO.IdDto;
-import com.example.ISAISA.DTO.VacationDenyDTO;
+import com.example.ISAISA.DTO.*;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.service.VacationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +8,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -88,5 +88,33 @@ public class VacationController {
         vacation = this.vacationService.denyVacationDermatologist(vacation, reasonDenied);
         return new ResponseEntity<>(vacation, HttpStatus.OK);
     }
+
+
+    @PostMapping(value="/requestVacationDermatologist", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    @Transactional
+    public ResponseEntity<BooleanDto> RequestVacationDermatologist(@RequestBody VacationDTO vacationDTO) {
+        Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Boolean requestVacation = vacationService.requestVacationDermatologist(user, vacationDTO.getBeginVacation(), vacationDTO.getEndVacation(), vacationDTO.getAbsence());
+
+        BooleanDto booleanDto = new BooleanDto(requestVacation);
+        return new ResponseEntity(booleanDto, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/requestVacationPharmacist", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    @Transactional
+    public ResponseEntity<BooleanDto> requestVacationPharmacist(@RequestBody VacationDTO vacationDTO) {
+        Pharmacist user = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Boolean requestVacation = vacationService.requestVacationPharmacist(user, vacationDTO.getBeginVacation(), vacationDTO.getEndVacation(), vacationDTO.getAbsence());
+
+        BooleanDto booleanDto = new BooleanDto(requestVacation);
+        return new ResponseEntity(booleanDto, HttpStatus.OK);
+    }
+
+
+
 
 }
