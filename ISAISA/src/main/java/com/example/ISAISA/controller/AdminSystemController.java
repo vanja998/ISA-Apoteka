@@ -166,6 +166,7 @@ public class AdminSystemController {
         return new ResponseEntity<Complaint>(complaint, HttpStatus.CREATED);
     }
 
+
     @PostMapping(value="/signupPharmacy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINSYSTEM')")
     public ResponseEntity<Pharmacy> addPharmacy(@RequestBody PharmacyRegDTO pharmacyDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {

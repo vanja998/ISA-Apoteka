@@ -45,6 +45,19 @@ public class PatientService {
         return user;
     }
 
+    public Patient deletePromotion(Patient patient, Pharmacy pharmacy){
+        Set<Pharmacy> pharmacies= patient.getPharmacies_promotions();
+        Set<Pharmacy> pharmacies1= new HashSet<Pharmacy>();
+        for(Pharmacy pharmacy1: pharmacies){
+            if (pharmacy1.getId()!=pharmacy.getId()){
+                pharmacies1.add(pharmacy1);
+            }
+        }
+        patient.setPharmacies_promotions(pharmacies1);
+        Patient patient1=patientRepository.save(patient);
+        return patient1;
+    }
+
     public Patient addPromotion(Patient patient,Pharmacy pharmacy){
         Set<Pharmacy> pharmacies=patient.getPharmacies_promotions();
         pharmacies.add(pharmacy);

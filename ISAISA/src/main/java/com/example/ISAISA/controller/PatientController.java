@@ -104,6 +104,18 @@ public class PatientController {
         return ResponseEntity.accepted().body(result);
     }
 
+    @GetMapping(value="/allpharmaciespromotion",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Set<Pharmacy>> getAllPharmaciesPromotion() {
+
+        Patient user = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        Set<Pharmacy> pharmacies = user.getPharmacies_promotions();
+
+
+        return new ResponseEntity<Set<Pharmacy>>(pharmacies, HttpStatus.OK);
+    }
+
     @GetMapping(value="/allSearchPatientsDerma",produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('DERMATOLOGIST')")
     public ResponseEntity<List<PatientSearchDto>> getAllSearchPatientsDoctor() {
@@ -193,6 +205,19 @@ public class PatientController {
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(complaint.getId()).toUri());
         return new ResponseEntity<Complaint>(complaint, HttpStatus.CREATED);
+    }
+
+    @PostMapping("/unsubscribe")
+    public ResponseEntity<Patient> unsubscribePromotion(@RequestBody IdDto idDto, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
+        Patient user1 = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Pharmacy pharmacy=pharmacyRepository.findOneById(idDto.getId());
+
+        Patient user=patientService.deletePromotion(user1,pharmacy);
+
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
+        return new ResponseEntity<Patient>(user, HttpStatus.CREATED);
     }
 
     @PostMapping("/complaintDermatologist")
