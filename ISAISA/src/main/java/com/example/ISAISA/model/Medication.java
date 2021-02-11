@@ -32,10 +32,10 @@ public class Medication {
     @Column(nullable = false)
     private String producer;
 
-    @Column(nullable = false)
+    @Column
     private Boolean prescription;
 
-    @Column(nullable = false)
+    @Column
     private String notes;
 
     @Column
