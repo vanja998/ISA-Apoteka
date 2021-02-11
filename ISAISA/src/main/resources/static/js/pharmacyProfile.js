@@ -83,7 +83,6 @@ $(document).on('click', '#patientAllPharmacists', function () {
                 row += "<td>" + data[i]['lastName'] + "</td>";
                 row += "<td>" + data[i]['rating'] + "</td>";
                 row += "<td>" + data[i]['pharmacy']['name'] + "</td>";
-                row += "<td>" + data[i]['pharmacy']['address'] + "</td>";
 
                 var btnMakeAppointment = "<button class='btnMakeAppointment' id = " + data[i]['id'] + "> Zakazi savetovanje </button>";
                 row += "<td>" + btnMakeAppointment + "</td>";
@@ -113,3 +112,210 @@ $(document).on('click', '.btnMakeAppointment', function (){
 
 //************************Dermatolozi
 
+$(document).on('click', '#patientAllDermatologists', function () {
+    var id1 = JSON.stringify({"id" : id});
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/dermatologists/dermatologistsByPharmacy",
+        dataType: "json",
+        contentType: "application/json",
+        data: id1,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log("SUCCESS", data);
+            for (i = 0; i < data.length; i++) {
+                var row = "<tr>";
+                var list = "<ul";
+                row += "<td>" + data[i]['firstName'] + "</td>";
+                row += "<td>" + data[i]['lastName'] + "</td>";
+                row += "<td>" + data[i]['rating'] + "</td>";
+
+                for (var j = 0; j < data[i]['pharmacies'].length; j++) {
+                    console.log(data[i]['pharmacies'][j]['name']);
+                    list += "<li>" + data[i]['pharmacies'][j]['name'] + "</li>";
+                }
+                row += "<td>" + list+ "</td>";
+
+                var btnRemove = "<button class='btnRemove' id = " + data[i]['id'] + "> Zakazi pregled </button>";
+                row += "<td>" + btnRemove + "</td>";
+
+                $('#tableDermatologistsAdminPharmacy').append(row);
+            }
+        },
+        error: function (jqXHR) {
+            if(jqXHR.status === 403)
+            {
+                window.location.href="error.html";
+            }
+            if(jqXHR.status === 401)
+            {
+                window.location.href="error.html";
+            }
+        }
+    });
+});
+
+
+//***********************Lekovi
+
+$(document).on('click', '#patientAllMedicine', function () {
+    var id1 = JSON.stringify({"id" : id});
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/medications/allMedicationsByPharmacy",
+        dataType: "json",
+        contentType: "application/json",
+        data: id1,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log("SUCCESS", data);
+            for (i = 0; i < data.length; i++) {
+                var row = "<tr>";
+                row += "<td>" + data[i]['code'] + "</td>";
+                row += "<td>" + data[i]['name'] + "</td>";
+                row += "<td>" + data[i]['producer'] + "</td>";
+                row += "<td>" + data[i]['price'] + "</td>";
+
+                var btnReserve = "<button class='btnReserve' id = " + data[i]['name'] + "> Rezervisi lek </button>";
+                row += "<td>" + btnReserve + "</td>";
+
+                $('#tableMedicineAdminPharmacy').append(row);
+            }
+        },
+        error: function (jqXHR) {
+            if(jqXHR.status === 403)
+            {
+                window.location.href="error.html";
+            }
+            if(jqXHR.status === 401)
+            {
+                window.location.href="error.html";
+            }
+        }
+    });
+});
+
+//Rezervacija
+$(document).on('click', '.btnReserve', function () {
+    var nameMed = this.id;
+
+    $(document).on('click', '#btnMedicineReservation', function () {
+        var dateReservation = $("#dateReservation").val();
+        var myJSON = JSON.stringify({"id": id, "name":nameMed, "dateofreservation" : dateReservation});
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/reservations/createReservation",
+            dataType: "json",
+            contentType: "application/json",
+            data: myJSON,
+            beforeSend: function (xhr) {
+                if (localStorage.token) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+                }
+            },
+            success: function (data) {
+                console.log("Lek uspesno rezervisan", data);
+            },
+            error: function (jqXHR) {
+                if(jqXHR.status === 403)
+                {
+                    window.location.href="error.html";
+                }
+                if(jqXHR.status === 401)
+                {
+                    window.location.href="error.html";
+                }
+            }
+        });
+    })
+
+});
+
+
+
+//***********************Slobodni termini
+$(document).on('click', '#patientAllAvailableAppointments', function () {
+    var id1 = JSON.stringify({"id" : id});
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/appointments/availableAppointmentsByPharmacy",
+        dataType: "json",
+        contentType: "application/json",
+        data: id1,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log("SUCCESS", data);
+            for (i = 0; i < data.length; i++) {
+                var row = "<tr>";
+                row += "<td>" + data[i]['dermatologist']['firstName'] + "</td>";
+                row += "<td>" + data[i]['dermatologist']['lastName'] + "</td>";
+                row += "<td>" + data[i]['beginofappointment'] + "</td>";
+                row += "<td>" + data[i]['endofappointment'] + "</td>";
+                row += "<td>" + data[i]['price'] + "</td>";
+
+                var btnMake = "<button class='btnMake' id = " + data[i]['id'] + ">Zakazi</button>";
+                row += "<td>" + btnMake + "</td>";
+
+                $('#tableAppointmentsAdminPharmacy').append(row);
+            }
+        },
+        error: function (jqXHR) {
+            if(jqXHR.status === 403)
+            {
+                window.location.href="error.html";
+            }
+            if(jqXHR.status === 401)
+            {
+                window.location.href="error.html";
+            }
+        }
+    });
+});
+
+$(document).on('click', '.btnMake', function (){
+    var idApp = this.id;
+
+    var id1 = JSON.stringify({"id":idApp});
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/appointments/reserveappointment",
+        dataType: "json",
+        contentType: "application/json",
+        data: id1,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log("SUCCESS", data);
+        },
+        error: function (jqXHR) {
+            if(jqXHR.status === 403)
+            {
+                window.location.href="error.html";
+            }
+            if(jqXHR.status === 401)
+            {
+                window.location.href="error.html";
+            }
+        }
+    });
+});

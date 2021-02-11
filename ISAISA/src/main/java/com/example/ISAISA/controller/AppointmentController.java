@@ -2,6 +2,7 @@ package com.example.ISAISA.controller;
 
 import com.example.ISAISA.DTO.*;
 import com.example.ISAISA.model.*;
+import com.example.ISAISA.repository.PharmacyRepository;
 import com.example.ISAISA.service.AppointmentService;
 import com.example.ISAISA.service.DermatologistService;
 
@@ -35,6 +36,7 @@ public class AppointmentController {
 
     private AppointmentService appointmentService;
     private DermatologistService dermatologistService;
+    private PharmacyRepository pharmacyRepository;
 
     @Autowired
     private EmailSenderService emailSenderService;
@@ -47,6 +49,11 @@ public class AppointmentController {
     @Autowired
     public void setDermatologistService(DermatologistService dermatologistService) {
         this.dermatologistService = dermatologistService;
+    }
+
+    @Autowired
+    public void setPharmacyRepository(PharmacyRepository pharmacyRepository) {
+        this.pharmacyRepository = pharmacyRepository;
     }
 
     @PostMapping(value="/checkIfAppointmentExists", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -291,7 +298,15 @@ public class AppointmentController {
         return new ResponseEntity<>(appointment, HttpStatus.OK);
     }
 
+    @PostMapping(value="/availableAppointmentsByPharmacy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Set<Appointment>> getAvailableAppointments(@RequestBody IdDto idDto){
 
+        Pharmacy pharmacy = pharmacyRepository.findOneById(idDto.getId());
+        Set<Appointment> appointments = this.appointmentService.getAvailableAppointmentsByPharmacy(pharmacy);
+
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
+    }
 
 
 }

@@ -166,4 +166,13 @@ public class PharmacyController {
         return new ResponseEntity<>(user.getPharmacy(), HttpStatus.OK);
     }
 
+    @PostMapping(value="/changePharmacy")
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Pharmacy> changePharmacy(@RequestBody Pharmacy pharmacy) {
+
+        Pharmacy changedPharmacy = pharmacyService.changePharmacy(pharmacy);
+
+        return new ResponseEntity<>(changedPharmacy, HttpStatus.OK);
+    }
+
 }

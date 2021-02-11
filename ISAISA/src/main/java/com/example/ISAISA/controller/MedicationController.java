@@ -5,6 +5,7 @@ import com.example.ISAISA.model.*;
 import com.example.ISAISA.service.EmployeeService;
 import com.example.ISAISA.service.MedicationService;
 import com.example.ISAISA.service.PharmacyMedicationService;
+import com.example.ISAISA.service.PharmacyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Id;
 import java.util.*;
 
 @RestController
@@ -22,6 +24,7 @@ public class MedicationController {
 
     private MedicationService medicationService;
     private PharmacyMedicationService pharmacyMedicationService;
+    private PharmacyService pharmacyService;
 
     @Autowired
     public void setMedicationService(MedicationService medicationService) {
@@ -31,6 +34,11 @@ public class MedicationController {
     @Autowired
     public void setPharmacyMedicationService(PharmacyMedicationService pharmacyMedicationService) {
         this.pharmacyMedicationService = pharmacyMedicationService;
+    }
+
+    @Autowired
+    public void setPharmacyService(PharmacyService pharmacyService) {
+        this.pharmacyService = pharmacyService;
     }
 
     @GetMapping(value="/allmedications",produces = MediaType.APPLICATION_JSON_VALUE)                                           // value nije naveden, jer koristimo bazni url
@@ -133,5 +141,25 @@ public class MedicationController {
 
         return new ResponseEntity<>(pharmacyMedication, HttpStatus.OK);
     }
+
+    @PostMapping(value="/allMedicationsByPharmacy",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Set<MedicationPharmacyDTO>> getMedicationsByPharmacy(@RequestBody IdDto idDto) {
+
+        Pharmacy pharmacy = pharmacyService.findById(idDto.getId());
+        Set<Medication> medications = this.medicationService.getMedicationByPharmacy(pharmacy);
+
+        Set<MedicationPharmacyDTO> medicationPharmacyDTOS = new HashSet<>();
+        for(Medication medication : medications) {
+            PharmacyMedication pharmacyMedication = pharmacyMedicationService.findByPharmacyAndMedication(pharmacy, medication);
+            MedicationPharmacyDTO mp = new MedicationPharmacyDTO(medication.getId(), medication.getCode(), medication.getName(), medication.getProducer(),
+                    pharmacyMedication.getQuantity(), pharmacyMedication.getPrice());
+
+            medicationPharmacyDTOS.add(mp);
+        }
+
+        return new ResponseEntity<>(medicationPharmacyDTOS, HttpStatus.OK);
+    }
+
 
 }

@@ -5,6 +5,8 @@ import com.example.ISAISA.DTO.PharmacyRegDTO;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.PharmacyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
@@ -70,7 +72,18 @@ public class PharmacyService {
         return pharmaciesDTOS;
     }
 
+    public Pharmacy changePharmacy(Pharmacy pharmacy) {
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Pharmacy pharmacyToChange = user.getPharmacy();
 
+        pharmacyToChange.setName(pharmacy.getName());
+        pharmacyToChange.setAddress(pharmacy.getAddress());
+        pharmacyToChange.setDescription(pharmacy.getDescription());
+
+        pharmacyToChange = pharmacyRepository.save(pharmacyToChange);
+
+        return pharmacyToChange;
+    }
 
 
 

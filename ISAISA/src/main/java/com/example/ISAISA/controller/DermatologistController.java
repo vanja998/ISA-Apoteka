@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -228,6 +229,30 @@ public class DermatologistController {
 
             DermatologistDTO dermatologistDTO1 = new DermatologistDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getRating(), pharmacies);
             dermatologistDTOS.add(dermatologistDTO1);
+        }
+
+        return new ResponseEntity<>(dermatologistDTOS, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/dermatologistsByPharmacy", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Set<DermatologistDTO>> getDermatologistsByPharmacy(@RequestBody IdDto idDto) {
+
+        Pharmacy pharmacy = pharmacyService.findById(idDto.getId());
+
+        Set<Dermatologist> dermatologists = dermatologistService.getByPharmacy(pharmacy);
+
+        Set<DermatologistDTO> dermatologistDTOS = new HashSet<>();
+
+        for (Dermatologist d : dermatologists) {
+            Set<Pharmacy> pharmacies = new HashSet<>();
+            Set<Dermatologist_Pharmacyy> dermatologist_pharmacyys = d.getDermatologist_pharmacies();
+            for (Dermatologist_Pharmacyy dp : dermatologist_pharmacyys) {
+                pharmacies.add(dp.getPharmacy());
+            }
+
+            DermatologistDTO dermatologistDTO = new DermatologistDTO(d.getId(), d.getFirstName(), d.getLastName(), d.getRating(), pharmacies);
+            dermatologistDTOS.add(dermatologistDTO);
         }
 
         return new ResponseEntity<>(dermatologistDTOS, HttpStatus.OK);

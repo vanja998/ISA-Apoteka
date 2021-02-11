@@ -5,12 +5,14 @@ $(document).ready(function () {
     var acceptOffer = $(".acceptOffer");
     var deleteOrder = $(".deleteOrder");
     var changeOrder = $(".changeOrder");
+    var filterShow = $(".filterShow");
 
     ordersShow.show();
     offersShow.hide();
     acceptOffer.hide();
     deleteOrder.hide();
     changeOrder.hide();
+    filterShow.show();
 
     $.ajax({
         type: "GET",
@@ -59,12 +61,14 @@ $(document).on('click', '.btnOffers', function () {
     var acceptOffer = $(".acceptOffer");
     var deleteOrder = $(".deleteOrder");
     var changeOrder = $(".changeOrder");
+    var filterShow = $(".filterShow");
 
     ordersShow.hide();
     offersShow.show();
     acceptOffer.hide();
     deleteOrder.hide();
     changeOrder.hide();
+    filterShow.hide();
 
     var id = this.id;
 
@@ -117,6 +121,8 @@ $(document).on('click', '.btnAcceptOffer', function () {
     var acceptOffer = $(".acceptOffer");
     acceptOffer.show();
 
+    var filterShow = $(".filterShow");
+    filterShow.hide();
 
     var id = this.id;
 
@@ -163,9 +169,11 @@ $(document).on('click', '.btnAcceptOffer', function () {
 $(document).on('click', '.btnReturnOffer', function () {
     var offersShow = $(".offersShow");
     var acceptOffer = $(".acceptOffer");
+    var filterShow = $(".filterShow");
 
     offersShow.show();
     acceptOffer.hide();
+    filterShow.hide();
 });
 
 $(document).on('click', '.btnDeleteOrder', function () {
@@ -175,6 +183,9 @@ $(document).on('click', '.btnDeleteOrder', function () {
 
     var deleteOrder = $(".deleteOrder");
     deleteOrder.show();
+
+    var filterShow = $(".filterShow");
+    filterShow.hide();
 
     var id = this.id;
     id = JSON.stringify({"id" : id});
@@ -230,13 +241,15 @@ $(document).on('click', '.btnChangeOrder', function () {
     var successDeleteOrder = $(".successDeleteOrder");
     var submitOrder = $(".submitOrder");
     var errorOrder = $(".errorOrder");
+    var filterShow = $(".filterShow");
 
     ordersShow.hide();
     changeOrder.show();
     errorDeleteOrder.hide();
     successDeleteOrder.hide();
-    submitOrder.hide()
+    submitOrder.hide();
     errorOrder.hide();
+    filterShow.hide();
 
     $.ajax({
         type: "GET",
@@ -421,4 +434,43 @@ function formToJSON(ids, vals, dateDeadline, id) {
 
 $(document).on('click', '.btnReturnOrder', function () {
     window.location.href="adminPharmacyChooseOffer.html";
+});
+
+$('.statusOrderr').change(function() {
+    var status = $(this).find("option:selected");
+    status = JSON.stringify({"Status":status});
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/orders/orderByStatus",
+        dataType: "json",
+        contentType: "application/json",
+        data: status,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+
+            console.log("SUCCESS", data);
+            for (i = 0; i < data.length; i++) {
+                var row = "<tr>";
+                row += "<td>" + data[i]['id'] + "</td>";
+                row += "<td>" + data[i]['dateDeadline'] + "</td>";
+
+                $('#tableOrdersShow').append(row);
+            }
+        },
+        error: function (jqXHR) {
+            if(jqXHR.status === 403) {
+                window.location.href="error.html";
+            }
+            if(jqXHR.status === 401) {
+                window.location.href="error.html";
+            }
+        }
+    });
+
+
 });

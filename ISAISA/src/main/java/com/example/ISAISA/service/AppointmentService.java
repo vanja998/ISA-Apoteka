@@ -101,6 +101,7 @@ public class AppointmentService {
         return false;
     }
 
+
     public Integer penalPatient(Integer appointmentId) {
 
         Appointment appointment = appointmentRepository.getOne(appointmentId);
@@ -133,6 +134,7 @@ public class AppointmentService {
             }
         }
 
+
         //Ako dermatolog ne radi tada
         if (appointment.getBeginofappointment().toLocalTime().isBefore(dermatologistBeginOfWork)
                 || appointment.getEndofappointment().toLocalTime().isAfter(dermatologistEndOfWork)) {
@@ -152,6 +154,19 @@ public class AppointmentService {
         appointmentRepository.save(appointment);
 
         return appointment;
+    }
+
+    public Set<Appointment> getAvailableAppointmentsByPharmacy(Pharmacy pharmacy) {
+        Set<Appointment> availableAppointments = appointmentRepository.findAllByPatientNull();
+        Set<Appointment> appointmentsByPharmacy = new HashSet<>();
+
+        for(Appointment a: availableAppointments) {
+            if(a.getPharmacy_appointment() == pharmacy) {
+                appointmentsByPharmacy.add(a);
+            }
+        }
+
+        return appointmentsByPharmacy;
     }
 
     public List<Appointment> findFreeAppointmentsForDermatologist(Dermatologist dermatologist, Integer examinationId) {

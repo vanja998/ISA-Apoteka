@@ -15,7 +15,7 @@ public class PharmacyMedication {
     private Integer id;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Pharmacy pharmacy;
 
     @JsonIgnore

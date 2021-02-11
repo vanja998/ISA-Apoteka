@@ -91,11 +91,7 @@ public class OrderService {
 
         for (AdminPharmacy ap : adminPharmacies) {
             Set<Orderr> orderrs1 = orderRepository.findByAdminPharmacy(ap);
-            for (Orderr orderr : orderrs1) {
-                if (orderr.getStatusAdmin().equals("ceka_na_ponude")) {
-                    orderrs.add(orderr);
-                }
-            }
+            orderrs.addAll(orderrs1);
         }
 
         return orderrs;
@@ -131,7 +127,22 @@ public class OrderService {
         }
         else
             throw new Exception("Nije moguce izmeniti narudzbenicu nakon sto je primljena ponuda!");
+    }
 
+    public Set<Orderr> getOrdersByPharmacyAndStatus(AdminPharmacy adminPharmacy, String status) {
+        Pharmacy pharmacy = adminPharmacy.getPharmacy();
+        Set<AdminPharmacy> adminPharmacies = adminPharmacyRepository.findAllByPharmacy(pharmacy);
 
+        Set<Orderr> orderrs = new HashSet<>();
+
+        for (AdminPharmacy ap : adminPharmacies) {
+            Set<Orderr> orderrs1 = orderRepository.findByAdminPharmacy(ap);
+            for (Orderr orderr : orderrs1) {
+                if (orderr.getStatusAdmin().equals(status))
+                    orderrs.add(orderr);
+            }
+        }
+
+        return orderrs;
     }
 }
