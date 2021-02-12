@@ -75,7 +75,7 @@ public class ReservationController {
 
         return new ResponseEntity<>(reservation1, HttpStatus.OK);
     }
-
+    
     @GetMapping(value="/reservedMedications",produces = MediaType.APPLICATION_JSON_VALUE)// value nije naveden, jer koristimo bazni url
     @PreAuthorize("hasRole('PATIENT')")
     public ResponseEntity<List<Reservation>> getReservations() {
