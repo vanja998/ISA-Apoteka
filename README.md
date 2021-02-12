@@ -2,7 +2,7 @@
 Projekat radjen u Intellij-u, pokretanje aplikacije u Intellij-u regularno (run), u browseru "http://localhost:8081/".
 Kao baza koriscen Postgres, u pgAdminu koristi se baza sa nazivom "baza1".
 Skripta za popunu baze testnim podacima nalazi se u data-postgres.sql fajlu.
-Odredjene sve funkcionalnosti za 6.
+Odradjene sve funkcionalnosti za 6.
 Napomene:
 -funkcionalnostima za slanje mejla treba malo vremena
 -broj telefona treba da bude cifra tokom registracije korisnika
