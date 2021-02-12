@@ -390,7 +390,7 @@ $(document).on('change', '#idAlternativeDropDown', function () {
             alternativeMedication.hide();
             var examination = $(".examination");
             examination.show();
-            alert('Lek je prepisan');l
+            alert('Lek je prepisan');
         },
         error: function (data) {
             console.log('Error', data);
