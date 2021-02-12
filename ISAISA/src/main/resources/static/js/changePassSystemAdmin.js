@@ -23,8 +23,7 @@ $(document).on('click', '#btnSavePasswordAdmin', function () {
             },
             success: function (data) {
                 console.log("SUCCESS: ", data);
-                var changePasswordAdminPharmacy = $(".changePasswordAdmin")
-                changePasswordAdminPharmacy.hide();
+
                 var changePasswordAdminPharmacy = $(".changePasswordAdmin")
                 changePasswordAdminPharmacy.hide();
                 var passwordChangeSuccess = $(".passwordChangeSuccess")
@@ -43,9 +42,7 @@ $(document).on('click', '#btnSavePasswordAdmin', function () {
         });
     }
     else {
-        var changePasswordAdminPharmacy = $(".changePasswordSupplier")
-        changePasswordAdminPharmacy.hide();
-        var changePasswordAdminPharmacy = $(".changePasswordSupplier")
+        var changePasswordAdminPharmacy = $(".changePasswordAdmin")
         changePasswordAdminPharmacy.hide();
         var passwordChangeError = $(".passwordChangeError")
         passwordChangeError.show();

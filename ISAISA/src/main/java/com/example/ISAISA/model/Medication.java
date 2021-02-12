@@ -32,11 +32,20 @@ public class Medication {
     @Column(nullable = false)
     private String producer;
 
-    @Column(nullable = false)
+    @Column
     private Boolean prescription;
 
-    @Column(nullable = false)
+    @Column
     private String notes;
+
+    @Column
+    private String contraindication;
+
+    @Column
+    private Integer recommended_daily_intake;
+
+    @Column
+    private Float rating;
 
     @JsonIgnore
     @OneToMany(mappedBy = "medication", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -100,6 +109,27 @@ public class Medication {
         this.producer = producer;
         this.prescription = prescription;
         this.notes = notes;
+    }
+
+    public Medication( String code, String name, String type_med, String shape_med, String ingredients, String producer, String contraindication, Integer recommended_daily_intake) {
+
+        this.code = code;
+        this.name = name;
+        this.type_med = type_med;
+        this.shape_med = shape_med;
+        this.ingredients = ingredients;
+        this.producer = producer;
+        this.contraindication = contraindication;
+        this.recommended_daily_intake = recommended_daily_intake;
+
+    }
+
+    public Float getRating() {
+        return rating;
+    }
+
+    public void setRating(Float rating) {
+        this.rating = rating;
     }
 
     public Integer getId() {
@@ -212,5 +242,21 @@ public class Medication {
 
     public void setPharmacy_medications(Set<PharmacyMedication> pharmacy_medications) {
         this.pharmacy_medications = pharmacy_medications;
+    }
+
+    public String getContraindication() {
+        return contraindication;
+    }
+
+    public void setContraindication(String contraindication) {
+        this.contraindication = contraindication;
+    }
+
+    public Integer getRecommended_daily_intake() {
+        return recommended_daily_intake;
+    }
+
+    public void setRecommended_daily_intake(Integer recommended_daily_intake) {
+        this.recommended_daily_intake = recommended_daily_intake;
     }
 }

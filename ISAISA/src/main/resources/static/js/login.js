@@ -16,7 +16,12 @@ $(document).ready(function () {
 	        contentType: "application/json",
 	        data: myJSON,
 	        success: function (data) {
-				// data = ulogovani korisnik koji je vratila metoda iz kontrolera
+
+				if(data['enabled']===false){
+					alert("Nije aktiviran nalog")
+					window.location.href = "index.html";
+				}
+
 	            console.log(data);
 	
 	            alert(email + " je uspešno ulogovan");

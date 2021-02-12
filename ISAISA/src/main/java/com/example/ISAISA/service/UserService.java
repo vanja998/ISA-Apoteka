@@ -1,7 +1,9 @@
 package com.example.ISAISA.service;
 
 import com.example.ISAISA.DTO.AdminSystemRegDto;
+import com.example.ISAISA.DTO.MedicationRegDTO;
 import com.example.ISAISA.model.*;
+import com.example.ISAISA.repository.MedicationRepository;
 import com.example.ISAISA.repository.PharmacyRepository;
 import com.example.ISAISA.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +11,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
@@ -21,6 +27,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    @Autowired
+    private MedicationRepository medicationRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -58,6 +66,22 @@ public class UserService {
         return u;
     }
 
+    public  Medication saveMedication(MedicationRegDTO medicationRegDTO,Medication medicationAlt){
+        Medication medication= new Medication();
+        medication.setCode(medicationRegDTO.getCode());
+        medication.setContraindication(medicationRegDTO.getContraindication());
+        medication.setName(medicationRegDTO.getName());
+        medication.setIngredients(medicationRegDTO.getIngredients());
+        medication.setProducer(medicationRegDTO.getProducer());
+        medication.setShape_med(medicationRegDTO.getShape_med());
+        medication.setType_med(medicationRegDTO.getType_med());
+        Set <Medication> medications= new HashSet<Medication>();
+        medications.add(medicationAlt);
+        medication.setMedication(medications);
+
+        medication=this.medicationRepository.save(medication);
+        return medication;
+    }
 
     public User saveDermatologist(PatientDto userRequest) {
         Dermatologist u = new Dermatologist();

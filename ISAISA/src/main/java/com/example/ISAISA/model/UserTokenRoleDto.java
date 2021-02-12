@@ -4,15 +4,24 @@ public class UserTokenRoleDto {
 
     private String accessToken;
     private int expiresIn;
-
+    private Boolean enabled;
     private String role;
 
 
 
-    public UserTokenRoleDto(String accessToken, int expiresIn, String role) {
+    public UserTokenRoleDto(String accessToken, int expiresIn, String role, Boolean enabled) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
         this.role = role;
+        this.enabled=enabled;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public String getAccessToken() {

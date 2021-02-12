@@ -26,6 +26,8 @@ public class MedicationService {
     public List<Medication> findAll(){
         return medicationRepository.findAll();
     }
+
+
     public Set<Medication> findAllByName(String name){return medicationRepository.findAllByName(name);}
     public Medication findByName(String name){return medicationRepository.findByName(name);}
     public Medication findById(Integer id) {return medicationRepository.findOneById(id);}
@@ -39,5 +41,12 @@ public class MedicationService {
         }
 
         return medicationDTOS;
+    }
+
+    public Set<Medication> getMedicationsbyNamee(String name){
+        Set<Medication> medications=medicationRepository.findAllByName(name);
+
+
+        return medications;
     }
 }

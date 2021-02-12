@@ -1,9 +1,6 @@
 package com.example.ISAISA.controller;
 
-import com.example.ISAISA.DTO.AdminSystemRegDto;
-import com.example.ISAISA.DTO.ComplainttDTO;
-import com.example.ISAISA.DTO.PharmacyRegDTO;
-import com.example.ISAISA.DTO.ReplyDTO;
+import com.example.ISAISA.DTO.*;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.*;
 import com.example.ISAISA.security.TokenUtils;
@@ -38,6 +35,8 @@ public class AdminSystemController {
     @Autowired
     private ComplaintService complaintService;
 
+    @Autowired
+    private MedicationRepository medicationRepository;
 
     @Autowired
     private PharmacyService pharmacyService;
@@ -84,6 +83,23 @@ public class AdminSystemController {
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(user.getId()).toUri());
         return new ResponseEntity<User>(user, HttpStatus.CREATED);
+    }
+
+    @PostMapping(value="/registerMedication",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINSYSTEM')")
+    public ResponseEntity<Medication> registerMedication(@RequestBody MedicationRegDTO medicationRegDTO, UriComponentsBuilder ucBuilder) throws ResourceConflictException, Exception {
+
+        Medication existmedication = this.medicationRepository.findByCode(medicationRegDTO.getCode());
+        if (existmedication != null) {
+            throw new Exception("Lek je vec registrovan");
+        }
+
+        Medication medication1= this.medicationRepository.findByName(medicationRegDTO.getAlternative());
+
+        Medication medication=this.userService.saveMedication(medicationRegDTO,medication1);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(medication.getId()).toUri());
+        return new ResponseEntity<Medication>(medication, HttpStatus.CREATED);
     }
 
     @GetMapping(value="/allcomplaints",produces = MediaType.APPLICATION_JSON_VALUE)
@@ -149,6 +165,7 @@ public class AdminSystemController {
         headers.setLocation(ucBuilder.path("/api/user/{userId}").buildAndExpand(complaint.getId()).toUri());
         return new ResponseEntity<Complaint>(complaint, HttpStatus.CREATED);
     }
+
 
     @PostMapping(value="/signupPharmacy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINSYSTEM')")

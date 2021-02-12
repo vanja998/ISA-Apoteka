@@ -16,18 +16,19 @@ insert into "users" (rolee, id, email, password, firstName, lastName, address, p
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, pharmacy_id, rating) values ('pharmacist', nextval('seq_user'), 'dara', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Dara', 'Granic', 'Dunavska', '060111113', 'Novi Sad', 'Srbija', true, 1, 5.0);
 insert into "users" (rolee, id, email, password, firstName, lastName, address, phone, city, country, enabled, rating) values ('dermatologist', nextval('seq_user'), 'vladisavljevmarko@gmail.com', '$2y$10$1p9FJ4b6sWPs97ACLIeG8.5VRhK4.4roqBGVI6PQjmnOyKM2jCwou', 'Luka', 'Colak', 'Dunavska', '060111113', 'Zrenjanin', 'Srbija', true, 3.0);
 
-insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes) values( nextval('seq_medication'),'as1234','paracetamol','tableta','okrugla','otrovcina','hemofarm',true,'javi se lekaru u slucaju nuspojava');
-insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes) values( nextval('seq_medication'),'bb12','brufen','tableta','okrugla','otrov','hemofarm',true,'javi se lekaru u slucaju nuspojava');
-insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes) values( nextval('seq_medication'),'pp123','analgin','tableta','okrugla','otrovcic','hemofarm',true,'javi se lekaru u slucaju nuspojava');
-insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes) values( nextval('seq_medication'),'afeeff','andol','tableta','okrugla','otrovcina','hemofarm',true,'javi se lekaru u slucaju nuspojava');
-insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes) values( nextval('seq_medication'),'aefefef','fervex','prasak','zrnast','otrovcina','hemofarm',true,'javi se lekaru u slucaju nuspojava');
+insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes,rating) values( nextval('seq_medication'),'as1234','paracetamol','tableta','okrugla','otrovcina','hemofarm',true,'javi se lekaru u slucaju nuspojava',4);
+insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes,rating) values( nextval('seq_medication'),'bb12','brufen','tableta','okrugla','otrov','hemofarm',true,'javi se lekaru u slucaju nuspojava',4);
+insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes,rating) values( nextval('seq_medication'),'pp123','analgin','tableta','okrugla','otrovcic','hemofarm',true,'javi se lekaru u slucaju nuspojava',5);
+insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes,rating) values( nextval('seq_medication'),'afeeff','andol','tableta','okrugla','otrovcina','hemofarm',true,'javi se lekaru u slucaju nuspojava',4);
+insert into "medication" (id,code,name,type_med,shape_med,ingredients,producer,prescription,notes,rating) values( nextval('seq_medication'),'aefefef','fervex','prasak','zrnast','otrovcina','hemofarm',true,'javi se lekaru u slucaju nuspojava',3);
+
 
 insert into "medication_altmedication"(medication_id,altmedication_id) values(1,1);
 insert into "medication_altmedication"(medication_id,altmedication_id) values(2,3);
 insert into "medication_altmedication"(medication_id,altmedication_id) values(3,4);
 
 --insert into "med_pharmacies" (pharmacy_id,medication_id) values (1,1);
---insert into "med_pharmacies" (pharmacy_id,medication_id) values (1,2);
+--isnsert into "med_pharmacies" (pharmacy_id,medication_id) values (1,2);
 insert into "pharmacymedication" (id, pharmacy_id, medication_id, quantity, price, beginPriceValidity, endPriceValidity) values (nextval('seq_pharmacy_medication'), 1, 1, 10, 10, '2021-01-01', '2021-03-01');
 insert into "pharmacymedication" (id, pharmacy_id, medication_id, quantity, price, beginPriceValidity, endPriceValidity) values (nextval('seq_pharmacy_medication'), 1, 2, 5, 10, '2021-01-01', '2021-02-01');
 
@@ -39,14 +40,21 @@ insert into "complaint"(id,question,answered,patient_id,pharmacy_id,ishospital) 
 insert into "orderr"(id,dateDeadline,statusAdmin,admin_id) values(nextval('seq_orderr'),'2020-12-31','ceka_na_ponude',4);
 insert into "orderr"(id,dateDeadline,statusAdmin,admin_id) values(nextval('seq_orderr'),'2021-05-31','ceka_na_ponude',4);
 insert into "orderr"(id,dateDeadline,statusAdmin,admin_id) values(nextval('seq_orderr'),'2021-07-31','ceka_na_ponude',7);
+insert into "orderr"(id,dateDeadline,statusAdmin,admin_id) values(nextval('seq_orderr'),'2021-08-31','obradjena',7);
 
 insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,1,1);
 insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,2,1);
 insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,3,2);
 
+insert into "orderr_medication"(id,amount,medication_id,orderr_id) values (nextval('seq_order'),5,1,4);
+
 insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 5, '2022-02-01', 'ceka_na_odgovor', 1, 3);
 --insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 6, '2022-02-01', 'ceka_na_odgovor', 1, 3);
 --insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 5, '2022-02-01', 'ceka_na_odgovor', 1, 3);
+insert into "offer"(id, offerPrice, deliveryDate, statusSupplier, orderr_id, supplier_id) values (nextval('seq_offer'), 5, '2022-02-01', 'odobrena', 4, 3);
+
+
+
 
 insert into "supplier_medication"(supplier_id,medication_id) values(3,1);
 insert into "supplier_medication"(supplier_id,medication_id) values(3,2);
