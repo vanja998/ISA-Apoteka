@@ -63,6 +63,9 @@ $(document).on('click', '#patientAllPharmacists', function () {
     medicine.hide();
     availableAppointments.hide();
 
+    var counseling = $(".counseling");
+    counseling.hide();
+
     var id1 = JSON.stringify({"id" : id});
 
     $.ajax({
@@ -106,8 +109,48 @@ $(document).on('click', '#patientAllPharmacists', function () {
 });
 
 //Zakazivanje
+var idPh
 $(document).on('click', '.btnMakeAppointment', function (){
+    idPh = this.id;
 
+    var counseling = $(".counseling");
+    counseling.show();
+
+    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy");
+    pharmacistsShowAdminPharmacy.hide()
+
+});
+
+$(document).on('click', '.btnMakeAppointment', function () {
+    var beginCounseling = $("#beginCounseling").val();
+
+    var myJSON = JSON.stringify({"id" : idPh, "beginofappointment" : beginCounseling});
+
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/counselings/createCounseling",
+        dataType: "json",
+        contentType: "application/json",
+        data: myJSON,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            alert("Uspesno zakazano savetovanje!");
+        },
+        error: function (jqXHR) {
+            if(jqXHR.status === 403)
+            {
+                window.location.href="error.html";
+            }
+            if(jqXHR.status === 401)
+            {
+                window.location.href="error.html";
+            }
+        }
+    });
 
 });
 
@@ -247,7 +290,7 @@ $(document).on('click', '.btnReserve', function () {
                 }
             },
             success: function (data) {
-                console.log("Lek uspesno rezervisan", data);
+                alert("Lek uspesno rezervisan");
             },
             error: function (jqXHR) {
                 if(jqXHR.status === 403)
@@ -260,7 +303,7 @@ $(document).on('click', '.btnReserve', function () {
                 }
             }
         });
-    })
+    });
 
 });
 
