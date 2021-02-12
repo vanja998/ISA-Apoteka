@@ -5,6 +5,7 @@ import com.example.ISAISA.DTO.UserChangeDTO;
 import com.example.ISAISA.DTO.FilterEmployeesDTO;
 import com.example.ISAISA.DTO.PharmacistDTO;
 import com.example.ISAISA.model.AdminPharmacy;
+import com.example.ISAISA.model.Dermatologist;
 import com.example.ISAISA.model.Pharmacist;
 import com.example.ISAISA.model.Pharmacy;
 import com.example.ISAISA.service.PharmacistService;
@@ -42,6 +43,7 @@ public class PharmacistController {
         this.pharmacyService = pharmacyService;
     }
 
+
     @GetMapping(value="/pharmacist",produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PHARMACIST')")
     public ResponseEntity<Pharmacist> getPharmacist() {
@@ -56,6 +58,21 @@ public class PharmacistController {
         Pharmacist user = pharmacistService.changePharmacistInfo(userDTO);
 
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/changePasswordFirsttime", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PHARMACIST')")
+    public ResponseEntity<?> changePasswordFirsttime(@RequestBody AuthenticationController.PasswordChanger passwordChanger) {
+
+        Pharmacist user = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        pharmacistService.changeFlag(user);
+
+        userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
+
+        Map<String, String> result = new HashMap<String, String>();
+        result.put("result", "success");
+
+        return ResponseEntity.accepted().body(result);
     }
 
     @PostMapping(value = "/changePass", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
