@@ -61,7 +61,6 @@ $(document).on('click', '#btnSavePasswordPharmacist', function () {
         passwordChangeSuccess.hide();
         var passwordChangeError = $(".passwordChangeError")
         passwordChangeError.show();
-
     }
 });
 

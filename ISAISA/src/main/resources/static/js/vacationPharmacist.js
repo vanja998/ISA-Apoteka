@@ -36,7 +36,7 @@ $(document).on('click', '#btnRequestVacation', function () {
         },
         success: function (data) {
             console.log("SUCCESS : ", data);
-            window.location.href="welcomeDermatologist.html";
+            window.location.href="welcomePharmacist.html";
             alert('Zahtev poslat');
 
         },

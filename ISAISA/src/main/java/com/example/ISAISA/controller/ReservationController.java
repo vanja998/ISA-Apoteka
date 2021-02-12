@@ -1,6 +1,5 @@
 package com.example.ISAISA.controller;
 
-import com.example.ISAISA.DTO.AppointmentDTO;
 import com.example.ISAISA.DTO.BooleanDto;
 import com.example.ISAISA.DTO.IdDto;
 import com.example.ISAISA.DTO.ReservationDto;
@@ -30,6 +29,7 @@ public class ReservationController {
     private ReservationService reservationService;
     private MedicationService medicationService;
     private PharmacyService pharmacyService;
+
     @Autowired
     private EmailSenderService emailSenderService;
 
@@ -148,6 +148,19 @@ public class ReservationController {
     @PreAuthorize("hasRole('PHARMACIST')")
     public void giveMedication(@RequestBody IdDto idDto) throws Exception {
         reservationService.giveMedication(idDto.getId());
+
+        Reservation reservation = reservationService.findById(idDto.getId());
+        Patient patient = reservation.getPatient();
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(patient.getEmail());
+        mailMessage.setSubject("Izdavanje leka");
+        mailMessage.setFrom("isaverifikacija@gmail.com");
+        mailMessage.setText("Lek je izdat "+reservation.getMedication().getName());
+        emailSenderService.sendEmail(mailMessage);
+
+
+
     }
 
 }
