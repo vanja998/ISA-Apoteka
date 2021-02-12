@@ -51,7 +51,8 @@ $(document).on('click', '.unsubscribe', function () {
                 alert("Uspesna odjava akcije");
                 window.location.href = "patientWelcome.html";
             },
-            error: function (error) {
+            error: function (error, data) {
+                console.log(data);
                 alert(error);
             }
         });

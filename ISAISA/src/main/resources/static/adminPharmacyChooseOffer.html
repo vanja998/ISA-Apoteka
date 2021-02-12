@@ -5,9 +5,17 @@
     <title>Narudzbenice</title>
     <script src="js/jquery.min.js"></script>
     <script src="js/adminPharmacyChooseOffer.js"></script>
-    <script src="http://underscorejs.org/underscore-min.js"></script>
 </head>
 <body>
+    <div class="filterShow">
+        <label for="statusOrder">Filtrirajte po statusu</label>
+        <select name="statusOrder" id="statusOrder">
+            <!--<option disabled selected value>-- odaberite status --</option>-->
+            <option value="ceka_na_ponude">ceka_na_ponude</option>
+            <option value="obradjena">obradjena</option>
+        </select>
+        <button id="btnStatusOrder">Filtriraj</button>
+    </div>
     <div class="ordersShow">
         <h1>Narudzbenice</h1>
         <table id="tableOrdersShow">
@@ -85,11 +93,9 @@
 
         <div class="errorChangeOrder">
             <h1 id="errorChangeOrder"></h1>
-            <button class="btnReturnOder">Ok</button>
+            <button class="btnReturnOrder">Ok</button>
         </div>
     </div>
-
-
 
 </body>
 </html>

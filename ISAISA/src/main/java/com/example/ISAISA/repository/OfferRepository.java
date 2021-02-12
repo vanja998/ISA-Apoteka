@@ -17,4 +17,6 @@ public interface OfferRepository extends CrudRepository<Offer, String> {
     Set<Offer> findAll();
 
     Offer findOneById(Integer id);
+
+    Set<Offer> findByOrderrAndStatusSupplier(Orderr orderr, String status);
 }

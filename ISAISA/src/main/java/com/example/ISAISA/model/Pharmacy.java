@@ -1,6 +1,7 @@
 package com.example.ISAISA.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -45,7 +46,7 @@ public class Pharmacy {
     @ManyToMany(mappedBy = "pharmacies", fetch = FetchType.EAGER)
     private Set<Medication> medication = new HashSet<Medication>();*/
     @JsonIgnore
-    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pharmacy", fetch = FetchType.EAGER)
     private Set<PharmacyMedication> pharmacy_medications = new HashSet<PharmacyMedication>();
 
 

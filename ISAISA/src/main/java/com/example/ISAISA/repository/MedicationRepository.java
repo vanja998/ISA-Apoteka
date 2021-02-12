@@ -11,12 +11,13 @@ public interface MedicationRepository extends JpaRepository<Medication, Integer>
 
    Medication findOneById(Integer id);
 
-
    Set<Medication> findAllByName(String name);
 
    Medication findByName(String name);
 
    Medication findByCode(String code);
+
+   Medication findByNameIgnoreCase(String name);
 
 
 }

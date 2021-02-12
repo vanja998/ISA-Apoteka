@@ -1,6 +1,6 @@
 package com.example.ISAISA.service;
 
-import com.example.ISAISA.DTO.BooleanDto;
+import com.example.ISAISA.model.Medication;
 import com.example.ISAISA.model.Pharmacy;
 import com.example.ISAISA.model.Reservation;
 import com.example.ISAISA.repository.ReservationRepository;
@@ -62,6 +62,11 @@ public class ReservationService {
             }
         }
 
+    }
+
+
+    public Reservation findByMedicationAndPhamacy(Medication medication, Pharmacy pharmacy) {
+        return this.reservationRepository.findOneByMedicationAndPharmacy(medication, pharmacy);
     }
 
 }

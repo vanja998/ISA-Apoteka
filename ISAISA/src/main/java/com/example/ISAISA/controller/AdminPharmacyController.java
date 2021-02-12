@@ -2,10 +2,10 @@ package com.example.ISAISA.controller;
 
 import com.example.ISAISA.DTO.PharmacistDTO;
 import com.example.ISAISA.DTO.UserChangeDTO;
-import com.example.ISAISA.model.AdminPharmacy;
-import com.example.ISAISA.model.Pharmacist;
+import com.example.ISAISA.model.*;
 import com.example.ISAISA.service.AdminPharmacyService;
 import com.example.ISAISA.service.PharmacistService;
+import com.example.ISAISA.service.UserService;
 import com.example.ISAISA.service.UserServiceDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +28,7 @@ public class AdminPharmacyController {
 
     private AdminPharmacyService adminPharmacyService;
     private PharmacistService pharmacistService;
+    private UserService userService;
 
     @Autowired
     public void setAdminPharmacyService(AdminPharmacyService adminPharmacyService) {
@@ -37,6 +38,11 @@ public class AdminPharmacyController {
     @Autowired
     public void setPharmacistService(PharmacistService pharmacistService) {
         this.pharmacistService = pharmacistService;
+    }
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
     }
 
     @RequestMapping(value="/admin", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -67,6 +73,19 @@ public class AdminPharmacyController {
         return ResponseEntity.accepted().body(result);
     }
 
+    @PostMapping(value = "/change-password-firsttime", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<?> changePasswordFirstTime(@RequestBody AuthenticationController.PasswordChanger passwordChanger) {
 
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        User user1=userService.changeFlagAdminPharmacy(user);
+        userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
+
+        Map<String, String> result = new HashMap<String, String>();
+        result.put("result", "success");
+
+        return ResponseEntity.accepted().body(result);
+    }
 
 }

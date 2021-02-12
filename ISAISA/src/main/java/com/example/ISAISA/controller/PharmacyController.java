@@ -4,6 +4,7 @@ package com.example.ISAISA.controller;
 import com.example.ISAISA.DTO.IdDto;
 import com.example.ISAISA.DTO.MedicationDto;
 import com.example.ISAISA.DTO.PharmacyDTO;
+import com.example.ISAISA.model.AdminPharmacy;
 import com.example.ISAISA.model.Medication;
 import com.example.ISAISA.model.Pharmacy;
 import com.example.ISAISA.service.MedicationService;
@@ -13,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
@@ -155,6 +157,22 @@ public class PharmacyController {
 
 
         return new ResponseEntity<>(pharmacies, HttpStatus.OK);
+    }
+
+    @GetMapping(value="/pharmacyId")
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Pharmacy> getPharmacyByAdmin() {
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return new ResponseEntity<>(user.getPharmacy(), HttpStatus.OK);
+    }
+
+    @PostMapping(value="/changePharmacy")
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Pharmacy> changePharmacy(@RequestBody Pharmacy pharmacy) {
+
+        Pharmacy changedPharmacy = pharmacyService.changePharmacy(pharmacy);
+
+        return new ResponseEntity<>(changedPharmacy, HttpStatus.OK);
     }
 
 }

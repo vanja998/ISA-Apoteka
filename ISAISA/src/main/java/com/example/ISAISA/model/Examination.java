@@ -20,10 +20,12 @@ public class Examination {
     @Column
     private Integer therapyDuration;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "examinationAppointment_id", referencedColumnName = "id")
     private Appointment examinationAppointment;
 
+    @JsonIgnore
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "examinationCounseling_id", referencedColumnName = "id")
     private Counseling examinationCounseling;

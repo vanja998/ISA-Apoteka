@@ -41,7 +41,7 @@ public class OfferController {
 
         Orderr orderr = orderService.findById(idDto.getId());
 
-        Set<Offer> offers = offerService.findByOrderr(orderr);
+        Set<Offer> offers = offerService.findByOrderrAndStatus(orderr);
 
         return new ResponseEntity<>(offers, HttpStatus.OK);
     }

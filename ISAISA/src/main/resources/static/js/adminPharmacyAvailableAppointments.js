@@ -69,38 +69,50 @@ $(document).on('click', '.btnCreateAvailableAppointmentForDermatologist', functi
 
         var myJSON = formToJSON(dermatologist_id, beginofappointment, duration, price);
 
-        $.ajax({
-            type: "POST",
-            url: "http://localhost:8081/appointments/createAvailableAppointment",
-            dataType: "json",
-            contentType: "application/json",
-            data: myJSON,
-            beforeSend: function (xhr) {
-                if (localStorage.token) {
-                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+        $("#dateBegin").val("");
+        $("#duration").val("");
+        $("#price").val("");
+        $('#responseMessageAppointmentCreation').val("");
+        beginofappointment = Date.parse(beginofappointment);
+
+        if(beginofappointment != null && beginofappointment > Date.now() && duration !== "" && price !== "" && duration > 0 && price > 0) {
+            $.ajax({
+                type: "POST",
+                url: "http://localhost:8081/appointments/createAvailableAppointment",
+                dataType: "json",
+                contentType: "application/json",
+                data: myJSON,
+                beforeSend: function (xhr) {
+                    if (localStorage.token) {
+                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+                    }
+                },
+                success: function (data) {
+                    console.log("SUCCESS", data);
+                    var successfulAppointmentCreation = $(".successfulAppointmentCreation");
+                    successfulAppointmentCreation.show();
+                    var chooseDateAvailableAppointments = $(".chooseDateAvailableAppointments");
+                    chooseDateAvailableAppointments.hide();
+                },
+                error: function (jqXHR) {
+                    if (jqXHR.status === 403) {
+                        window.location.href = "error.html";
+                    }
+                    if (jqXHR.status === 401) {
+                        window.location.href = "error.html";
+                    }
+                    if (jqXHR.status === 500) {
+                        console.log(jqXHR.responseText);
+                        var unsuccessfulAppointmentCreation = $(".unsuccessfulAppointmentCreation");
+                        unsuccessfulAppointmentCreation.show();
+                        var chooseDateAvailableAppointments = $(".chooseDateAvailableAppointments");
+                        chooseDateAvailableAppointments.hide();
+                        var response = JSON.parse(jqXHR.responseText);
+                        $('#responseMessageAppointmentCreation').append(response['message']);
+                    }
                 }
-            },
-            success: function (data) {
-                console.log("SUCCESS", data);
-                var successfulAppointmentCreation = $(".successfulAppointmentCreation");
-                successfulAppointmentCreation.show();
-            },
-            error: function (jqXHR) {
-                if (jqXHR.status === 403) {
-                    window.location.href = "error.html";
-                }
-                if (jqXHR.status === 401) {
-                    window.location.href = "error.html";
-                }
-                if (jqXHR.status === 500) {
-                    console.log(jqXHR.responseText);
-                    var unsuccessfulAppointmentCreation = $(".unsuccessfulAppointmentCreation");
-                    unsuccessfulAppointmentCreation.show();
-                    var response = JSON.parse(jqXHR.responseText);
-                    $('#errorDeletePharmacist').append(response['message']);
-                }
-            }
-        });
+            });
+        }
     });
 });
 
@@ -108,7 +120,7 @@ function formToJSON(dermatologist_id, beginofappointment, duration, price) {
     return JSON.stringify(
         {
             "dermatologist" : dermatologist_id,
-            "beginofappointment" : beginofwork,
+            "beginofappointment" : beginofappointment,
             "duration" : duration,
             "price" : price
         }
@@ -125,8 +137,8 @@ $(document).on('click', '#btnCancelNewAvailableAppointment', function () {
     var successfulAppointmentCreation = $(".successfulAppointmentCreation");
     successfulAppointmentCreation.hide();
 
-    var availableAppointments = $(".availableAppointments");
-    availableAppointments.show();
+    var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy");
+    dermatologistsShowAdminPharmacy.show();
 
 });
 
@@ -135,13 +147,19 @@ $(document).on('click', '#btnReturnToChoosing1', function () {
     unsuccessfulAppointmentCreation.hide();
 
     var availableAppointments = $(".availableAppointments");
-    availableAppointments.show();
+    availableAppointments.hide();
+
+    var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy");
+    dermatologistsShowAdminPharmacy.show();
 });
 
 $(document).on('click', '#btnReturnToChoosing', function () {
-    var usuccessfulAppointmentCreation = $(".successfulAppointmentCreation");
+    var successfulAppointmentCreation = $(".successfulAppointmentCreation");
     successfulAppointmentCreation.hide();
 
     var availableAppointments = $(".availableAppointments");
-    availableAppointments.show();
+    availableAppointments.hide();
+
+    var dermatologistsShowAdminPharmacy = $(".dermatologistsShowAdminPharmacy");
+    dermatologistsShowAdminPharmacy.show();
 });

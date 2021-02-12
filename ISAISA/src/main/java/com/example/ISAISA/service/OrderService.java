@@ -21,6 +21,7 @@ public class OrderService {
     private OrderMedicationRepository orderMedicationRepository;
     private AuthorityService authService;
     private AdminPharmacyRepository adminPharmacyRepository;
+    private PharmacyMedicationRepository pharmacyMedicationRepository;
 
     @Autowired
     public void setOrderRepository(OrderRepository orderRepository) {
@@ -39,6 +40,9 @@ public class OrderService {
     @Autowired
     public void setAdminPharmacyRepository(AdminPharmacyRepository adminPharmacyRepository) { this.adminPharmacyRepository = adminPharmacyRepository; }
 
+    @Autowired
+    public void setPharmacyMedicationRepository(PharmacyMedicationRepository pharmacyMedicationRepository) { this.pharmacyMedicationRepository = pharmacyMedicationRepository; }
+
     public List<Orderr> findAll(){
         return orderRepository.findAll();
     }
@@ -55,14 +59,30 @@ public class OrderService {
         int counter = 0;
         for (Integer i : orderDTO.getMed_ids()) {
             Medication medication = medicationRepository.findOneById(i);
+            Set<PharmacyMedication> pharmacyMedications = pharmacyMedicationRepository.findByPharmacyAndMedicationOrderByBeginPriceValidityDesc(
+                    orderDTO.getAdminPharmacy().getPharmacy(), medication);
+            List<PharmacyMedication> pharmacyMedications1 = new ArrayList<>(pharmacyMedications);
+            PharmacyMedication pharmacyMedication;
+            if (pharmacyMedications1.isEmpty()) {
+                pharmacyMedication = new PharmacyMedication(orderDTO.getAdminPharmacy().getPharmacy(), medication, 0);
+                pharmacyMedicationRepository.save(pharmacyMedication);
+            }
+            else {
+                pharmacyMedication = pharmacyMedications1.get(0);
+                pharmacyMedication = pharmacyMedicationRepository.save(pharmacyMedication);
+            }
+            /*PharmacyMedication pharmacyMedication = pharmacyMedicationRepository.findOneByPharmacyAndMedicationAndBeginPriceValidityBeforeAndEndPriceValidityAfter(
+                    orderDTO.getAdminPharmacy().getPharmacy(), medication, LocalDate.now(), LocalDate.now());*/
+
 
             Orderr_Medication om = new Orderr_Medication(amounts.get(counter), medication);
+
 
             orderr_medications.add(om);
             counter++;
         }
 
-        Orderr orderr = new Orderr(orderDTO.getDateDeadline(), orderr_medications , orderDTO.getAdminPharmacy(), orderDTO.getStatusAdmin());
+        Orderr orderr = new Orderr(orderDTO.getDateDeadline(), orderr_medications , orderDTO.getAdminPharmacy(), "ceka_na_ponude");
         orderr = orderRepository.save(orderr);
 
         for (Orderr_Medication om : orderr_medications) {
@@ -80,7 +100,8 @@ public class OrderService {
         Set<Orderr> orderrs = new HashSet<>();
 
         for (AdminPharmacy ap : adminPharmacies) {
-            orderrs.addAll(orderRepository.findByAdminPharmacy(ap));
+            Set<Orderr> orderrs1 = orderRepository.findByAdminPharmacy(ap);
+            orderrs.addAll(orderrs1);
         }
 
         return orderrs;
@@ -116,7 +137,22 @@ public class OrderService {
         }
         else
             throw new Exception("Nije moguce izmeniti narudzbenicu nakon sto je primljena ponuda!");
+    }
 
+    public Set<Orderr> getOrdersByPharmacyAndStatus(AdminPharmacy adminPharmacy, String status) {
+        Pharmacy pharmacy = adminPharmacy.getPharmacy();
+        Set<AdminPharmacy> adminPharmacies = adminPharmacyRepository.findAllByPharmacy(pharmacy);
 
+        Set<Orderr> orderrs = new HashSet<>();
+
+        for (AdminPharmacy ap : adminPharmacies) {
+            Set<Orderr> orderrs1 = orderRepository.findByAdminPharmacy(ap);
+            for (Orderr orderr : orderrs1) {
+                if (orderr.getStatusAdmin().equals(status))
+                    orderrs.add(orderr);
+            }
+        }
+
+        return orderrs;
     }
 }

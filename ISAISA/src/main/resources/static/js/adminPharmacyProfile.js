@@ -191,7 +191,7 @@ $(document).on('click', '#btnSavePasswordAdminPharmacy', function () {
 
     console.log(myJSON);
 
-    if (newPassword === repeatedPassword) {
+    if (newPassword === repeatedPassword && newPassword !== "") {
 
         $.ajax({
             type: "POST",
@@ -212,11 +212,14 @@ $(document).on('click', '#btnSavePasswordAdminPharmacy', function () {
                 passwordChangeSuccess.show();
             },
             error: function (jqXHR) {
-                if(jqXHR.status == 403)
+                if(jqXHR.status === 500)
                 {
-                    window.location.href="error.html";
+                    var changePasswordAdminPharmacy = $(".changePasswordAdminPharmacy")
+                    changePasswordAdminPharmacy.hide();
+                    var passwordChangeError = $(".passwordChangeError")
+                    passwordChangeError.show();
                 }
-                if(jqXHR.status == 401)
+                if(jqXHR.status === 401)
                 {
                     window.location.href="error.html";
                 }
@@ -256,3 +259,10 @@ function formToJSON1(oldPassword, newPassword) {
         }
     );
 }
+
+$(document).on('click', '#btnTryAgain', function () {
+    var passwordChangeError = $(".passwordChangeError")
+    passwordChangeError.hide();
+    var changePasswordAdminPharmacy = $(".changePasswordAdminPharmacy")
+    changePasswordAdminPharmacy.show();
+});

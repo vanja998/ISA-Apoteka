@@ -79,7 +79,7 @@ $(document).on('click', '.btnSearchPharmacistsAdminPharmacy', function () {
 
     console.log(myJSON);
 
-    $('.searchPharmacistsAdminPharmacy').val("");
+    $('#searchPharmacistsAdminPharmacy').val("");
     $('#tablePharmacistsSearchAdminPharmacy tbody').empty();
 
     $.ajax({

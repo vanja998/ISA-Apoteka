@@ -15,6 +15,7 @@ public class Counseling {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_counseling")
     private Integer id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     private Patient patient;
 

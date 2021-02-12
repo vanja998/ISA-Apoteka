@@ -5,12 +5,14 @@ $(document).ready(function () {
     var acceptOffer = $(".acceptOffer");
     var deleteOrder = $(".deleteOrder");
     var changeOrder = $(".changeOrder");
+    var filterShow = $(".filterShow");
 
     ordersShow.show();
     offersShow.hide();
     acceptOffer.hide();
     deleteOrder.hide();
     changeOrder.hide();
+    filterShow.show();
 
     $.ajax({
         type: "GET",
@@ -59,12 +61,14 @@ $(document).on('click', '.btnOffers', function () {
     var acceptOffer = $(".acceptOffer");
     var deleteOrder = $(".deleteOrder");
     var changeOrder = $(".changeOrder");
+    var filterShow = $(".filterShow");
 
     ordersShow.hide();
     offersShow.show();
     acceptOffer.hide();
     deleteOrder.hide();
     changeOrder.hide();
+    filterShow.hide();
 
     var id = this.id;
 
@@ -117,6 +121,8 @@ $(document).on('click', '.btnAcceptOffer', function () {
     var acceptOffer = $(".acceptOffer");
     acceptOffer.show();
 
+    var filterShow = $(".filterShow");
+    filterShow.hide();
 
     var id = this.id;
 
@@ -163,9 +169,11 @@ $(document).on('click', '.btnAcceptOffer', function () {
 $(document).on('click', '.btnReturnOffer', function () {
     var offersShow = $(".offersShow");
     var acceptOffer = $(".acceptOffer");
+    var filterShow = $(".filterShow");
 
     offersShow.show();
     acceptOffer.hide();
+    filterShow.hide();
 });
 
 $(document).on('click', '.btnDeleteOrder', function () {
@@ -175,6 +183,9 @@ $(document).on('click', '.btnDeleteOrder', function () {
 
     var deleteOrder = $(".deleteOrder");
     deleteOrder.show();
+
+    var filterShow = $(".filterShow");
+    filterShow.hide();
 
     var id = this.id;
     id = JSON.stringify({"id" : id});
@@ -229,14 +240,16 @@ $(document).on('click', '.btnChangeOrder', function () {
     var errorDeleteOrder = $(".errorDeleteOrder");
     var successDeleteOrder = $(".successDeleteOrder");
     var submitOrder = $(".submitOrder");
-    var errorOrder = $(".errorOrder");
+    var errorChangeOrder = $(".errorChangeOrder");
+    var filterShow = $(".filterShow");
 
     ordersShow.hide();
     changeOrder.show();
     errorDeleteOrder.hide();
     successDeleteOrder.hide();
-    submitOrder.hide()
-    errorOrder.hide();
+    submitOrder.hide();
+    errorChangeOrder.hide();
+    filterShow.hide();
 
     $.ajax({
         type: "GET",
@@ -345,21 +358,24 @@ $(document).on('click', '#btnSubmitOrder', function () {
     var ids = [];
     var vals = [];
 
-    $('table [type="checkbox"]').each(function(id, chk) {
+    $('table [type="checkbox"]').each(function (id, chk) {
         if (chk.checked) {
             ids.push(chk.id)
-            var val = document.getElementById(chk.id+"/").value;
+            var val = document.getElementById(chk.id + "/").value;
             vals.push(val);
             //document.getElementById(chk.id+"/").value = 1;
             //document.getElementById(chk.id+"/").disabled = true;
-        };
+        }
+
     });
 
     var dateDeadline = $("#dateDeadline").val();
 
     var myJSON = formToJSON(ids, vals, dateDeadline, id);
 
-    if (ids.length !== 0) {
+    dateDeadline = Date.parse(dateDeadline);
+
+    if (ids.length !== 0 && dateDeadline > Date.now()) {
         $.ajax({
             type: "POST",
             url: "http://localhost:8081/orders/changeOrder",
@@ -383,10 +399,14 @@ $(document).on('click', '#btnSubmitOrder', function () {
                 var quantityInput = $(".quantityInput");
                 quantityInput.val("");
                 quantityInput.hide();*/
+                var changeOrder = $(".changeOrder");
+                changeOrder.hide();
+                var ordersShow = $(".ordersShow");
+                ordersShow.show();
             },
             error: function (jqXHR, data) {
-                /*if (jqXHR.status === 500) {
-                    var errorOrder = $(".errorOrder");
+                if (jqXHR.status === 500) {
+                    var errorOrder = $(".errorChangeOrder");
                     errorOrder.show();
 
                     var response = JSON.parse(jqXHR.responseText);
@@ -400,7 +420,7 @@ $(document).on('click', '#btnSubmitOrder', function () {
                 }
                 else {
                     window.location.href = "error.html";
-                }*/
+                }
                 console.log(data);
             }
         });
@@ -421,4 +441,52 @@ function formToJSON(ids, vals, dateDeadline, id) {
 
 $(document).on('click', '.btnReturnOrder', function () {
     window.location.href="adminPharmacyChooseOffer.html";
+});
+
+$(document).on('click', '#btnStatusOrder', function() {
+    var status = document.getElementById("statusOrder").value;
+    status = JSON.stringify({"status":status});
+    $('#tableOrdersShow tbody').empty();
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/orders/orderByStatus",
+        dataType: "json",
+        contentType: "application/json",
+        data: status,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+
+            console.log("SUCCESS", data);
+            for (i = 0; i < data.length; i++) {
+                var row = "<tr>";
+                row += "<td>" + data[i]['id'] + "</td>";
+                row += "<td>" + data[i]['dateDeadline'] + "</td>";
+
+                var btnOffers = "<button class='btnOffers' id = " + data[i]['id'] + ">Pogledaj ponude</button>";
+                row += "<td>" + btnOffers + "</td>";
+
+                var btnChangeOrder = "<button class='btnChangeOrder' id = " + data[i]['id'] + ">Izmeni narudzbenicu</button>";
+                row += "<td>" + btnChangeOrder + "</td>";
+
+                var btnDeleteOrder = "<button class='btnDeleteOrder' id = " + data[i]['id'] + ">Obrisi narudzbenicu</button>";
+                row += "<td>" + btnDeleteOrder + "</td>";
+
+                $('#tableOrdersShow').append(row);
+            }
+        },
+        error: function (jqXHR) {
+            if(jqXHR.status === 403) {
+                window.location.href="error.html";
+            }
+            if(jqXHR.status === 401) {
+                window.location.href="error.html";
+            }
+        }
+    });
+
+
 });

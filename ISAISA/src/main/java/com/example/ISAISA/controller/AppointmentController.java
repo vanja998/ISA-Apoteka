@@ -1,14 +1,10 @@
 package com.example.ISAISA.controller;
 
 import com.example.ISAISA.DTO.*;
-import com.example.ISAISA.model.Appointment;
-import com.example.ISAISA.model.Dermatologist;
-import com.example.ISAISA.model.AdminPharmacy;
-import com.example.ISAISA.model.Pharmacy;
+import com.example.ISAISA.model.*;
+import com.example.ISAISA.repository.PharmacyRepository;
 import com.example.ISAISA.service.AppointmentService;
 import com.example.ISAISA.service.DermatologistService;
-
-import com.example.ISAISA.model.Patient;
 
 import com.example.ISAISA.service.EmailSenderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +36,7 @@ public class AppointmentController {
 
     private AppointmentService appointmentService;
     private DermatologistService dermatologistService;
+    private PharmacyRepository pharmacyRepository;
 
     @Autowired
     private EmailSenderService emailSenderService;
@@ -52,6 +49,11 @@ public class AppointmentController {
     @Autowired
     public void setDermatologistService(DermatologistService dermatologistService) {
         this.dermatologistService = dermatologistService;
+    }
+
+    @Autowired
+    public void setPharmacyRepository(PharmacyRepository pharmacyRepository) {
+        this.pharmacyRepository = pharmacyRepository;
     }
 
     @PostMapping(value="/checkIfAppointmentExists", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -278,5 +280,35 @@ public class AppointmentController {
 
         return new ResponseEntity<>(calendarDTOS, HttpStatus.OK);
     }
+
+    @GetMapping(value="/getAppointmentsPharmacy",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Set<Appointment>> getAppointmentsByPharmacy() {
+
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<Appointment> appointments = appointmentService.getAppointmentByPharmacyAfterNow(user.getPharmacy());
+
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/changeAppointmentPrice", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Appointment> changeAppointmentPrice(@RequestBody IdPriceDTO idPriceDTO){
+
+        Appointment appointment = appointmentService.changeAppointment(idPriceDTO.getPrice(), idPriceDTO.getId());
+
+        return new ResponseEntity<>(appointment, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/availableAppointmentsByPharmacy", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Set<Appointment>> getAvailableAppointments(@RequestBody IdDto idDto){
+
+        Pharmacy pharmacy = pharmacyRepository.findOneById(idDto.getId());
+        Set<Appointment> appointments = this.appointmentService.getAvailableAppointmentsByPharmacy(pharmacy);
+
+        return new ResponseEntity<>(appointments, HttpStatus.OK);
+    }
+
 
 }

@@ -141,6 +141,12 @@ public class UserService {
         return user;
     }
 
+    public User changeFlagAdminPharmacy(AdminPharmacy user){
+        user.setFlag(1);
+        user=userRepository.save(user);
+        return user;
+    }
+
 
     public User saveSupplier(PatientDto userRequest) {
         Supplier u = new Supplier();

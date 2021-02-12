@@ -1,3 +1,5 @@
+//Prikaz apoteke
+
 //Prikaz svih dermatologa
 $(document).ready(function () {
     var dermatologistsAdminPharmacy = $(".dermatologistsAdminPharmacy");

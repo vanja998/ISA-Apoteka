@@ -115,4 +115,19 @@ public class OrderController {
 
         return new ResponseEntity<>(order, HttpStatus.OK);
     }
+
+    @PostMapping(value="/orderByStatus", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Set<OrderMedicationDTO>> getOrdersByPharmacyAndStatus(@RequestBody StatusDTO statusDTO){
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<Orderr> orderrs = orderService.getOrdersByPharmacyAndStatus(user, statusDTO.getStatus());
+        Set<OrderMedicationDTO> orderMedicationDTOS = new HashSet<>();
+
+        for (Orderr orderr : orderrs) {
+            OrderMedicationDTO om = new OrderMedicationDTO(orderr.getId(), orderr.getDateDeadline(), orderr.getAdminPharmacy());
+            orderMedicationDTOS.add(om);
+        }
+
+        return new ResponseEntity<>(orderMedicationDTOS, HttpStatus.OK);
+    }
 }

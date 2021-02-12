@@ -1,9 +1,6 @@
 package com.example.ISAISA.controller;
 
-import com.example.ISAISA.DTO.BooleanDto;
-import com.example.ISAISA.DTO.CalendarDTO;
-import com.example.ISAISA.DTO.CreateAppointmentDto;
-import com.example.ISAISA.DTO.IdDto;
+import com.example.ISAISA.DTO.*;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.service.AppointmentService;
 import com.example.ISAISA.service.CounselingService;
@@ -18,6 +15,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value="/counselings")
@@ -124,4 +122,22 @@ public class CounselingController {
         return new ResponseEntity<>(calendarDTOS, HttpStatus.OK);
     }
 
+    @GetMapping(value="/getCounselingsPharmacy",produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Set<Counseling>> getCounselingsByPharmacy() {
+
+        AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<Counseling> counselings = counselingService.getCounselingByPharmacyAfterNow(user.getPharmacy());
+
+        return new ResponseEntity<>(counselings, HttpStatus.OK);
+    }
+
+    @PostMapping(value="/changeCounselingPrice", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('ADMINPHARMACY')")
+    public ResponseEntity<Counseling> changeCounselingPrice(@RequestBody IdPriceDTO idPriceDTO){
+
+        Counseling counseling = counselingService.changeCounselingPrice(idPriceDTO.getPrice(), idPriceDTO.getId());
+
+        return new ResponseEntity<>(counseling, HttpStatus.OK);
+    }
 }
