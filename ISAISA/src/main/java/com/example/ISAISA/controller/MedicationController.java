@@ -51,6 +51,14 @@ public class MedicationController {
         return new ResponseEntity<>(medicationsDTOS, HttpStatus.OK);
     }
 
+    @GetMapping(value="/allmedicationss",produces = MediaType.APPLICATION_JSON_VALUE)                                           // value nije naveden, jer koristimo bazni url
+    public ResponseEntity<List<Medication>> getMedicationss() {
+        List<Medication> medicationList = this.medicationService.findAll();
+
+
+        return new ResponseEntity<>(medicationList, HttpStatus.OK);
+    }
+
     @PostMapping(value="/MedicationsSearch", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Set<Medication>> getMedicationsbyName(@RequestBody Medication medicationDTO) {
 

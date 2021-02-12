@@ -26,7 +26,7 @@ $(document).ready(function () {
 
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/medications/allmedications",
+        url: "http://localhost:8081/medications/allmedicationss",
         dataType: "json",
         success: function (data) {
             console.log("SUCCESS : ", data);

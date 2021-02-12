@@ -80,7 +80,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
         web.ignoring().antMatchers(HttpMethod.POST, "/auth/**","/medications/MedicationsSearch","/medications/MedicationsSearchh","/medications/getOneMedication","/pharmacy/PharmaciesSearch","/medications/getpharmaciesprice","/medications/filterType");
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/favicon.ico",
-				"/**/*.css", "/**/*.js", "/favicon.ico", "/**/*.html","/medications/getTypeMedication","/pharmacy/allpharmacies","/medications/allmedications","/pharmacy/allpharmaciessortbyname","/pharmacy/allpharmaciessortbyaddress");
+				"/**/*.css", "/**/*.js", "/favicon.ico", "/**/*.html","/medications/getTypeMedication","/pharmacy/allpharmacies","/medications/allmedications","/medications/allmedicationss","/pharmacy/allpharmaciessortbyname","/pharmacy/allpharmaciessortbyaddress");
 
     }
 

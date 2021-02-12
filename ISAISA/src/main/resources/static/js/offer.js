@@ -28,7 +28,7 @@ $(document).ready(function () {
 
 
 
-                if(data[i]['statusSupplier']==='prihvacena'){
+                if(data[i]['statusSupplier']==='odobrena'){
                     var btn = "<button disabled>Ponuda je obradjena</button>";
                 }
                 else if(data[i]['statusSupplier']==='odbijena'){
@@ -168,7 +168,7 @@ $(document).on('click', '.btnFilter', function () {
 
 
 
-                if(data[i]['statusSupplier']==='prihvacena'){
+                if(data[i]['statusSupplier']==='odobrena'){
                     var btn = "<button disabled>Ponuda je obradjena</button>";
                 }
                 else if(data[i]['statusSupplier']==='odbijena'){
