@@ -51,7 +51,7 @@ $(document).on('click', '.btnCancelReservation', function(){
         },
         success: function () {
             alert("success");
-            window.location.href("patientWelcome.html")
+            window.location.href = "patientWelcome.html";
 
         },
         error: function (error) {
