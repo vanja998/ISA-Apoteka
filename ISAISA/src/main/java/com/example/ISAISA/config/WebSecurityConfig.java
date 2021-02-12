@@ -78,9 +78,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) throws Exception {
         // TokenAuthenticationFilter ce ignorisati sve ispod navedene putanje
-        web.ignoring().antMatchers(HttpMethod.POST, "/auth/**","/medications/MedicationsSearch","/medications/MedicationsSearchh","/medications/getOneMedication","/pharmacy/PharmaciesSearch","/medications/getpharmaciesprice","/medications/filterType");
+        web.ignoring().antMatchers(HttpMethod.POST, "/auth/**","/medications/MedicationsSearch","/medications/MedicationsSearchh","/medications/getOneMedication","/pharmacy/PharmaciesSearch","/pharmacy/PharmaciesSearchbyaddress","/pharmacy/filterbyrating","/medications/getpharmaciesprice","/medications/filterType");
         web.ignoring().antMatchers(HttpMethod.GET, "/", "/webjars/**", "/favicon.ico",
-				"/**/*.css", "/**/*.js", "/favicon.ico", "/**/*.html","/medications/getTypeMedication","/pharmacy/allpharmacies","/medications/allmedications","/medications/allmedicationss","/pharmacy/allpharmaciessortbyname","/pharmacy/allpharmaciessortbyaddress");
+				"/**/*.css", "/**/*.js", "/favicon.ico", "/**/*.html","/medications/getTypeMedication","/pharmacy/allpharmacies","/medications/allmedications","/medications/allmedicationss","/pharmacy/allpharmaciessortbyname","/pharmacy/allpharmaciessortbyaddress","/pharmacy/allpharmaciessortbyrating");
+
 
     }
 

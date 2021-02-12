@@ -19,6 +19,7 @@ public class Counseling {
     @ManyToOne(fetch = FetchType.EAGER)
     private Patient patient;
 
+
     @ManyToOne(fetch = FetchType.EAGER)
     private Pharmacist pharmacist;
 
@@ -49,6 +50,12 @@ public class Counseling {
         this.beginofappointment = beginofappointment;
         this.endofappointment = endofappointment;
         this.price = price;
+    }
+
+    public Counseling(Integer id, LocalDateTime beginofappointment, LocalDateTime endofappointment, Pharmacist pharmacist) {
+    }
+
+    public Counseling(Integer id, LocalDateTime beginofappointment, LocalDateTime endofappointment, Pharmacist pharmacist, Integer price) {
     }
 
     public Integer getId() {

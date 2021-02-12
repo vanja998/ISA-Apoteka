@@ -25,7 +25,7 @@ public class Pharmacist extends User {
     private LocalTime endofwork;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "pharmacist", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "pharmacist", fetch = FetchType.EAGER)
     private Set<Counseling> counselings = new HashSet<Counseling>();
 
     @JsonIgnore

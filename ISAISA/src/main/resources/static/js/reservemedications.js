@@ -63,6 +63,7 @@ $(document).on('click', '.btnReserveMedication', function () {
         },
         success: function (data) {
             console.log("SUCCESS: ", data);
+            alert("uspesno rezervisan lek");
         },
         error: function (data) {
             console.log("ERROR: ", data);

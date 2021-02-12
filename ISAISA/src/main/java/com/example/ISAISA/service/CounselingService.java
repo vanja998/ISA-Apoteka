@@ -1,5 +1,6 @@
 package com.example.ISAISA.service;
 
+import com.example.ISAISA.DTO.AppointmentDTO;
 import com.example.ISAISA.DTO.CalendarDTO;
 import com.example.ISAISA.model.*;
 import com.example.ISAISA.repository.*;
@@ -45,9 +46,19 @@ public class CounselingService {
         this.patientRepository = patientRepository;
     }
 
+
     @Autowired
     public void setPharmacistRepository(PharmacistRepository pharmacistRepository) {
         this.pharmacistRepository = pharmacistRepository;
+    }
+
+
+    public Set<Counseling> findAllOrderByPrice(Patient patient){return  counselingRepository.findAllByPatientOrderByPrice(patient);}
+    public Counseling findonebyid(Integer id){return counselingRepository.findOneById(id);}
+    public void delete(Counseling counseling){counselingRepository.delete(counseling);}
+    public List<Counseling> findAll() {return counselingRepository.findAll();}
+    public Counseling save(Counseling appointment) {
+        return counselingRepository.save(appointment);
     }
 
     public Counseling ifPatientHasCounseling(Integer idPatient, Pharmacist pharmacist) {

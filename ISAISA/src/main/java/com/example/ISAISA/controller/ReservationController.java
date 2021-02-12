@@ -4,6 +4,7 @@ import com.example.ISAISA.DTO.BooleanDto;
 import com.example.ISAISA.DTO.IdDto;
 import com.example.ISAISA.DTO.ReservationDto;
 import com.example.ISAISA.model.*;
+import com.example.ISAISA.repository.PharmacyMedicationRepository;
 import com.example.ISAISA.service.EmailSenderService;
 import com.example.ISAISA.service.MedicationService;
 import com.example.ISAISA.service.PharmacyService;
@@ -17,11 +18,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping(value = "/reservations")
@@ -29,6 +32,13 @@ public class ReservationController {
     private ReservationService reservationService;
     private MedicationService medicationService;
     private PharmacyService pharmacyService;
+    private PharmacyMedicationRepository pharmacyMedicationRepository;
+
+    @Autowired
+    public void setPharmacyMedicationRepository(PharmacyMedicationRepository pharmacyMedicationRepository) {
+        this.pharmacyMedicationRepository = pharmacyMedicationRepository;
+    }
+
 
     @Autowired
     private EmailSenderService emailSenderService;
@@ -50,13 +60,15 @@ public class ReservationController {
 
     @PostMapping(value="/createReservation", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PATIENT')")
-    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationDto reservationdto){
+    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationDto reservationdto) throws Exception {
 
         Patient user = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Medication medication =medicationService.findByName(reservationdto.getName());
         Pharmacy pharmacy = pharmacyService.findById(reservationdto.getId());
         LocalDateTime dateofreservation=reservationdto.getDateofreservation();
-
+        if(reservationdto.getDateofreservation().isBefore(LocalDateTime.now())){
+            throw new Exception("uneli ste vreme iz proslosti");
+        }
         Reservation reservation1 = new Reservation();
         reservation1.setPatient(user);
         reservation1.setMedication(medication);
@@ -65,6 +77,7 @@ public class ReservationController {
         reservation1.setMedicationtaken(false);
         reservationService.save(reservation1);
 
+
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(user.getEmail());
         mailMessage.setSubject("Rezervacija leka");
@@ -72,6 +85,18 @@ public class ReservationController {
         mailMessage.setText("uspesno ste rezervisali lek, jedinstveni broj rezervacije je " + reservation1.getId() );
 
         emailSenderService.sendEmail(mailMessage);
+
+        LocalDate today = LocalDate.now();
+        Set<PharmacyMedication> pharmacyMedications = pharmacyMedicationRepository.findAllByPharmacyAndMedication(pharmacy, medication);
+        for(PharmacyMedication i: pharmacyMedications){
+            if(today.isAfter(i.getBeginPriceValidity()) && today.isBefore(i.getEndPriceValidity())){
+
+                i.setQuantity(i.getQuantity()-1);
+                pharmacyMedicationRepository.save(i);
+                break;
+            }
+        }
+
 
         return new ResponseEntity<>(reservation1, HttpStatus.OK);
     }
@@ -112,7 +137,17 @@ public class ReservationController {
         }
 
         else {
-            reservationService.delete(reservation);
+
+            LocalDate today = LocalDate.now();
+            Set<PharmacyMedication> pharmacyMedications = pharmacyMedicationRepository.findAllByPharmacyAndMedication(reservation.getPharmacy(), reservation.getMedication());
+            for(PharmacyMedication i: pharmacyMedications){
+                if(today.isAfter(i.getBeginPriceValidity()) && today.isBefore(i.getEndPriceValidity())){
+                    i.setQuantity(i.getQuantity()+1);
+                    pharmacyMedicationRepository.save(i);
+                    reservationService.delete(reservation);
+                    break;
+                }
+            }
 
         }
 

@@ -282,8 +282,9 @@ public class ExaminationService {
         LocalDate today = LocalDate.now();
         Set<PharmacyMedication> pharmacyMedications = pharmacyMedicationRepository.findAllByPharmacyAndMedication(pharmacy, medication);
         for(PharmacyMedication i: pharmacyMedications){
-            if(today.isAfter(i.getBeginPriceValidity())){
+            if(today.isAfter(i.getBeginPriceValidity()) && today.isBefore(i.getEndPriceValidity())){
                 i.setQuantity(i.getQuantity()-1);
+                pharmacyMedicationRepository.save(i);
                 break;
             }
         }

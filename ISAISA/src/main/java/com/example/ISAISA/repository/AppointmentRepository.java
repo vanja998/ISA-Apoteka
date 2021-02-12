@@ -15,4 +15,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
         List<Appointment> findByPatient(Patient patient);
         Set<Appointment> findAllByDermatologistAndBeginofappointmentAfter(Dermatologist dermatologist, LocalDateTime localDate);
         Set<Appointment> findAllByPatientNull();
+        Set<Appointment> findByPatientOrderByPrice(Patient patient);
 }

@@ -281,6 +281,7 @@ public class AppointmentController {
         return new ResponseEntity<>(calendarDTOS, HttpStatus.OK);
     }
 
+
     @GetMapping(value="/getAppointmentsPharmacy",produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('ADMINPHARMACY')")
     public ResponseEntity<Set<Appointment>> getAppointmentsByPharmacy() {
@@ -310,5 +311,20 @@ public class AppointmentController {
         return new ResponseEntity<>(appointments, HttpStatus.OK);
     }
 
+
+
+    @GetMapping(value="/reservedappointmentsbyprice",produces = MediaType.APPLICATION_JSON_VALUE)// value nije naveden, jer koristimo bazni url
+    @PreAuthorize("hasRole('PATIENT')")
+    public ResponseEntity<Set<Appointment>> geReservedAppointmentsbypricee() {
+
+
+        Patient user = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Set<Appointment> appointmentList = appointmentService.findpatientorderbyprice(user);
+        // Kreiramo listu DTO objekata
+
+
+
+        return new ResponseEntity<>(appointmentList, HttpStatus.OK);
+    }
 
 }

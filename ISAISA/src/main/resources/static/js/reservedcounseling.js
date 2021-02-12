@@ -1,7 +1,8 @@
 $(document).ready(function () {
+    $('#reservedappointments').empty();
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/appointments/reservedappointment",
+        url: "http://localhost:8081/counselings/reservedcounseling",
         dataType: "json",
         beforeSend: function(xhr) {
             if (localStorage.token) {
@@ -13,10 +14,9 @@ $(document).ready(function () {
             for (i = 0; i < data.length; i++) {
                 var row = "<tr>";
                 row += "<td>" + data[i]['id'] + "</td>";
-                row += "<td>" + data[i]['patient']['firstName'] + "</td>";
-                row += "<td>" + data[i]['dermatologist']['firstName'] + "</td>";
                 row += "<td>" + data[i]['beginofappointment'] + "</td>";
                 row += "<td>" + data[i]['endofappointment'] + "</td>";
+                row += "<td>" + data[i]['pharmacist']['firstName'] + "</td>";
                 row += "<td>" + data[i]['price'] + "</td>";
 
 
@@ -35,14 +35,12 @@ $(document).ready(function () {
         }
     });
 });
-
-
 $(document).on('click', '.btnCancelAppointment', function(){
     var id=this.id;
     $.ajax({
         type: "POST",
-        url: "http://localhost:8081/appointments/cancelappointment",
-        dataType: "json",
+        url: "http://localhost:8081/counselings/cancelcounseling",
+        //dataType: "json",
         contentType: "application/json",
         data:id,
         beforeSend: function (xhr) {
@@ -52,7 +50,8 @@ $(document).on('click', '.btnCancelAppointment', function(){
         },
         success: function () {
             alert("success");
-            window.location.href = "patientWelcome.html";
+            window.location.href="patientWelcome.html";
+
         },
         error: function (error) {
             alert(error);
@@ -64,7 +63,7 @@ $(document).on('click', '#btnSortbyprice', function(){
     $('#reservedappointments').empty();
     $.ajax({
         type: "GET",
-        url: "http://localhost:8081/appointments/reservedappointmentsbyprice",
+        url: "http://localhost:8081/counselings/reservedcounselingbyprice",
         dataType: "json",
         beforeSend: function(xhr) {
             if (localStorage.token) {
@@ -76,10 +75,9 @@ $(document).on('click', '#btnSortbyprice', function(){
             for (i = 0; i < data.length; i++) {
                 var row = "<tr>";
                 row += "<td>" + data[i]['id'] + "</td>";
-                row += "<td>" + data[i]['patient']['firstName'] + "</td>";
-                row += "<td>" + data[i]['dermatologist']['firstName'] + "</td>";
                 row += "<td>" + data[i]['beginofappointment'] + "</td>";
                 row += "<td>" + data[i]['endofappointment'] + "</td>";
+                row += "<td>" + data[i]['pharmacist']['firstName'] + "</td>";
                 row += "<td>" + data[i]['price'] + "</td>";
 
 
