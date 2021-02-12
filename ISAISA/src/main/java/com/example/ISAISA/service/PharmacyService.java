@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -30,7 +31,10 @@ public class PharmacyService {
         return p;
     }
 
+    public Set<Pharmacy> findByAddress1(String address) {return  pharmacyRepository.findAllByAddress(address);}
 
+    public Pharmacy findbyPharmacist(Pharmacist pharmacist) {return  pharmacyRepository.findByPharmacists(pharmacist);}
+    public List<Pharmacy> findbyratinggreater(Float rating){return pharmacyRepository.findByRatingGreaterThan(rating);}
     public Pharmacy save(PharmacyRegDTO pharmacyDTO) {
         Pharmacy p = new Pharmacy();
         p.setAddress(pharmacyDTO.getAddress());

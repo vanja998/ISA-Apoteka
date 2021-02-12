@@ -49,13 +49,15 @@ public class ReservationController {
 
     @PostMapping(value="/createReservation", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('PATIENT')")
-    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationDto reservationdto){
+    public ResponseEntity<Reservation> createReservation(@RequestBody ReservationDto reservationdto) throws Exception {
 
         Patient user = (Patient) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Medication medication =medicationService.findByName(reservationdto.getName());
         Pharmacy pharmacy = pharmacyService.findById(reservationdto.getId());
         LocalDateTime dateofreservation=reservationdto.getDateofreservation();
-
+        if(reservationdto.getDateofreservation().isBefore(LocalDateTime.now())){
+            throw new Exception("uneli ste vreme iz proslosti");
+        }
         Reservation reservation1 = new Reservation();
         reservation1.setPatient(user);
         reservation1.setMedication(medication);
@@ -63,6 +65,7 @@ public class ReservationController {
         reservation1.setDateofreservation(dateofreservation);
         reservation1.setMedicationtaken(false);
         reservationService.save(reservation1);
+
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(user.getEmail());

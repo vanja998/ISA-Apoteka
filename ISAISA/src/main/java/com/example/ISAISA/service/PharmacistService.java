@@ -1,13 +1,13 @@
 package com.example.ISAISA.service;
 
+import com.example.ISAISA.DTO.AppointmentDTO;
+import com.example.ISAISA.DTO.BeginofappointmentDto;
 import com.example.ISAISA.DTO.PharmacistDTO;
 import com.example.ISAISA.DTO.UserChangeDTO;
 import com.example.ISAISA.model.Pharmacist;
 import com.example.ISAISA.model.Pharmacy;
-import com.example.ISAISA.repository.AppointmentRepository;
 import com.example.ISAISA.repository.CounselingRepository;
 import com.example.ISAISA.repository.PharmacistRepository;
-import org.apache.tomcat.websocket.pojo.PojoMessageHandlerPartialText;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import com.example.ISAISA.model.*;
@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -45,6 +46,37 @@ public class PharmacistService {
     @Autowired
     public void setCounselingRepository(CounselingRepository counselingRepository) { this.counselingRepository = counselingRepository; }
 
+    public Pharmacist  findByRatings(Float price){return pharmacistRepository.findOneByRating(price);}
+
+    public Pharmacist findById(Integer id) {return pharmacistRepository.findOneById(id);}
+
+    public Set<Pharmacist> findbyPharmacy(Pharmacy pharmacy){return pharmacistRepository.findAllByPharmacy(pharmacy);}
+
+    public List<Pharmacist> findAll() {return this.pharmacistRepository.findAll();}
+
+    public List<Pharmacist> findfreepharmacist(BeginofappointmentDto appointmentDTO){
+        List<Pharmacist>pharmacistList = findAll();
+        List<Pharmacist> slobodni=new ArrayList<>();
+        List<Pharmacy> apoteke = new ArrayList<>();
+        for(Pharmacist pharmacist:pharmacistList){
+            Set<Counseling>listaterminafarmaceuta=pharmacist.getCounselings();
+            for (Counseling counseling:listaterminafarmaceuta){
+
+                if(appointmentDTO.getBeginofappointment().isAfter(counseling.getBeginofappointment()) ||  appointmentDTO.getBeginofappointment().isAfter(counseling.getEndofappointment())
+                        || appointmentDTO.getBeginofappointment().toLocalTime().isBefore(pharmacist.getBeginofwork()) || appointmentDTO.getBeginofappointment().toLocalTime().isAfter(pharmacist.getEndofwork()) ){
+
+
+
+                }
+                else{
+                    slobodni.add(pharmacist);
+
+                }
+            }
+        }
+
+        return slobodni;
+    }
     public Set<PharmacistDTO> getPharmacistsByPharmacy(Pharmacy pharmacy) {
 
         Set<Pharmacist> pharmacists = pharmacistRepository.findAllByPharmacy(pharmacy);

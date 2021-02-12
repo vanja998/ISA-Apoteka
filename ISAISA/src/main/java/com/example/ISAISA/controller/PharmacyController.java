@@ -1,9 +1,9 @@
 package com.example.ISAISA.controller;
 
 
-import com.example.ISAISA.DTO.IdDto;
-import com.example.ISAISA.DTO.MedicationDto;
-import com.example.ISAISA.DTO.PharmacyDTO;
+import com.example.ISAISA.DTO.*;
+import com.example.ISAISA.model.Dermatologist;
+import com.example.ISAISA.model.Dermatologist_Pharmacyy;
 import com.example.ISAISA.model.Medication;
 import com.example.ISAISA.model.Pharmacy;
 import com.example.ISAISA.service.MedicationService;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.nio.file.AccessDeniedException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -66,6 +67,14 @@ public class PharmacyController {
         return new ResponseEntity<>(pharmacies, HttpStatus.OK);
     }
 
+    @PostMapping(value="/PharmaciesSearchbyaddress", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<Pharmacy>> getPharmaciesbyaddress(@RequestBody Pharmacy pharmacyDTO) {
+
+        Set<Pharmacy> pharmacies = pharmacyService.findByAddress1(pharmacyDTO.getAddress());
+
+        return new ResponseEntity<>(pharmacies, HttpStatus.OK);
+    }
+
     @GetMapping(value="/allpharmaciessortbyname",produces = MediaType.APPLICATION_JSON_VALUE)                                           // value nije naveden, jer koristimo bazni url
     public ResponseEntity<List<Pharmacy>> sortPharmacyByName() {
         List<Pharmacy> pharmacyList = this.pharmacyService.findAll();
@@ -88,6 +97,8 @@ public class PharmacyController {
 
         return new ResponseEntity<>(pharmaciesDTOS, HttpStatus.OK);
     }
+
+
 
     @GetMapping(value="/allpharmaciessortbyaddress",produces = MediaType.APPLICATION_JSON_VALUE)                                           // value nije naveden, jer koristimo bazni url
     public ResponseEntity<List<Pharmacy>> sortPharmacyByAddress() throws AccessDeniedException {
@@ -155,6 +166,17 @@ public class PharmacyController {
 
 
         return new ResponseEntity<>(pharmacies, HttpStatus.OK);
+    }
+    @PostMapping(value="/filterbyrating", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Set<Pharmacy>> filterbyrating(@RequestBody PharmacyDTO pharmacydto) {
+
+        List<Pharmacy> pharmacies = pharmacyService.findbyratinggreater(pharmacydto.getRating());
+        Set<Pharmacy> pharmaciesdto= new HashSet<>();
+        for(Pharmacy pharmaci1:pharmacies){
+            pharmaciesdto.add(pharmaci1);
+        }
+
+        return new ResponseEntity<>(pharmaciesdto, HttpStatus.OK);
     }
 
 }

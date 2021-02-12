@@ -1,6 +1,7 @@
 package com.example.ISAISA.repository;
 
 import com.example.ISAISA.model.Medication;
+import com.example.ISAISA.model.Pharmacist;
 import com.example.ISAISA.model.Pharmacy;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -15,6 +16,9 @@ public interface PharmacyRepository extends JpaRepository<Pharmacy, Integer> {
     Pharmacy findOneById(Integer id);
     List<Pharmacy> findAll();
     Set<Pharmacy> findAllByName(String name);
+    Set<Pharmacy> findAllByAddress(String addresses);
+    Pharmacy findByPharmacists(Pharmacist pharmacist);
+    List<Pharmacy> findByRatingGreaterThan(Float rating);
     //List<Pharmacy> findAllByMedication(Medication medication);
 
 }

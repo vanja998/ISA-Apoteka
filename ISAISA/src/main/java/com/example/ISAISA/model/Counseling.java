@@ -50,6 +50,12 @@ public class Counseling {
         this.price = price;
     }
 
+    public Counseling(Integer id, LocalDateTime beginofappointment, LocalDateTime endofappointment, Pharmacist pharmacist) {
+    }
+
+    public Counseling(Integer id, LocalDateTime beginofappointment, LocalDateTime endofappointment, Pharmacist pharmacist, Integer price) {
+    }
+
     public Integer getId() {
         return id;
     }

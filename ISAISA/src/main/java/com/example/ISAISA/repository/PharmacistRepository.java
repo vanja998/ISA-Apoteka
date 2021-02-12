@@ -4,6 +4,7 @@ import com.example.ISAISA.model.Pharmacist;
 import com.example.ISAISA.model.Pharmacy;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Set;
 
 public interface PharmacistRepository extends JpaRepository<Pharmacist, Integer> {
@@ -19,5 +20,9 @@ public interface PharmacistRepository extends JpaRepository<Pharmacist, Integer>
     Set<Pharmacist> findAllByRatingBetween(Float ratingOver, Float ratingUnder);
 
     Pharmacist findOneById(Integer id);
+
+    Pharmacist findOneByRating(Float rating);
+
+    List<Pharmacist> findAll();
 
 }

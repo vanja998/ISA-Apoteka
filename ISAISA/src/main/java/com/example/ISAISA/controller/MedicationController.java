@@ -48,7 +48,6 @@ public class MedicationController {
     public ResponseEntity<Set<Medication>> getMedicationsbyName(@RequestBody Medication medicationDTO) {
 
         Set<Medication> medications = medicationService.getMedicationsbyName(medicationDTO.getName());
-
         return new ResponseEntity<>(medications, HttpStatus.OK);
     }
 

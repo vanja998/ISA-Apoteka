@@ -80,11 +80,66 @@ $(document).on('click', '#btnSearchMedication', function () {
     });
 
 });
+$(document).on('click', '#btnSearchMedication2', function () {
 
+    var searchParam = $("#searchMedication2").val();
+
+
+    var myJSON = formToJSON3(searchParam)
+
+    $('#tableMedicationsSearch').empty();
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/pharmacy/PharmaciesSearchbyaddress",
+        dataType: "json",
+        contentType: "application/json",
+        data: myJSON,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log("SUCCESS: ", data);
+            $('#searchMedication').append(searchParam);
+            for (i = 0; i < data.length; i++) {
+                var row = "<tr>";
+                row += "<td>" + data[i]['name'] + "</td>";     // ubacujemo podatke jednog zaposlenog u polja
+                row += "<td>" + data[i]['address'] + "</td>";
+                row += "<td>" + data[i]['description'] + "</td>";
+                row += "<td>" + data[i]['rating'] + "</td>";
+                $('#tableMedicationsSearch').append(row);
+            }
+
+        },
+        error: function (data) {
+            console.log("ERROR: ", data);
+
+        }
+    });
+
+});
 function formToJSON(name) {
     return JSON.stringify(
         {
             "name": name
+
+        }
+    );
+}
+
+function formToJSON3(address) {
+    return JSON.stringify(
+        {
+            "address": address
+
+        }
+    );
+}
+function formToJSON4(rating) {
+    return JSON.stringify(
+        {
+            "rating": rating
 
         }
     );
@@ -130,6 +185,33 @@ $(document).on('click', '#btnSortbyaddressPharmacy', function () {    // Čeka s
             for (i = 0; i < data.length; i++) {                     // prolazimo kroz listu svih zaposlenih
                 var row = "<tr>";// kreiramo red za tabelu
                 row += "<td>" + data[i]['name'] + "</td>";     // ubacujemo podatke jednog zaposlenog u polja
+                row += "<td>" + data[i]['address'] + "</td>";
+                row += "<td>" + data[i]['description'] + "</td>";
+                row += "<td>" + data[i]['rating'] + "</td>";
+
+                $('#pharmacy').append(row);                        // ubacujemo kreirani red u tabelu čiji je id = employees
+            }
+        },
+        error: function (data) {
+            console.log("ERROR : ", data);
+        }
+    });
+
+});
+
+$(document).on('click', '#btnSortbyocena', function () {    // Čeka se trenutak kada je DOM(Document Object Model) učitan da bi JS mogao sa njim da manipuliše.
+    // ajax poziv
+
+    $('#pharmacy').empty();
+    $.ajax({
+        type: "GET",                                                // HTTP metoda
+        url: "http://localhost:8081/pharmacy/allpharmaciessortbyrating",                  // URL koji se gađa
+        dataType: "json",                                           // tip povratne vrednosti
+        success: function (data) {
+            console.log("SUCCESS : ", data);                        // ispisujemo u konzoli povratnu vrednost
+            for (i = 0; i < data.length; i++) {                     // prolazimo kroz listu svih zaposlenih
+                var row = "<tr>";// kreiramo red za tabelu
+                row += "<td>" + data[i]['name'] + "</td>";
                 row += "<td>" + data[i]['address'] + "</td>";
                 row += "<td>" + data[i]['description'] + "</td>";
                 row += "<td>" + data[i]['rating'] + "</td>";
@@ -206,6 +288,45 @@ $(document).on('click', '.patientAllPromotions', function () {
         },
         error: function (data) {
             window.location.href = "error.html";
+        }
+    });
+
+});
+$(document).on('click', '#btnFilterbyocena', function () {
+
+    var searchParam = $("#searchbyrating").val();
+
+
+    var myJSON = formToJSON4(searchParam)
+
+    $('#tableMedicationsSearch').empty();
+    $.ajax({
+        type: "POST",
+        url: "http://localhost:8081/pharmacy/filterbyrating",
+        dataType: "json",
+        contentType: "application/json",
+        data: myJSON,
+        beforeSend: function (xhr) {
+            if (localStorage.token) {
+                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+            }
+        },
+        success: function (data) {
+            console.log("SUCCESS: ", data);
+            $('#searchMedication').append(searchParam);
+            for (i = 0; i < data.length; i++) {
+                var row = "<tr>";
+                row += "<td>" + data[i]['name'] + "</td>";     // ubacujemo podatke jednog zaposlenog u polja
+                row += "<td>" + data[i]['address'] + "</td>";
+                row += "<td>" + data[i]['description'] + "</td>";
+                row += "<td>" + data[i]['rating'] + "</td>";
+                $('#tableMedicationsSearch').append(row);
+            }
+
+        },
+        error: function (data) {
+            console.log("ERROR: ", data);
+
         }
     });
 

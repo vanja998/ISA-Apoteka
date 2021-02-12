@@ -40,6 +40,8 @@ public class AppointmentService {
         return appointmentRepository.save(appointment);
     }
 
+    public Set<Appointment> findpatientorderbyprice(Patient patient){return appointmentRepository.findByPatientOrderByPrice(patient);}
+
     @Autowired
     public void setCounselingRepository(CounselingRepository counselingRepository) {
         this.counselingRepository = counselingRepository;
