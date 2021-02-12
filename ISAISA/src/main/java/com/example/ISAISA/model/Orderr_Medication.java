@@ -16,7 +16,7 @@ public class Orderr_Medication {
     private Integer amount;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     private Orderr orderr;
 
     @JsonIgnore

@@ -97,52 +97,51 @@ $(document).on('click', '#btnSubmitOrder', function () {
 
     dateDeadline = Date.parse(dateDeadline);
 
-    for (var i in ids) {
-        if (ids.length !== 0 && dateDeadline > Date.now() && i > 0) {
-            $.ajax({
-                type: "POST",
-                url: "http://localhost:8081/orders/createOrder",
-                dataType: "json",
-                contentType: "application/json",
-                data: myJSON,
-                beforeSend: function (xhr) {
-                    if (localStorage.token) {
-                        xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
-                    }
-                },
-                success: function (data) {
-                    console.log("SUCCESS", data);
-                    var submitOrder = $(".submitOrder");
-                    submitOrder.hide();
 
-                    var checkboxSelect = $(".checkboxSelect");
-                    checkboxSelect.prop('checked', false);
-                    checkboxSelect.hide();
-
-                    var quantityInput = $(".quantityInput");
-                    quantityInput.val("");
-                    quantityInput.hide();
-                },
-                error: function (jqXHR, data) {
-                    if (jqXHR.status === 500) {
-                        var errorOrder = $(".errorOrder");
-                        errorOrder.show();
-
-                        var response = JSON.parse(jqXHR.responseText);
-                        $('#errorOrder').append(response['message']);
-
-                        var submitOrder = $(".submitOrder");
-                        submitOrder.hide()
-
-                        var ordersShow = $(".ordersShow");
-                        ordersShow.hide();
-                    } else {
-                        console.log(data);
-                        //window.location.href = "error.html";
-                    }
+    if (ids.length > 0 && dateDeadline > Date.now()){
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/orders/createOrder",
+            dataType: "json",
+            contentType: "application/json",
+            data: myJSON,
+            beforeSend: function (xhr) {
+                if (localStorage.token) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
                 }
-            });
-        }
+            },
+            success: function (data) {
+                console.log("SUCCESS", data);
+                var submitOrder = $(".submitOrder");
+                submitOrder.hide();
+
+                var checkboxSelect = $(".checkboxSelect");
+                checkboxSelect.prop('checked', false);
+                checkboxSelect.hide();
+
+                var quantityInput = $(".quantityInput");
+                quantityInput.val("");
+                quantityInput.hide();
+            },
+            error: function (jqXHR, data) {
+                if (jqXHR.status === 500) {
+                    var errorOrder = $(".errorOrder");
+                    errorOrder.show();
+
+                    var response = JSON.parse(jqXHR.responseText);
+                    $('#errorOrder').append(response['message']);
+
+                    var submitOrder = $(".submitOrder");
+                    submitOrder.hide()
+
+                    var ordersShow = $(".ordersShow");
+                    ordersShow.hide();
+                } else {
+                    console.log(data);
+                    //window.location.href = "error.html";
+                }
+            }
+        });
     }
 });
 

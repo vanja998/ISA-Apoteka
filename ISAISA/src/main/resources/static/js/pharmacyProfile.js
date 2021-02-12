@@ -140,6 +140,7 @@ $(document).on('click', '#btnCounseling', function () {
         },
         success: function (data) {
             alert("Uspesno zakazano savetovanje!");
+            window.location.href="pharmacies.html";
         },
         error: function (jqXHR) {
             if(jqXHR.status === 403)
@@ -292,6 +293,7 @@ $(document).on('click', '.btnReserve', function () {
             },
             success: function (data) {
                 alert("Lek uspesno rezervisan");
+                window.location.href="pharmacies.html";
             },
             error: function (jqXHR) {
                 if(jqXHR.status === 403)
@@ -383,6 +385,8 @@ $(document).on('click', '.btnMake', function (){
         },
         success: function (data) {
             console.log("SUCCESS", data);
+            alert("Uspesno zakazan termin!");
+            window.location.href="pharmacies.html";
         },
         error: function (jqXHR) {
             if(jqXHR.status === 403)

@@ -412,6 +412,8 @@ $(document).on('click', '#btnSubmitOrder', function () {
                     var response = JSON.parse(jqXHR.responseText);
                     $('#errorOrder').append(response['message']);
 
+                    alert("Doslo je do greske");
+
                     var submitOrder = $(".submitOrder");
                     submitOrder.hide()
 
