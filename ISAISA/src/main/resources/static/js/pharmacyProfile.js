@@ -5,18 +5,18 @@ $(document).on('click', '.btnPharmacy', function () {
     var allPharmacies = $(".allPharmacies");
     var onePharmacy = $(".onePharmacy");
     var card = $(".card")
-    var pharmacistsAdminPharmacy = $(".pharmacistsAdminPharmacy")
-    var pharmacistsSearchAdminPharmacy = $(".pharmacistsSearchAdminPharmacy")
-    var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
-    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy");
+    var pharmacists = $(".pharmacists")
+    var dermatologists = $(".dermatologists")
+    var medicine = $(".medicine");
+    var availableAppointments = $(".availableAppointments");
 
     allPharmacies.hide();
     onePharmacy.show();
-    pharmacistsShowAdminPharmacy.hide();
+    pharmacists.hide();
     card.show();
-    pharmacistsFilterAdminPharmacy.hide();
-    pharmacistsSearchAdminPharmacy.hide();
-    pharmacistsAdminPharmacy.hide();
+    dermatologists.hide();
+    medicine.hide();
+    availableAppointments.hide();
 
     id = this.id;
     console.log(id);
@@ -50,17 +50,18 @@ $(document).on('click', '.btnPharmacy', function () {
 //*************************Farmaceuti
 //Prikaz farmaceuta
 $(document).on('click', '#patientAllPharmacists', function () {
-    var card = $(".card");
-    var pharmacistsShowAdminPharmacy = $(".pharmacistsShowAdminPharmacy");
-    var pharmacistsSearchAdminPharmacy = $(".pharmacistsSearchAdminPharmacy");
-    var pharmacistsFilterAdminPharmacy = $(".pharmacistsFilterAdminPharmacy");
-    var pharmacistsAdminPharmacy = $(".pharmacistsAdminPharmacy");
 
+    var card = $(".card")
+    var pharmacists = $(".pharmacists")
+    var dermatologists = $(".dermatologists")
+    var medicine = $(".medicine");
+    var availableAppointments = $(".availableAppointments");
+
+    pharmacists.show();
     card.hide();
-    pharmacistsShowAdminPharmacy.show();
-    pharmacistsSearchAdminPharmacy.hide();
-    pharmacistsFilterAdminPharmacy.hide();
-    pharmacistsAdminPharmacy.show();
+    dermatologists.hide();
+    medicine.hide();
+    availableAppointments.hide();
 
     var id1 = JSON.stringify({"id" : id});
 
@@ -113,6 +114,19 @@ $(document).on('click', '.btnMakeAppointment', function (){
 //************************Dermatolozi
 
 $(document).on('click', '#patientAllDermatologists', function () {
+
+    var card = $(".card")
+    var pharmacists = $(".pharmacists")
+    var dermatologists = $(".dermatologists")
+    var medicine = $(".medicine");
+    var availableAppointments = $(".availableAppointments");
+
+    pharmacists.hide();
+    card.hide();
+    dermatologists.show();
+    medicine.hide();
+    availableAppointments.hide();
+
     var id1 = JSON.stringify({"id" : id});
 
     $.ajax({
@@ -141,9 +155,6 @@ $(document).on('click', '#patientAllDermatologists', function () {
                 }
                 row += "<td>" + list+ "</td>";
 
-                var btnRemove = "<button class='btnRemove' id = " + data[i]['id'] + "> Zakazi pregled </button>";
-                row += "<td>" + btnRemove + "</td>";
-
                 $('#tableDermatologistsAdminPharmacy').append(row);
             }
         },
@@ -164,6 +175,17 @@ $(document).on('click', '#patientAllDermatologists', function () {
 //***********************Lekovi
 
 $(document).on('click', '#patientAllMedicine', function () {
+    var card = $(".card")
+    var pharmacists = $(".pharmacists")
+    var dermatologists = $(".dermatologists")
+    var medicine = $(".medicine");
+    var availableAppointments = $(".availableAppointments");
+
+    pharmacists.hide();
+    card.hide();
+    dermatologists.hide();
+    medicine.show();
+    availableAppointments.hide();
     var id1 = JSON.stringify({"id" : id});
 
     $.ajax({
@@ -246,6 +268,17 @@ $(document).on('click', '.btnReserve', function () {
 
 //***********************Slobodni termini
 $(document).on('click', '#patientAllAvailableAppointments', function () {
+    var card = $(".card")
+    var pharmacists = $(".pharmacists")
+    var dermatologists = $(".dermatologists")
+    var medicine = $(".medicine");
+    var availableAppointments = $(".availableAppointments");
+
+    pharmacists.hide();
+    card.hide();
+    dermatologists.hide();
+    medicine.hide();
+    availableAppointments.show();
     var id1 = JSON.stringify({"id" : id});
 
     $.ajax({

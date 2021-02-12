@@ -149,33 +149,33 @@ $(document).on('click', '#btnSubmitPrice', function () {
 
     var myJSON = JSON.stringify({"id" : id, "price" : changePrice});
 
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8081/counselings/changeCounselingPrice",
-        dataType: "json",
-        contentType: "application/json",
-        data: myJSON,
-        beforeSend: function (xhr) {
-            if (localStorage.token) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+    if(changePrice > 0 && changePrice !== null) {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/counselings/changeCounselingPrice",
+            dataType: "json",
+            contentType: "application/json",
+            data: myJSON,
+            beforeSend: function (xhr) {
+                if (localStorage.token) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+                }
+            },
+            success: function (data) {
+                console.log("SUCCESS: ", data);
+                $(".changePrice").val("");
+                window.location.href = "adminPharmacyPrices.html";
+            },
+            error: function (jqXHR) {
+                if (jqXHR.status === 403) {
+                    window.location.href = "error.html";
+                }
+                if (jqXHR.status === 401) {
+                    window.location.href = "error.html";
+                }
             }
-        },
-        success: function (data) {
-            console.log("SUCCESS: ", data);
-            $(".changePrice").val("");
-            window.location.href="adminPharmacyPrices.html";
-        },
-        error: function (jqXHR) {
-            if(jqXHR.status === 403)
-            {
-                window.location.href="error.html";
-            }
-            if(jqXHR.status === 401)
-            {
-                window.location.href="error.html";
-            }
-        }
-    });
+        });
+    }
 });
 
 
@@ -201,33 +201,33 @@ $(document).on('click', '#btnSubmitPrice', function () {
 
     var myJSON = JSON.stringify({"id" : id, "price" : changePrice});
 
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8081/appointments/changeAppointmentPrice",
-        dataType: "json",
-        contentType: "application/json",
-        data: myJSON,
-        beforeSend: function (xhr) {
-            if (localStorage.token) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+    if(changePrice > 0 && changePrice !== null) {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/appointments/changeAppointmentPrice",
+            dataType: "json",
+            contentType: "application/json",
+            data: myJSON,
+            beforeSend: function (xhr) {
+                if (localStorage.token) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+                }
+            },
+            success: function (data) {
+                console.log("SUCCESS: ", data);
+                $(".changePrice").val("");
+                window.location.href = "adminPharmacyPrices.html";
+            },
+            error: function (jqXHR) {
+                if (jqXHR.status === 403) {
+                    window.location.href = "error.html";
+                }
+                if (jqXHR.status === 401) {
+                    window.location.href = "error.html";
+                }
             }
-        },
-        success: function (data) {
-            console.log("SUCCESS: ", data);
-            $(".changePrice").val("");
-            window.location.href="adminPharmacyPrices.html";
-        },
-        error: function (jqXHR) {
-            if(jqXHR.status === 403)
-            {
-                window.location.href="error.html";
-            }
-            if(jqXHR.status === 401)
-            {
-                window.location.href="error.html";
-            }
-        }
-    });
+        });
+    }
 });
 
 
@@ -256,33 +256,36 @@ $(document).on('click', '#btnSubmitPriceMed', function () {
 
     var myJSON = JSON.stringify({"id" : id, "price" : changePrice, "end" : dateEndPrice});
 
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8081/medications/changeMedicationPrice",
-        dataType: "json",
-        contentType: "application/json",
-        data: myJSON,
-        beforeSend: function (xhr) {
-            if (localStorage.token) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+    dateEndPrice = Date.parse(dateEndPrice);
+
+    if(changePrice > 0 && changePrice !== null && dateEndPrice !== null && dateEndPrice > Date.now()) {
+
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/medications/changeMedicationPrice",
+            dataType: "json",
+            contentType: "application/json",
+            data: myJSON,
+            beforeSend: function (xhr) {
+                if (localStorage.token) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+                }
+            },
+            success: function (data) {
+                console.log("SUCCESS: ", data);
+                $("#changePriceMed").val("");
+                $("#dateEndPrice").val("");
+                window.location.href = "adminPharmacyPrices.html";
+            },
+            error: function (jqXHR) {
+                if (jqXHR.status === 403) {
+                    window.location.href = "error.html";
+                }
+                if (jqXHR.status === 401) {
+                    window.location.href = "error.html";
+                }
             }
-        },
-        success: function (data) {
-            console.log("SUCCESS: ", data);
-            $("#changePriceMed").val("");
-            $("#dateEndPrice").val("");
-            window.location.href="adminPharmacyPrices.html";
-        },
-        error: function (jqXHR) {
-            if(jqXHR.status === 403)
-            {
-                window.location.href="error.html";
-            }
-            if(jqXHR.status === 401)
-            {
-                window.location.href="error.html";
-            }
-        }
-    });
+        });
+    }
 });
 

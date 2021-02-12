@@ -120,7 +120,13 @@ public class MedicationService {
             }
         }
 
-        PharmacyMedication pharmacyMedication= pharmacyMedicationRepository.findOneByPharmacyAndMedicationAndBeginPriceValidityBeforeAndEndPriceValidityAfter(pharmacy, medication, LocalDate.now(), LocalDate.now());
+        Set<PharmacyMedication> pharmacyMedications = pharmacyMedicationRepository.findByPharmacyAndMedicationOrderByBeginPriceValidityDesc(pharmacy, medication);
+        List<PharmacyMedication> pharmacyMedications1 = new ArrayList<>(pharmacyMedications);
+        if (pharmacyMedications1.isEmpty()) {
+            throw new Exception("Doslo je do greske!");
+        }
+        PharmacyMedication pharmacyMedication = pharmacyMedications1.get(0);
+
         pharmacyMedicationRepository.delete(pharmacyMedication);
     }
 
@@ -150,14 +156,21 @@ public class MedicationService {
         List<PharmacyMedication> pharmacyMedications2 = new ArrayList<>(pharmacyMedications1);
 
         PharmacyMedication pharmacyMedicationBefore = pharmacyMedications2.get(0);
+        PharmacyMedication pharmacyMedicationNow;
+        if (pharmacyMedicationBefore.getPrice() == null) {
+            pharmacyMedicationNow = pharmacyMedicationBefore;
+            pharmacyMedicationNow.setPrice(price);
+            pharmacyMedicationNow.setBeginPriceValidity(LocalDate.now());
+            pharmacyMedicationNow.setEndPriceValidity(end);
 
-        //Postavi kraj perioda vazenja cene poslednjeg pojavljivanja u pharmacyMedication na danas
-        pharmacyMedicationBefore.setEndPriceValidity(LocalDate.now());
-        pharmacyMedicationBefore = pharmacyMedicationRepository.save(pharmacyMedicationBefore);
-
-        //Postavi pocetak perioda vazenja cene novog pojavljivanja u pharmacyMedication na danas
-        PharmacyMedication pharmacyMedicationNow = new PharmacyMedication(pharmacyMedicationBefore.getPharmacy(), pharmacyMedicationBefore.getMedication(),
-                pharmacyMedicationBefore.getQuantity(), price, LocalDate.now().plusDays(1), end);
+        } else {
+            //Postavi kraj perioda vazenja cene poslednjeg pojavljivanja u pharmacyMedication na danas
+            pharmacyMedicationBefore.setEndPriceValidity(LocalDate.now());
+            pharmacyMedicationBefore = pharmacyMedicationRepository.save(pharmacyMedicationBefore);
+            //Postavi pocetak perioda vazenja cene novog pojavljivanja u pharmacyMedication na danas
+             pharmacyMedicationNow = new PharmacyMedication(pharmacyMedicationBefore.getPharmacy(), pharmacyMedicationBefore.getMedication(),
+                    pharmacyMedicationBefore.getQuantity(), price, LocalDate.now().plusDays(1), end);
+        }
         pharmacyMedicationNow = pharmacyMedicationRepository.save(pharmacyMedicationNow);
 
         return pharmacyMedicationNow;

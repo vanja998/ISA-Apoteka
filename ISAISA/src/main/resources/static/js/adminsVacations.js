@@ -194,11 +194,16 @@ $(document).on('click', '.btnDeny', function () {
                 success: function (data) {
                     var successfulDenyVacation = $(".successfulDenyVacation");
                     successfulDenyVacation.show();
+                    var formDenyVacation = $(".formDenyVacation");
+                    formDenyVacation.hide();
                 },
                 error: function (jqXHR, data) {
                     if(jqXHR.status === 500) {
                         var unsuccessfulDenyVacation = $(".unsuccessfulDenyVacation");
                         unsuccessfulDenyVacation.show();
+
+                        var formDenyVacation = $(".formDenyVacation");
+                        formDenyVacation.hide();
 
                         var response = JSON.parse(jqXHR.responseText);
                         document.getElementById('unsuccessfulDenyVacation').innerHTML = response['message'];
@@ -223,11 +228,15 @@ $(document).on('click', '.btnDeny', function () {
                 success: function (data) {
                     var successfulDenyVacation = $(".successfulDenyVacation");
                     successfulDenyVacation.show();
+                    var formDenyVacation = $(".formDenyVacation");
+                    formDenyVacation.hide();
                 },
                 error: function (jqXHR, data) {
                     if(jqXHR.status === 500) {
                         var unsuccessfulDenyVacation = $(".unsuccessfulDenyVacation");
                         unsuccessfulDenyVacation.show();
+                        var formDenyVacation = $(".formDenyVacation");
+                        formDenyVacation.hide();
 
                         var response = JSON.parse(jqXHR.responseText);
                         document.getElementById('unsuccessfulDenyVacation').innerHTML = response['message'];
@@ -251,5 +260,5 @@ $(document).on('click', '#btnCancelDenial', function () {
 });
 
 $(document).on('click', '.returnToVacations', function () {
-   window.location.href="adminVacations.html";
+   window.location.href="adminsVacations.html";
 });

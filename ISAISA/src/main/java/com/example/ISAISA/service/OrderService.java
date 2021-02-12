@@ -59,20 +59,30 @@ public class OrderService {
         int counter = 0;
         for (Integer i : orderDTO.getMed_ids()) {
             Medication medication = medicationRepository.findOneById(i);
-            PharmacyMedication pharmacyMedication = pharmacyMedicationRepository.findOneByPharmacyAndMedicationAndBeginPriceValidityBeforeAndEndPriceValidityAfter(
-                    orderDTO.getAdminPharmacy().getPharmacy(), medication, LocalDate.now(), LocalDate.now());
-            if(pharmacyMedication == null) {
+            Set<PharmacyMedication> pharmacyMedications = pharmacyMedicationRepository.findByPharmacyAndMedicationOrderByBeginPriceValidityDesc(
+                    orderDTO.getAdminPharmacy().getPharmacy(), medication);
+            List<PharmacyMedication> pharmacyMedications1 = new ArrayList<>(pharmacyMedications);
+            PharmacyMedication pharmacyMedication;
+            if (pharmacyMedications1.isEmpty()) {
                 pharmacyMedication = new PharmacyMedication(orderDTO.getAdminPharmacy().getPharmacy(), medication, 0);
                 pharmacyMedicationRepository.save(pharmacyMedication);
             }
+            else {
+                pharmacyMedication = pharmacyMedications1.get(0);
+                pharmacyMedication = pharmacyMedicationRepository.save(pharmacyMedication);
+            }
+            /*PharmacyMedication pharmacyMedication = pharmacyMedicationRepository.findOneByPharmacyAndMedicationAndBeginPriceValidityBeforeAndEndPriceValidityAfter(
+                    orderDTO.getAdminPharmacy().getPharmacy(), medication, LocalDate.now(), LocalDate.now());*/
+
 
             Orderr_Medication om = new Orderr_Medication(amounts.get(counter), medication);
+
 
             orderr_medications.add(om);
             counter++;
         }
 
-        Orderr orderr = new Orderr(orderDTO.getDateDeadline(), orderr_medications , orderDTO.getAdminPharmacy(), orderDTO.getStatusAdmin());
+        Orderr orderr = new Orderr(orderDTO.getDateDeadline(), orderr_medications , orderDTO.getAdminPharmacy(), "ceka_na_ponude");
         orderr = orderRepository.save(orderr);
 
         for (Orderr_Medication om : orderr_medications) {

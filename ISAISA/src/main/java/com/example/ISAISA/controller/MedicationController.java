@@ -73,7 +73,7 @@ public class MedicationController {
         for(Medication medication : medications) {
             PharmacyMedication pharmacyMedication = pharmacyMedicationService.findByPharmacyAndMedication(user.getPharmacy(), medication);
             MedicationPharmacyDTO mp = new MedicationPharmacyDTO(medication.getId(), medication.getCode(), medication.getName(), medication.getProducer(),
-                    pharmacyMedication.getQuantity(), pharmacyMedication.getPrice());
+                    pharmacyMedication.getQuantity(), pharmacyMedication.getPrice(), pharmacyMedication.getBeginPriceValidity(), pharmacyMedication.getEndPriceValidity());
 
             medicationPharmacyDTOS.add(mp);
         }

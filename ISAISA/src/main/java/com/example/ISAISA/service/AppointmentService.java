@@ -127,9 +127,9 @@ public class AppointmentService {
         //Ako dermatolog vec ima zakazan termin tada (unutar intervala ili da ga obuhvata)
         Set<Appointment> existingDermAppointments = appointmentRepository.findAllByDermatologist(appointment.getDermatologist());
         for (Appointment a : existingDermAppointments) {
-            if ((appointment.getBeginofappointment().isAfter(a.getBeginofappointment()) && appointment.getBeginofappointment().isBefore(a.getEndofappointment())) ||
-                    (appointment.getEndofappointment().isAfter(a.getBeginofappointment()) && appointment.getEndofappointment().isBefore(a.getEndofappointment()))
-                    || (appointment.getBeginofappointment().isBefore(a.getBeginofappointment()) && appointment.getEndofappointment().isAfter(a.getEndofappointment()))) {
+            if ((appointment.getBeginofappointment().isAfter(a.getBeginofappointment().minusMinutes(1)) && appointment.getBeginofappointment().isBefore(a.getEndofappointment().plusMinutes(1))) ||
+                    (appointment.getEndofappointment().isAfter(a.getBeginofappointment().minusMinutes(1)) && appointment.getEndofappointment().isBefore(a.getEndofappointment().plusMinutes(1)))
+                    || (appointment.getBeginofappointment().isBefore(a.getBeginofappointment().minusMinutes(1)) && appointment.getEndofappointment().isAfter(a.getEndofappointment().plusMinutes(1)))) {
                 throw new Exception("Postoji zakazan termin u ovo vreme!");
             }
         }

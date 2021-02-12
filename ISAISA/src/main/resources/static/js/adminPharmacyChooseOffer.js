@@ -240,7 +240,7 @@ $(document).on('click', '.btnChangeOrder', function () {
     var errorDeleteOrder = $(".errorDeleteOrder");
     var successDeleteOrder = $(".successDeleteOrder");
     var submitOrder = $(".submitOrder");
-    var errorOrder = $(".errorOrder");
+    var errorChangeOrder = $(".errorChangeOrder");
     var filterShow = $(".filterShow");
 
     ordersShow.hide();
@@ -248,7 +248,7 @@ $(document).on('click', '.btnChangeOrder', function () {
     errorDeleteOrder.hide();
     successDeleteOrder.hide();
     submitOrder.hide();
-    errorOrder.hide();
+    errorChangeOrder.hide();
     filterShow.hide();
 
     $.ajax({
@@ -358,21 +358,24 @@ $(document).on('click', '#btnSubmitOrder', function () {
     var ids = [];
     var vals = [];
 
-    $('table [type="checkbox"]').each(function(id, chk) {
+    $('table [type="checkbox"]').each(function (id, chk) {
         if (chk.checked) {
             ids.push(chk.id)
-            var val = document.getElementById(chk.id+"/").value;
+            var val = document.getElementById(chk.id + "/").value;
             vals.push(val);
             //document.getElementById(chk.id+"/").value = 1;
             //document.getElementById(chk.id+"/").disabled = true;
-        };
+        }
+
     });
 
     var dateDeadline = $("#dateDeadline").val();
 
     var myJSON = formToJSON(ids, vals, dateDeadline, id);
 
-    if (ids.length !== 0) {
+    dateDeadline = Date.parse(dateDeadline);
+
+    if (ids.length !== 0 && dateDeadline > Date.now()) {
         $.ajax({
             type: "POST",
             url: "http://localhost:8081/orders/changeOrder",
@@ -396,10 +399,14 @@ $(document).on('click', '#btnSubmitOrder', function () {
                 var quantityInput = $(".quantityInput");
                 quantityInput.val("");
                 quantityInput.hide();*/
+                var changeOrder = $(".changeOrder");
+                changeOrder.hide();
+                var ordersShow = $(".ordersShow");
+                ordersShow.show();
             },
             error: function (jqXHR, data) {
-                /*if (jqXHR.status === 500) {
-                    var errorOrder = $(".errorOrder");
+                if (jqXHR.status === 500) {
+                    var errorOrder = $(".errorChangeOrder");
                     errorOrder.show();
 
                     var response = JSON.parse(jqXHR.responseText);
@@ -413,7 +420,7 @@ $(document).on('click', '#btnSubmitOrder', function () {
                 }
                 else {
                     window.location.href = "error.html";
-                }*/
+                }
                 console.log(data);
             }
         });

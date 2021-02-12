@@ -63,28 +63,28 @@ $(document).on('click', '#submitChangeBio', function () {
     var chDescription = $("#chDescription").val();
 
     var myJSON = JSON.stringify({"name": chPharmacyName, "address" : chAddress, "description" : chDescription});
-
-    $.ajax({
-        type: "POST",
-        url: "http://localhost:8081/pharmacy/changePharmacy",
-        dataType: "json",
-        contentType: "application/json",
-        data: myJSON,
-        beforeSend: function(xhr) {
-            if (localStorage.token) {
-                xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+    if(chPharmacyName !== "" && chAddress !== "" ) {
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8081/pharmacy/changePharmacy",
+            dataType: "json",
+            contentType: "application/json",
+            data: myJSON,
+            beforeSend: function (xhr) {
+                if (localStorage.token) {
+                    xhr.setRequestHeader('Authorization', 'Bearer ' + localStorage.token);
+                }
+            },
+            success: function (data) {
+                console.log("SUCCESS: ", data);
+                window.location.href = "adminPharmacyPharmacy.html";
+            },
+            error: function (data) {
+                console.log("ERROR: ", data);
+                window.location.href = "error.html"
             }
-        },
-        success: function (data) {
-            console.log("SUCCESS: ", data);
-            window.location.href = "adminPharmacyPharmacy.html";
-        },
-        error: function (data) {
-            console.log("ERROR: ", data);
-            window.location.href = "error.html"
-        }
-    });
-
+        });
+    }
 });
 
 $(document).on('click', '#cancelChangeBio', function () {

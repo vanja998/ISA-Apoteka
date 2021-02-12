@@ -87,7 +87,7 @@ public class OfferService {
 
             for (Offer o : offers) {
                 if (o.getId().equals(offer.getId())) {
-                    if (now.after(offer.getOrderr().getDateDeadline())) {
+                    if (now.before(offer.getOrderr().getDateDeadline())) {
                         offer.setStatusSupplier("prihvacena");
                         Pharmacy pharmacy = offer.getOrderr().getAdminPharmacy().getPharmacy();
                         Set<Medication> medications = new HashSet<>();
@@ -109,6 +109,8 @@ public class OfferService {
                             pharmacyMedicationRepository.save(pharmacyMedication);
                         }
                         offer.getOrderr().setStatusAdmin("obradjena");
+                    } else {
+                        throw new Exception("Ne mozete prihvatati ponude pre definisanog roka!");
                     }
                 } else {
                     o.setStatusSupplier("odbijena");

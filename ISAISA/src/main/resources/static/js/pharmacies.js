@@ -147,7 +147,7 @@ $(document).on('click', '#btnSortbyaddressPharmacy', function () {    // Čeka s
 //********************************************************************
 //Deo za profil apoteke
 
-$(document).on('click', '.btnPharmacy', function () {
+/*$(document).on('click', '.btnPharmacy', function () {
     var allPharmacies = $(".allPharmacies");
     var onePharmacy = $(".onePharmacy");
 
@@ -181,7 +181,7 @@ $(document).on('click', '.btnPharmacy', function () {
         }
     });
 
-});
+});*/
 
 $(document).on('click', '.patientAllPromotions', function () {
 

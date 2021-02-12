@@ -48,7 +48,7 @@ public class VacationService {
     }
 
     public Vacation approveVacationDermatologist(Vacation vacation) {
-        vacation.setApproved(false);
+        vacation.setApproved(true);
         vacation = this.vacationRepository.save(vacation);
 
         SimpleMailMessage mailMessage = new SimpleMailMessage();

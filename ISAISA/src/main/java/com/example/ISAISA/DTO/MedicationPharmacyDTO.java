@@ -45,6 +45,17 @@ public class MedicationPharmacyDTO {
         this.price = price;
     }
 
+    public MedicationPharmacyDTO(Integer id, String code, String name, String producer, Integer quantity, Integer price, LocalDate beginPriceValidity, LocalDate endPriceValidity) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+        this.producer = producer;
+        this.quantity = quantity;
+        this.price = price;
+        this.beginPriceValidity = beginPriceValidity;
+        this.endPriceValidity = endPriceValidity;
+    }
+
     public Integer getId() { return id; }
 
     public void setId(Integer id) { this.id = id; }

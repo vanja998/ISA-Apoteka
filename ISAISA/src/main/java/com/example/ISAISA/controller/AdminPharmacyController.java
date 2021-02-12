@@ -78,8 +78,10 @@ public class AdminPharmacyController {
     public ResponseEntity<?> changePasswordFirstTime(@RequestBody AuthenticationController.PasswordChanger passwordChanger) {
 
         AdminPharmacy user = (AdminPharmacy) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
+
         User user1=userService.changeFlagAdminPharmacy(user);
+        userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
+
         Map<String, String> result = new HashMap<String, String>();
         result.put("result", "success");
 

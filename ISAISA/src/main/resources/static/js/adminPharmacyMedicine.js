@@ -202,6 +202,9 @@ $(document).on('click', '#btnAddSaveMedicineAdminPharmacy', function () {
 
     var myJSON = formToJSON1(medicineName, price, beginPriceValidity, endPriceValidity);
 
+    beginPriceValidity = Date.parse(beginPriceValidity);
+    endPriceValidity = Date.parse(endPriceValidity);
+
     $.ajax({
         type: "POST",
         url: "http://localhost:8081/medications/addMedicineToPharmacy",
