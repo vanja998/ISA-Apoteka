@@ -98,6 +98,7 @@ public class UserService {
         u.setCountry(userRequest.getCountry());
         u.setPhone(userRequest.getPhoneNumber());
         u.setFlag(0);
+        u.setEnabled(true);
 
         List<Authority> auth = authService.findByname("ROLE_DERMATOLOGIST");
 
@@ -120,6 +121,7 @@ public class UserService {
         u.setCountry(userRequest.getCountry());
         u.setPhone(userRequest.getPhoneNumber());
         u.setFlag(0);
+        u.setEnabled(true);
 
         List<Authority> auth = authService.findByname("ROLE_ADMINSYSTEM");
 
@@ -161,6 +163,7 @@ public class UserService {
         u.setCountry(userRequest.getCountry());
         u.setPhone(userRequest.getPhoneNumber());
         u.setFlag(0);
+        u.setEnabled(true);
 
         List<Authority> auth = authService.findByname("ROLE_SUPPLIER");
 
@@ -185,6 +188,7 @@ public class UserService {
         Pharmacy pharmacy= pharmacyRepository.getOne(userRequest.getPharmacyID());
         a.setPharmacy(pharmacy);
         a.setEnabled(true);
+        a.setFlag(0);
 
         List<Authority> auth = authService.findByname("ROLE_ADMINPHARMACY");
         // u primeru se registruju samo obicni korisnici i u skladu sa tim im se i dodeljuje samo rola USER
