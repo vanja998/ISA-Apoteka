@@ -11,4 +11,6 @@ import java.util.Set;
 
 public interface PharmacyMedicationRepository extends JpaRepository<PharmacyMedication, Integer> {
     Set<PharmacyMedication> findAllByMedicationAndBeginPriceValidityBeforeAndEndPriceValidityAfter(Medication medication, LocalDate localDate,LocalDate localDate1);
+    Set<PharmacyMedication> findAllByPharmacyAndMedication(Pharmacy pharmacy, Medication medication);
+
 }

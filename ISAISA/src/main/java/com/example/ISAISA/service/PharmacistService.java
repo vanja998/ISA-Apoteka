@@ -94,6 +94,11 @@ public class PharmacistService {
         return pharmacist;
     }
 
+    public void changeFlag(Pharmacist pharmacist){
+        pharmacist.setFlag(1);
+        pharmacistRepository.save(pharmacist);
+    }
+
     public Set<PharmacistDTO> getAll() {
 
         List<Pharmacist> pharmacists = pharmacistRepository.findAll();

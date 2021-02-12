@@ -60,6 +60,23 @@ public class DermatologistController {
 
         userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
 
+
+
+        Map<String, String> result = new HashMap<String, String>();
+        result.put("result", "success");
+
+        return ResponseEntity.accepted().body(result);
+    }
+
+    @PostMapping(value = "/changePasswordFirsttime", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('DERMATOLOGIST')")
+    public ResponseEntity<?> changePasswordFirsttime(@RequestBody AuthenticationController.PasswordChanger passwordChanger) {
+
+        Dermatologist user = (Dermatologist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        dermatologistService.changeFlag(user);
+
+        userDetailsService.changePassword(passwordChanger.oldPassword, passwordChanger.newPassword);
+
         Map<String, String> result = new HashMap<String, String>();
         result.put("result", "success");
 

@@ -15,7 +15,7 @@ public class Reservation {
     private Integer id;
 
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     private Patient patient;
 
 

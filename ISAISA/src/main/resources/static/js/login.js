@@ -36,10 +36,10 @@ $(document).ready(function () {
 					window.location.href = "patientWelcome.html";
 				}
 				else if(data['role']==='dermatologist'){
-					window.location.href = "welcomeDermatologist.html";
+					window.location.href = "checkLoginDermatologist.html";
 				}
 				else if(data['role']==='pharmacist') {
-					window.location.href = "welcomePharmacist.html";
+					window.location.href = "checkLoginPharmacist.html";
 				}
 				else if(data['role']==='adminsystem'){
 					window.location.href = "adminSystemHomePage.html";

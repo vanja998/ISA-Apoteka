@@ -25,12 +25,15 @@ public class Vacation {
     private LocalDate dateEndVacation;
 
     @Column
+    private Boolean absence;
+
+    @Column
     private Boolean approved;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Pharmacist pharmacist;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Dermatologist dermatologist;
 
     public Vacation() { }
@@ -68,4 +71,11 @@ public class Vacation {
 
     public void setDermatologist(Dermatologist dermatologist) { this.dermatologist = dermatologist; }
 
+    public Boolean getAbsence() {
+        return absence;
+    }
+
+    public void setAbsence(Boolean absence) {
+        this.absence = absence;
+    }
 }

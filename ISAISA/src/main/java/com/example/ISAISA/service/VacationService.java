@@ -1,12 +1,16 @@
 package com.example.ISAISA.service;
 
+import com.example.ISAISA.model.Dermatologist;
+import com.example.ISAISA.model.Pharmacist;
 import com.example.ISAISA.model.Vacation;
 import com.example.ISAISA.repository.VacationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 @Service
@@ -20,6 +24,7 @@ public class VacationService {
 
     @Autowired
     public void setEmailSenderService(EmailSenderService emailSenderService) {this.emailSenderService = emailSenderService; }
+
 
     public Set<Vacation> findAllByPharmacistNotNull() {
         return this.vacationRepository.findAllByPharmacistNotNullAndApprovedNullAndDateBeginVacationAfter(LocalDate.now());
@@ -95,6 +100,47 @@ public class VacationService {
         emailSenderService.sendEmail(mailMessage);
 
         return vacation;
+    }
+
+
+    public Boolean requestVacationDermatologist(Dermatologist dermatologist, LocalDateTime beginVacation, LocalDateTime endVacation, Integer absence){
+
+        Vacation vacation = new Vacation();
+        Boolean abs;
+        if(absence==1){
+            abs=true;
+        }else {
+            abs=false;
+        }
+
+        vacation.setDermatologist(dermatologist);
+        vacation.setDateBeginVacation(beginVacation.toLocalDate());
+        vacation.setDateEndVacation(endVacation.toLocalDate());
+        vacation.setAbsence(abs);
+
+        vacationRepository.save(vacation);
+
+        return true;
+    }
+
+    public Boolean requestVacationPharmacist(Pharmacist pharmacist, LocalDateTime beginVacation, LocalDateTime endVacation, Integer absence){
+
+        Vacation vacation = new Vacation();
+        Boolean abs;
+        if(absence==1){
+            abs=true;
+        }else {
+            abs=false;
+        }
+
+        vacation.setPharmacist(pharmacist);
+        vacation.setDateBeginVacation(beginVacation.toLocalDate());
+        vacation.setDateEndVacation(endVacation.toLocalDate());
+        vacation.setAbsence(abs);
+
+        vacationRepository.save(vacation);
+
+        return true;
     }
 
 }

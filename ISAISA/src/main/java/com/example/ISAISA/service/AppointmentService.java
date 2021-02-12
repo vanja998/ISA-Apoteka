@@ -288,6 +288,12 @@ public class AppointmentService {
         List<Appointment> patientAppointments = appointmentRepository.findByPatient(patient);
         List<Counseling> patientCounselings = counselingRepository.findAllByPatient(patient);
 
+        LocalDateTime dateTime = LocalDateTime.now();
+
+        if(dateTime.isAfter(startOfAppointment)){
+            return false;
+        }
+
         Boolean patientFree = true;
 
         for (Appointment i : patientAppointments) {

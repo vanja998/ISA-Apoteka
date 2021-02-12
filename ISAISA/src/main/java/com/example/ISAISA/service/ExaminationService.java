@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -19,6 +20,12 @@ public class ExaminationService {
     private MedicationRepository medicationRepository;
     private CounselingRepository counselingRepository;
     private AdminPharmacyRepository adminPharmacyRepository;
+    private PharmacyMedicationRepository pharmacyMedicationRepository;
+
+    @Autowired
+    public void setPharmacyMedicationRepository(PharmacyMedicationRepository pharmacyMedicationRepository) {
+        this.pharmacyMedicationRepository = pharmacyMedicationRepository;
+    }
 
     @Autowired
     public void setAdminPharmacyRepository(AdminPharmacyRepository adminPharmacyRepository) {
@@ -152,13 +159,17 @@ public class ExaminationService {
         if(examination.getExaminationAppointment() != null) {
              pharmacy = examination.getExaminationAppointment().getPharmacy_appointment();
              for (PharmacyMedication pm : pharmacy.getPharmacy_medications()) {
-                 medications.add(pm.getMedication());
+                 if(pm.getQuantity()>0) {
+                     medications.add(pm.getMedication());
+                 }
              }
         }
         else {
              pharmacy = examination.getExaminationCounseling().getPharmacist().getPharmacy();
              for (PharmacyMedication pm : pharmacy.getPharmacy_medications()) {
-                 medications.add(pm.getMedication());
+                 if(pm.getQuantity()>0) {
+                     medications.add(pm.getMedication());
+                 }
              }
         }
         List<Integer> lekoviId = new ArrayList<>();
@@ -235,7 +246,9 @@ public class ExaminationService {
 
         List<String> imenaAlternativa = new ArrayList<>();
         for(Medication i : alternative){
-            imenaAlternativa.add(i.getName());
+            if (isMedicationAvailable(i.getName(), examinationId)) {
+                imenaAlternativa.add(i.getName());
+            }
         }
 
         List<String> alternativeNotAlergic = new ArrayList<>();
@@ -259,9 +272,27 @@ public class ExaminationService {
         Examination examination = examinationRepository.findOneById(examinationId);
         Medication medication = medicationRepository.findByName(medicationName);
 
+        Pharmacy pharmacy;
+        if(examination.getExaminationAppointment() != null) {
+            pharmacy = examination.getExaminationAppointment().getPharmacy_appointment();
+        }else {
+            pharmacy = examination.getExaminationCounseling().getPharmacist().getPharmacy();
+        }
+
+        LocalDate today = LocalDate.now();
+        Set<PharmacyMedication> pharmacyMedications = pharmacyMedicationRepository.findAllByPharmacyAndMedication(pharmacy, medication);
+        for(PharmacyMedication i: pharmacyMedications){
+            if(today.isAfter(i.getBeginPriceValidity())){
+                i.setQuantity(i.getQuantity()-1);
+                break;
+            }
+        }
+
         examination.setPrescriptedMedication(medication);
         examination.setTherapyDuration(duration);
         examination = examinationRepository.save(examination);
+
+
 
         return true;
     }
@@ -526,7 +557,7 @@ public class ExaminationService {
     public AdminPharmacy findAdminPharmacy(Integer examinationId){
         Examination examination = examinationRepository.findOneById(examinationId);
         Pharmacy pharmacy = examination.getExaminationAppointment().getPharmacy_appointment();
-        Set<AdminPharmacy> adminPharmacies = pharmacy.getAdminPharmacySet();
+        Set<AdminPharmacy> adminPharmacies = adminPharmacyRepository.findAllByPharmacy(pharmacy);
         AdminPharmacy admin = adminPharmacies.iterator().next();
         return admin;
 

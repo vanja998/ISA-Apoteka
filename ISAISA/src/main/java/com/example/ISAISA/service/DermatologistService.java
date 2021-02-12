@@ -55,6 +55,11 @@ public class DermatologistService {
         return user;
     }
 
+    public void changeFlag(Dermatologist dermatologist){
+        dermatologist.setFlag(1);
+        dermatologistRepository.save(dermatologist);
+    }
+
     //Prikaz po apoteci
     public Set<Dermatologist> getByPharmacy(Pharmacy pharmacy) {
 

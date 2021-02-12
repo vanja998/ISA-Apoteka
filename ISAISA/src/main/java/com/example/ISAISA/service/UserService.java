@@ -75,6 +75,8 @@ public class UserService {
         medication.setProducer(medicationRegDTO.getProducer());
         medication.setShape_med(medicationRegDTO.getShape_med());
         medication.setType_med(medicationRegDTO.getType_med());
+        medication.setContraindication(medicationRegDTO.getContraindication());
+        medication.setRecommended_daily_intake(medicationRegDTO.getRecommended_daily_intake());
         Set <Medication> medications= new HashSet<Medication>();
         medications.add(medicationAlt);
         medication.setMedication(medications);

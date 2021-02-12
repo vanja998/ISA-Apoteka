@@ -382,7 +382,7 @@ $(document).on('change', '#idAlternativeDropDown', function () {
             alternativeMedication.hide();
             var examination = $(".examination");
             examination.show();
-            alert('Lek je prepisan');l
+            alert('Lek je prepisan');
         },
         error: function (data) {
             console.log('Error', data);
@@ -501,7 +501,8 @@ $(document).on('click', '#btnCreateCounselingNow', function () {
     var startOfCounseling = $("#chStartOfCounseling").val();
     var endOfCounseling = $("#chEndOfCounseling").val();
 
-    var price = $("#chPrice").val();
+    //var price = $("#chPrice").val();
+    var price = 3000;
 
     var myJSON = JSON.stringify({"id":examinationId, "startOfAppointment":startOfCounseling , "endOfAppointment":endOfCounseling, "price":price});
 

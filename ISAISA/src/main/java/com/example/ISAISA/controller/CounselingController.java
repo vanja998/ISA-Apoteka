@@ -78,6 +78,15 @@ public class CounselingController {
         Pharmacist user = (Pharmacist) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Boolean counseling = counselingService.createCounselingPharmacist(user, createCounselingDto.getId(),  createCounselingDto.getStartOfAppointment(), createCounselingDto.getEndOfAppointment(), createCounselingDto.getPrice());
 
+        Patient patient = counselingService.findPatient(createCounselingDto.getId());
+
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(patient.getEmail());
+        mailMessage.setSubject("Zakazivanje termina");
+        mailMessage.setFrom("isaverifikacija@gmail.com");
+        mailMessage.setText("Pregled Vam je zakazan.");
+        emailSenderService.sendEmail(mailMessage);
+
         BooleanDto booleanDto = new BooleanDto(counseling);
 
 
